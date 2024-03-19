@@ -31,7 +31,33 @@ public static class JsonHandler
         List<T> listOfObjects = Read<T>(jsonFile);
         listOfObjects.Add(objectToAppend);
         Write<T>(listOfObjects);
+
         return true;
+    }
+
+    public static bool Update<T>(T objectToUpdate, string jsonFile)
+    {
+        List<T> listOfObjects = Read<T>(jsonFile);
+        bool updated = false;
+
+        for (int i = 0; i < listOfObjects.Count; i++)
+        {
+            if (listOfObjects[i].ID == objectToUpdate.ID)
+            {
+                listOfObjects[i] = objectToUpdate;
+                Write<T>(listOfObjects, jsonFile);
+                updated = true;
+                break;
+            }
+        }
+
+        if (!updated) 
+        {
+            Append<T>(objectToUpdate, jsonFile);
+            updated = true;
+        }
+        
+        return updated;
     }
 
     public static List<T>? Read<T>(string jsonFile)
