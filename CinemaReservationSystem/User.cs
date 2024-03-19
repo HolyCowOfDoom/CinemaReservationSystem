@@ -1,32 +1,48 @@
+using System.Data.Common;
+using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 using CsvHelper.Configuration.Attributes;
 
 public class User
 {
-    static string UserDBFilePath = "../UserDB.csv";
+    static string UserDBFilePath = Path.GetFullPath("UserDB.csv");
     private readonly int _id;
     //private string _name; 
     //private string _birthDate;
     //private string _email;
     private string _password;
+    private bool _fromCSV;
 
     public int ID {get => _id; init => _id = value;}
     public string Name {get; private set;} //we don't want _name to be able to be changed outside of this class
     public string BirthDate {get; private set;}
     public string Email {get; private set;}
-    //private string Password {get; set;}
+    public string Password {get => EncryptPassword(_password); private set => _password = value;}
     //add custom set if allowing user to change password
 
-    public User(string name, string birthDate, string email, string password){
+    public User(string name, string birthDate, string email, string password)
+    {
         //ID = GetUsersCount();
         Name = name;
         BirthDate = birthDate;
         Email = email;
         _password = password;
+        AddUser(this);
     }
-   public static bool AddUser(string name, string birthDate, string email, string password)
+    //for use by CsVHandler.Read() (it instantiates User objects)
+    public User(int id, string name, string birthDate, string email, string password)
     {
-        CsvHandler.Write(UserDBFilePath);
+        ID = id;
+        Name = name;
+        BirthDate = birthDate;
+        Email = email;
+        _password = password;
+    }
+    public static bool AddUser(User user)
+    {
+        //List<object> records = new()
+        CsvHandler.Append(UserDBFilePath, new List<object>{user});
+        //CsvHandler.Write(UserDBFilePath);
         return true;
     }
     // public User(string name, string birthDate, string email, string password)
@@ -46,11 +62,32 @@ public class User
     public static bool ValidatePassword(int id, string name, string password)
     {
         //int id = GetIDFromName(name);
-        string userPassword = GetPasswordFromID(id); //gets directly from DB rather than Users List
+        string userPassword = DecryptPassword(GetPasswordFromID(id)); //gets directly from DB rather than Users List
         if(password == userPassword) return true;
         else return false;
     }
 
+    private static string EncryptPassword(string password)
+    {
+        string encrypted = "";
+        foreach(char letter in password)
+        {
+            if(letter % 2 == 0) encrypted += letter + 13; //even -> odd
+            else encrypted += (char)(letter + 9); //odd -> even 7 + 9 -> 16
+        }
+        return encrypted;
+    }
+
+    private static string DecryptPassword(string password)
+    {
+        string decrypted = "";
+        foreach(char letter in password)
+        {
+            if(letter % 2 != 0) decrypted += letter - 13; //odd -> even
+            else decrypted += letter - 9; //even -> odd 16 - 9 => 7
+        }
+        return decrypted;
+    }
     public static bool ChangeName(int id, string newName){
         string currentName = GetNameFromID(id);
         if(newName == currentName){
@@ -63,7 +100,7 @@ public class User
             return false;
         }
         else{
-            CsvHandler.Write(UserDBFilePath);
+            //CsvHandler.Write(UserDBFilePath);
             //SetNameOfID(id, newName);
             return true;
         }
@@ -81,7 +118,7 @@ public class User
             return false;
         }
         else{
-            CsvHandler.Write(UserDBFilePath);
+            //CsvHandler.Write(UserDBFilePath);
             //SetBirthDateOfID(id, birthDate);
             return true;
         }
@@ -99,7 +136,7 @@ public class User
             return false;
         }
         else{
-            CsvHandler.Write(UserDBFilePath);
+            //CsvHandler.Write(UserDBFilePath);
             //SetEmailOfID(id, email);
             return true;
         }
@@ -110,7 +147,7 @@ public class User
         try{
             int id = 0;
             //load from csv/Users
-            CsvHandler.Read(UserDBFilePath);
+            //CsvHandler.Read(UserDBFilePath);
             return id;
         } catch(Exception e){ //catch specific csv exceptions
             Console.WriteLine(e);
@@ -123,7 +160,7 @@ public class User
     {
         string name = "";
         //load from csv/Users
-        CsvHandler.Read(UserDBFilePath);
+        //CsvHandler.Read(UserDBFilePath);
         return name;
     }
 
@@ -131,7 +168,7 @@ public class User
     {
         string birthDate = "";
         //load from csv/Users
-        CsvHandler.Read(UserDBFilePath);
+        //CsvHandler.Read(UserDBFilePath);
         return birthDate;
     }
 
@@ -139,7 +176,7 @@ public class User
     {
         string email = "";
         //load from csv/Users
-        CsvHandler.Read(UserDBFilePath);
+        //CsvHandler.Read(UserDBFilePath);
         return email;
     }
 
@@ -147,7 +184,7 @@ public class User
     {
         string password = "";
         //load from csv/Users
-        CsvHandler.Read(UserDBFilePath);
+        //CsvHandler.Read(UserDBFilePath);
         return password;
     }
 
