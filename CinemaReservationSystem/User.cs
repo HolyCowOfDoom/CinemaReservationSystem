@@ -1,22 +1,29 @@
 using System.Reflection.Metadata.Ecma335;
 using CsvHelper.Configuration.Attributes;
 
-public static class User
+public class User
 {
     static string UserDBFilePath = "../UserDB.csv";
-    // private readonly int _id;
-    // //private string _name; 
-    // //private string _birthDate;
-    // //private string _email;
-    // private string _password;
+    private readonly int _id;
+    //private string _name; 
+    //private string _birthDate;
+    //private string _email;
+    private string _password;
 
-    // public int ID {get => _id; init => _id = value;}
-    // public string Name {get; private set;} //we don't want _name to be able to be changed outside of this class
-    // public string BirthDate {get; private set;}
-    // public string Email {get; private set;}
+    public int ID {get => _id; init => _id = value;}
+    public string Name {get; private set;} //we don't want _name to be able to be changed outside of this class
+    public string BirthDate {get; private set;}
+    public string Email {get; private set;}
     //private string Password {get; set;}
     //add custom set if allowing user to change password
 
+    public User(string name, string birthDate, string email, string password){
+        //ID = GetUsersCount();
+        Name = name;
+        BirthDate = birthDate;
+        Email = email;
+        _password = password;
+    }
    public static bool AddUser(string name, string birthDate, string email, string password)
     {
         CsvHandler.Write(UserDBFilePath);
