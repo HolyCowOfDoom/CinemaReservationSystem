@@ -6,16 +6,13 @@ public class Graphics
         {
             WriteInCenter(text);
         }
-        Console.WriteLine("\t\t\t\t\t╔═══════════════════════════════════╗");
-        Console.WriteLine("\t\t\t\t\t║              Player               ║");
-        Console.WriteLine("\t\t\t\t\t╠═══════════════════════════════════╣");
-        Console.WriteLine("\t\t\t\t\t║ HEALTH:      {0, -8}             ║", $"{CurrentHealth}/{MaxHealth}");
-        Console.WriteLine("\t\t\t\t\t║ WEAPON:      {0, -21}║", $"{CurrentWeapon.Name}");
-        Console.WriteLine("\t\t\t\t\t║ DAMAGE:      {0, -10}           ║", $"{(int)(CurrentWeapon.MaxDamage * 0.8)}-{CurrentWeapon.MaxDamage}");
-        Console.WriteLine("\t\t\t\t\t║ CRITCHANCE:  {0, -10}           ║", $"{(double)CurrentWeapon.CritChance}");
-        Console.WriteLine("\t\t\t\t\t║ EXP:         {0, -21}║", $"{Experience}");
-        Console.WriteLine("\t\t\t\t\t║ LVL:         {0, -21}║", $"{Level}");
-        Console.WriteLine("\t\t\t\t\t╚═══════════════════════════════════╝");
+        else
+        {
+            WriteInCenter("╔═══════════════════════════════════╗");
+            WriteInCenter($"║              {header}            ║");
+            WriteInCenter("╠═══════════════════════════════════╣");
+            WriteInCenter(text);
+        }
     }
 
     public static void WriteInCenter(string data)
