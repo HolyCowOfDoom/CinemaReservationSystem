@@ -3,6 +3,7 @@ using CsvHelper.Configuration.Attributes;
 
 public static class User
 {
+    static string UserDBFilePath = "../UserDB.csv";
     // private readonly int _id;
     // //private string _name; 
     // //private string _birthDate;
@@ -18,7 +19,7 @@ public static class User
 
    public static bool AddUser(string name, string birthDate, string email, string password)
     {
-        CsvHandler.Write();
+        CsvHandler.Write(UserDBFilePath);
         return true;
     }
     // public User(string name, string birthDate, string email, string password)
@@ -55,7 +56,7 @@ public static class User
             return false;
         }
         else{
-            CsvHandler.Write();
+            CsvHandler.Write(UserDBFilePath);
             //SetNameOfID(id, newName);
             return true;
         }
@@ -73,7 +74,7 @@ public static class User
             return false;
         }
         else{
-            CsvHandler.Write();
+            CsvHandler.Write(UserDBFilePath);
             //SetBirthDateOfID(id, birthDate);
             return true;
         }
@@ -91,7 +92,7 @@ public static class User
             return false;
         }
         else{
-            CsvHandler.Write();
+            CsvHandler.Write(UserDBFilePath);
             //SetEmailOfID(id, email);
             return true;
         }
@@ -102,7 +103,7 @@ public static class User
         try{
             int id = 0;
             //load from csv/Users
-            CsvHandler.Read();
+            CsvHandler.Read(UserDBFilePath);
             return id;
         } catch(Exception e){ //catch specific csv exceptions
             Console.WriteLine(e);
@@ -115,7 +116,7 @@ public static class User
     {
         string name = "";
         //load from csv/Users
-        CsvHandler.Read();
+        CsvHandler.Read(UserDBFilePath);
         return name;
     }
 
@@ -123,7 +124,7 @@ public static class User
     {
         string birthDate = "";
         //load from csv/Users
-        CsvHandler.Read();
+        CsvHandler.Read(UserDBFilePath);
         return birthDate;
     }
 
@@ -131,7 +132,7 @@ public static class User
     {
         string email = "";
         //load from csv/Users
-        CsvHandler.Read();
+        CsvHandler.Read(UserDBFilePath);
         return email;
     }
 
@@ -139,7 +140,7 @@ public static class User
     {
         string password = "";
         //load from csv/Users
-        CsvHandler.Read();
+        CsvHandler.Read(UserDBFilePath);
         return password;
     }
 
