@@ -44,21 +44,6 @@ public class Graphics
         WriteInCenter(bottomBorder);
     }
 
-    public static void WriteInCenter(string data)
-    {
-        foreach (var model in data.Split('\n'))
-        {
-            Console.SetCursorPosition((Console.WindowWidth - model.Length) / 2, Console.CursorTop);
-            Console.WriteLine(model);
-        }
-    }
-
-    public static char ReadInput()
-    {
-        char input = Console.ReadKey();
-        return input;
-    }
-
         public void Map()
     {
         Console.Clear();
