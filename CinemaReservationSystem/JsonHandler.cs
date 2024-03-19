@@ -29,15 +29,16 @@ public static class JsonHandler
     public static bool Append<T>(T objectToAppend, string jsonFile)
     {
         List<T> listOfObjects = Read<T>(jsonFile);
+        if (listOfObjects == null) listOfObjects = new List<T>();
         listOfObjects.Add(objectToAppend);
-        Write<T>(listOfObjects);
+        bool writeSucces = Write<T>(listOfObjects);
 
-        return true;
+        return writeSucces;
     }
 
     public static bool Update<T>(T objectToUpdate, string jsonFile)
     {
-        List<T> listOfObjects = Read<T>(jsonFile);
+        List<T>? listOfObjects = Read<T>(jsonFile);
         bool updated = false;
 
         for (int i = 0; i < listOfObjects.Count; i++)
@@ -62,7 +63,7 @@ public static class JsonHandler
 
     public static List<T>? Read<T>(string jsonFile)
     {
-        List<T> listOfObject = new List<T>();
+        List<T> listOfObjects = new List<T>();
         try
         {
             using (StreamReader reader = new StreamReader(jsonFile))
@@ -83,6 +84,18 @@ public static class JsonHandler
         }
 
         return listOfObjects;
+    }
+
+    public static bool Remove<T>(T objectToRemove, jsonFile)
+    {
+        List<T>? listOfObjects = Read<T>(jsonFile);
+        if (listOfObjects != null)
+        {
+            listOfObjects.Remove(objectToRemove);
+            bool writeSucces = Write<T>(listOfObjects, jsonFile);
+            return writeSucces;
+        }
+        return false;
     }
 
 
