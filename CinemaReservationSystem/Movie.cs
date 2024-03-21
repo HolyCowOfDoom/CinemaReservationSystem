@@ -6,8 +6,7 @@ public class Movie
     public List<int> ScreeningIDs = new List<int>;
     public Movie(string title, int ageRating, List<int> screenings = null)
     {
-        List<Movie> allMovies = JsonHandler.Read<Movie>("MovieDB.json");
-        MovieID = allMovies.Count + 1;
+        ID = (JsonHandler.Read<Movie>("MovieDB.json")).Count + 1;
         Title = title;
         AgeRating = ageRating;
         if (screenings != null) Screenings = screenings;
@@ -27,7 +26,7 @@ public class Movie
         JsonHandler.Remove<Screening>(screeningToRemove);
     }
 
-    public List<Screening> GetAllScreenings()
+    public List<Screening> GetAllMovieScreenings()
     {
         List<Screening> allScreenings = JsonHandler.Read<Screening>("ScreeningDB.json");
         List<Screening> movieScreenings = new List<Screening>();

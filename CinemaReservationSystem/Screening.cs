@@ -6,8 +6,7 @@ public class Screening
     public readonly int MovieID;
     public Screening(Auditorium assignedAuditorium, string screeningDateTime, int movieID)
     {
-        List<Screening> allScreenings = JsonHandler.Read<Screening>("ScreeningDB.json");
-        ID = allScreenings.Count + 1;
+        ID = (JsonHandler.Read<Movie>("ScreeningDB.json")).Count + 1;
         AssignedAuditorium = assignedAuditorium;
         ScreeningDateTime = DateTime.ParseExact(timeStampString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
         MovieID = movieID;

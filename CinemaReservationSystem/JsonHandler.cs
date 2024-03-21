@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.Linq;
 
 public static class JsonHandler
 {
@@ -41,22 +42,16 @@ public static class JsonHandler
         List<T>? listOfObjects = Read<T>(jsonFile);
         bool updated = false;
 
-        for (int i = 0; i < listOfObjects.Count; i++)
+        T objectInList = Get<T>(objectToUpdate.ID, jsonFile);
+        if (objectInList != null)
         {
-            if (listOfObjects[i].ID == objectToUpdate.ID)
-            {
-                listOfObjects[i] = objectToUpdate;
-                Write<T>(listOfObjects, jsonFile);
-                updated = true;
-                break;
-            }
+            listOfObjects[listOfObjects.IndexOf(objectInList)] = objectToUpdate;
+            updated = Write<T>(listOfObjects, jsonFile);
+            return updated;
         }
-
-        if (!updated) 
-        {
-            Append<T>(objectToUpdate, jsonFile);
-            updated = true;
-        }
+       
+        Append<T>(objectToUpdate, jsonFile);
+        updated = true;
         
         return updated;
     }
@@ -86,10 +81,10 @@ public static class JsonHandler
         return listOfObjects;
     }
 
-    public static bool Remove<T>(T objectToRemove, jsonFile)
+    public static bool Remove<T>(T objectToRemove, string jsonFile)
     {
         List<T>? listOfObjects = Read<T>(jsonFile);
-        if (listOfObjects != null)
+        if (listOfObjects != null && listOfObjects.Contains(objectToRemove))
         {
             listOfObjects.Remove(objectToRemove);
             bool writeSucces = Write<T>(listOfObjects, jsonFile);
@@ -98,5 +93,16 @@ public static class JsonHandler
         return false;
     }
 
-
+    public static T Get<T>(int objectID, string jsonFile)
+    {
+        List<T> listOfObjects = Read<T>(jsonFile);
+        foreach (T object in listOfObjects)
+        {
+            if (object.ID == objectID)
+            {
+                return object;
+            }
+        }
+        return null;
+    }
 }
