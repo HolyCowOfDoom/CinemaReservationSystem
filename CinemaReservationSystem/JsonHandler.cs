@@ -1,6 +1,8 @@
 using Newtonsoft.Json;
 using System.Linq;
 
+
+// Necessary interface for the ID system to fuction.
 public interface ObjectHasID
 {
     int ID { get; }
@@ -80,6 +82,7 @@ public static class JsonHandler
         return default;
     }
 
+    // Gets index of item in read list, returns -1 if item was not found.
     public static int GetIndex<T>(int objectID, string jsonFile) where T : ObjectHasID
     {
         List<T> listOfObjects = Read<T>(jsonFile);
@@ -101,7 +104,7 @@ public static class JsonHandler
         Write<T>(listOfObjects, jsonFile);
     }
 
-
+    // updates the json with given object, gets object id; gets list; writes list. If object id is not found, appends object.
     public static void Update<T>(T objectToUpdate, string jsonFile) where T : ObjectHasID
     {
         int objectIndex = GetIndex<T>(objectToUpdate.ID, jsonFile);
