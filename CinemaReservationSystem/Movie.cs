@@ -2,30 +2,37 @@ using CsvHelper.Configuration.Attributes;
 
 public class Movie : ObjectHasID
 {
-    public int ID { get;}
     public string Title;
     public int AgeRating;
-    public List<int> ScreeningIDs = new List<int>();
-    public Movie(string title, int ageRating, List<int>? screenings = null)
+    public List<int> ScreeningIDs;
+    public int ID { get; }
+    public Movie(string title, int ageRating, List<int>? screenings = null, int? id = null)
     {
-        List<Screening>? allMovies = JsonHandler.Read<Screening>("MovieDB.json");
-        ID = allMovies != null ? allMovies.Count + 1 : 1;
         Title = title;
         AgeRating = ageRating;
-        if (screenings != null) ScreeningIDs = screenings;
+        ScreeningIDs = screenings == null ? new List<int>() : screenings;
+
+        if (id == null)
+        {
+            List<Movie> movieList = JsonHandler.Read<Movie>("MovieDB.json");
+            int lastID = movieList.Count > 0 ? movieList[movieList.Count -1].ID : 0;
+            ID = lastID + 1;
+            JsonHandler.Update(this, "MovieDB.json");
+        }
+        else ID = (int)id;
     }
 
     public void AddScreening(Auditorium assignedAuditorium, string screeningDateTime)
     {
         Screening newScreening = new Screening(assignedAuditorium, screeningDateTime, this.ID);
         ScreeningIDs.Add(newScreening.ID);
-        bool updateSucces = JsonHandler.Update<Screening>(newScreening, "ScreeningDB.json");
-        updateSucces = JsonHandler.Update<Movie>(this, "MovieDB.json");
+        JsonHandler.Update<Screening>(newScreening, "ScreeningDB.json");
+        JsonHandler.Update<Movie>(this, "MovieDB.json");
     }
 
     public void RemoveScreening(int screeningID)
     {
-        bool removalSucces = JsonHandler.Remove<Screening>(screeningID, "ScreeningDB.json");
+        JsonHandler.Remove<Screening>(screeningID, "ScreeningDB.json");
     }
 
     public List<Screening> GetAllMovieScreenings()

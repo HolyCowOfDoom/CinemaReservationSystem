@@ -8,7 +8,8 @@ public interface ObjectHasID
 
 public static class JsonHandler
 {
-    public static bool Write<T>(List<T> dataToWrite, string jsonFile)
+    // Writes given object list to given json file.
+    public static void Write<T>(List<T> dataToWrite, string jsonFile)
     {
         try
         {
@@ -21,49 +22,15 @@ public static class JsonHandler
         catch (JsonWriterException ex)
         {
             Console.WriteLine($"Error reading JSON: {ex.Message}");
-            return false;
         }
         catch (FileNotFoundException ex)
         {
             Console.WriteLine($"JSON file not found: {ex.Message}");
-            return false;
         }
-
-        return true;
     }
 
-    public static bool Append<T>(T objectToAppend, string jsonFile)
-    {
-        List<T>? listOfObjects = Read<T>(jsonFile);
-
-        if (listOfObjects == null) listOfObjects = new List<T>();
-        
-        listOfObjects.Add(objectToAppend);
-        bool writeSucces = Write<T>(listOfObjects, jsonFile);
-
-        return writeSucces;
-    }
-
-    public static bool Update<T>(T objectToUpdate, string jsonFile) where T : ObjectHasID
-    {
-        List<T>? listOfObjects = Read<T>(jsonFile);
-        bool updated = false;
-
-        T? objectInList = Get<T>(objectToUpdate.ID, jsonFile);
-        if (objectInList != null && listOfObjects != null)
-        {
-            listOfObjects[listOfObjects.IndexOf(objectInList)] = objectToUpdate;
-            updated = Write<T>(listOfObjects, jsonFile);
-            return updated;
-        }
-       
-        Append<T>(objectToUpdate, jsonFile);
-        updated = true;
-        
-        return updated;
-    }
-
-    public static List<T>? Read<T>(string jsonFile)
+    // Reads the given JSON file and return the appropriate list, if JSON is empty return a new empty list.
+    public static List<T> Read<T>(string jsonFile)
     {
         List<T>? listOfObjects = new List<T>();
         try
@@ -77,47 +44,62 @@ public static class JsonHandler
         catch (JsonReaderException ex)
         {
             Console.WriteLine($"Error reading JSON: {ex.Message}");
-            return null;
         }
         catch (FileNotFoundException ex)
         {
             Console.WriteLine($"JSON file not found: {ex.Message}");
-            return null;
         }
-
-        return listOfObjects;
+        return listOfObjects == null ? new List<T>() : listOfObjects;
     }
 
-    public static bool Remove<T>(int removalID, string jsonFile) where T: ObjectHasID
+    // Removes object based on object.ID, works with all json related classes.
+    public static void Remove<T>(int removalID, string jsonFile) where T: ObjectHasID
     {
-        List<T>? listOfObjects = Read<T>(jsonFile);
         T? objectToRemove = Get<T>(removalID, jsonFile);
         
         if(objectToRemove != null)
         {
-            if (listOfObjects != null && listOfObjects.Contains(objectToRemove))
-            {
-                listOfObjects.Remove(objectToRemove);
-                bool writeSucces = Write<T>(listOfObjects, jsonFile);
-                return writeSucces;
-            }
+            List<T> listOfObjects = Read<T>(jsonFile);
+            listOfObjects.Remove(objectToRemove);
+            Write<T>(listOfObjects, jsonFile);
+            return;
         }
-        return false;
     }
 
+    // returns T object based on object.ID, returns null if object does not exist in JSON.
     public static T? Get<T>(int objectID, string jsonFile) where T : ObjectHasID
     {
-        List<T>? listOfObjects = Read<T>(jsonFile);
-        if (listOfObjects != null)
+        List<T> listOfObjects = Read<T>(jsonFile);
+        foreach (T item in listOfObjects)
         {
-            foreach (T item in listOfObjects)
+            if (item.ID == objectID)
             {
-                if (item.ID == objectID)
-                {
-                    return item;
-                }
+                return item;
             }
         }
         return default;
+    }
+
+    // gets list from json, adds item, writes list back to json.
+    public static void Append<T>(T objectToAppend, string jsonFile)
+    {
+        List<T> listOfObjects = Read<T>(jsonFile);
+        listOfObjects.Add(objectToAppend);
+        Write<T>(listOfObjects, jsonFile);
+    }
+
+
+    public static void Update<T>(T objectToUpdate, string jsonFile) where T : ObjectHasID
+    {
+        List<T> listOfObjects = Read<T>(jsonFile);
+
+        T? objectInList = Get<T>(objectToUpdate.ID, jsonFile);
+        if (objectInList != null)
+        {
+            listOfObjects[listOfObjects.IndexOf(objectInList)] = objectToUpdate;
+            Write<T>(listOfObjects, jsonFile);
+            return;
+        }
+        Append<T>(objectToUpdate, jsonFile);
     }
 }

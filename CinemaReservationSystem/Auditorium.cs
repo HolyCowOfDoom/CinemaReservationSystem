@@ -50,7 +50,7 @@ public class Auditorium
 
     public void ReserveSeat(int seatID)
     {
-        Seat seat = Seats.Find(s => s.ID == seatID);
+        Seat? seat = Seats.Find(s => s.ID == seatID);
         if (seat != null && !seat.IsReserved)
         {
             seat.ReserveSeat();
