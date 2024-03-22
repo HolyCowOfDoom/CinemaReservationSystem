@@ -1,14 +1,17 @@
-public class Screening
+using System.Globalization;
+
+public class Screening : ObjectHasID
 {
-    public readonly int ID;
+    public int ID { get; }
     public Auditorium AssignedAuditorium;
     public DateTime ScreeningDateTime;
-    public readonly int MovieID;
+    public int MovieID { get;}
     public Screening(Auditorium assignedAuditorium, string screeningDateTime, int movieID)
     {
-        ID = (JsonHandler.Read<Movie>("ScreeningDB.json")).Count + 1;
+        List<Screening>? allScreenings = JsonHandler.Read<Screening>("ScreeningDB.json");
+        ID = allScreenings != null ? allScreenings.Count + 1 : 1;
         AssignedAuditorium = assignedAuditorium;
-        ScreeningDateTime = DateTime.ParseExact(timeStampString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+        ScreeningDateTime = DateTime.ParseExact(screeningDateTime, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
         MovieID = movieID;
     }
 
@@ -16,11 +19,11 @@ public class Screening
     {
         try
         {
-            ScreeningDateTime = DateTime.ParseExact(timeStampString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
-            bool result = JsonHandler.Update(this, "ScreeningsDB.Json");
+            ScreeningDateTime = DateTime.ParseExact(dateTime, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+            bool result = JsonHandler.Update(this, "ScreeningDB.Json");
             return result;
         }
-        catch (FormatException ex)
+        catch (FormatException)
         {
             Console.WriteLine("Format error. Please use [dd-MM-yyyy HH:mm]");
             return false;
@@ -33,10 +36,10 @@ public class Screening
         {
             TimeSpan newTime = TimeSpan.Parse(time);
             ScreeningDateTime = ScreeningDateTime.Date + newTime;
-            bool result = JsonHandler.Update(this, "ScreeningsDB.Json");
+            bool result = JsonHandler.Update(this, "ScreeningDB.Json");
             return result;
         }
-        catch (FormatException ex)
+        catch (FormatException)
         {
             Console.WriteLine("Format error. Please use [HH:mm]");
             return false;
@@ -48,10 +51,10 @@ public class Screening
         try
         {
             ScreeningDateTime = DateTime.ParseExact(date, "dd-MM-yyyy", CultureInfo.InvariantCulture) + ScreeningDateTime.TimeOfDay;
-            bool result = JsonHandler.Update(this, "ScreeningsDB.Json");
+            bool result = JsonHandler.Update(this, "ScreeningDB.Json");
             return result;
         }
-        catch (FormatException ex)
+        catch (FormatException)
         {
             Console.WriteLine("Format error. Please use [dd-MM-yyyy]");
             return false;
@@ -61,7 +64,7 @@ public class Screening
     public bool AdjustAuditorium(Auditorium newAuditorium)
     {
         AssignedAuditorium = newAuditorium;
-        bool result = JsonHandler.Update(this, "ScreeningsDB.Json");
+        bool result = JsonHandler.Update(this, "ScreeningDB.Json");
         return result;
     }
 }
