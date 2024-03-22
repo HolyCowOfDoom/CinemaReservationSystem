@@ -55,12 +55,12 @@ public static class JsonHandler
     // Removes object based on object.ID, works with all json related classes.
     public static void Remove<T>(int removalID, string jsonFile) where T: ObjectHasID
     {
-        T? objectToRemove = Get<T>(removalID, jsonFile);
+        int objectIndex = GetIndex<T>(removalID, jsonFile);
         
-        if(objectToRemove != null)
+        if(objectIndex != -1)
         {
             List<T> listOfObjects = Read<T>(jsonFile);
-            listOfObjects.Remove(objectToRemove);
+            listOfObjects.Remove(listOfObjects[objectIndex]);
             Write<T>(listOfObjects, jsonFile);
             return;
         }
@@ -80,6 +80,19 @@ public static class JsonHandler
         return default;
     }
 
+    public static int GetIndex<T>(int objectID, string jsonFile) where T : ObjectHasID
+    {
+        List<T> listOfObjects = Read<T>(jsonFile);
+        foreach (T item in listOfObjects)
+        {
+            if (item.ID == objectID)
+            {
+                return listOfObjects.IndexOf(item);
+            }
+        }
+        return -1;
+    }
+
     // gets list from json, adds item, writes list back to json.
     public static void Append<T>(T objectToAppend, string jsonFile)
     {
@@ -91,12 +104,11 @@ public static class JsonHandler
 
     public static void Update<T>(T objectToUpdate, string jsonFile) where T : ObjectHasID
     {
-        List<T> listOfObjects = Read<T>(jsonFile);
-
-        T? objectInList = Get<T>(objectToUpdate.ID, jsonFile);
-        if (objectInList != null)
+        int objectIndex = GetIndex<T>(objectToUpdate.ID, jsonFile);
+        if (objectIndex != -1)
         {
-            listOfObjects[listOfObjects.IndexOf(objectInList)] = objectToUpdate;
+            List<T> listOfObjects = Read<T>(jsonFile);
+            listOfObjects[objectIndex] = objectToUpdate;
             Write<T>(listOfObjects, jsonFile);
             return;
         }
