@@ -1,11 +1,10 @@
 public class Helper
 {
     //Can be used to filter char or multiple chars and can display menu with header and user options in a box graphic
-    public static char ReadInput(Func<char, bool> validationCriteria, string reason="")
+    public static char ReadInput(Func<char, bool> validationCriteria, string header="", string text="")
     {
-        Graphics.BoxText(reason);
+        Graphics.BoxText(text, header);
         /* validate input examples for char
-        char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4', "Menu Options: 1234");
                         char letterInput = ReadInput(char.IsLetter);
 
         Validate input to be a digit
