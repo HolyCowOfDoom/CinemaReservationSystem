@@ -2,8 +2,8 @@ class Interface{
     // Eerste keer dat Menu word geroepen moet de bool op False beginnen.
     public static void GeneralMenu(bool login){
         if(!login){
-            Console.WriteLine("General Menu\n 1. View all movies\n 2. Register \n 3. Log in\n");
-            char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3', "Menu Options: 123");
+            char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3', 
+            "General Menu",  "1. View all movies\n 2. Register\n 3. Log in");
             if(DigitInput == '1'){
                 InterfaceController.ViewMovies(login);
             }
@@ -19,8 +19,8 @@ class Interface{
         }
 
         else{
-            Console.WriteLine("General Menu\n 1. View all movies\n 2. Log out\n 3. View profile\n 4. Reserve seats");
-            char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4', "Menu Options: 1234");
+            char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4',
+            "General Menu\n 1. View all movies\n 2. Register \n 3. Log in\n", "Menu Options: 1234");
             if(DigitInput == '1'){
                 InterfaceController.ViewMovies(login);
             }
