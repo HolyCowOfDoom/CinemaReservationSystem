@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Collections.Concurrent;
 
 public static class CsvHandler{
  
@@ -31,9 +32,21 @@ public static class CsvHandler{
         return true;
     }
 
-    //example (UserDBFilePath, "ID", 1)
-    //example (UserDBFilePath, "Name", "Utku")
-    public static bool FindRecordWithHeaderWithValue(string csvFile, string header, VariantType value)
+    //example (UserDBFilePath, "ID", 1) -> returns User obj with ID 1
+    //example (UserDBFilePath, "Name", "Utku") -> returns User obj with Name Utku
+    public static T? FindRecordWithHeaderWithValue<T>(string csvFile, string header, object value)
+    {
+        //Type J = value.GetType();
+        //J.MakeGenericType();
+        var method = typeof(CsvHandler).GetMethod("FindRecordWithHeaderWithValue2");
+        var CsvHandlerRef = method.MakeGenericMethod(typeof(T), value.GetType());
+        return (T)CsvHandlerRef.Invoke(null, new object[] {csvFile, header, value});
+        //https://stackoverflow.com/questions/3957817/calling-generic-method-with-type-variable
+        
+        //this doesn't work!
+        //FindRecordWithHeaderWithValue2<T, value.GetType()>(csvFile, header, value);
+    }
+    public static T? FindRecordWithHeaderWithValue2<T, J>(string csvFile, string header, J value)
     {
         var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
         {
@@ -47,38 +60,27 @@ public static class CsvHandler{
         // List<string> headers = headersString.Split(',').ToList();
         // int headerIndex = headers.FindIndex(item => item == header);
         
+        csvReader.Read();
         csvReader.ReadHeader();
         while (csvReader.Read())
         {
-            var field = csvReader.GetField<VariantType>(header);
+            J field = csvReader.GetField<J>(header);
+            if(value.Equals(field))
+            {
+                T records = csvReader.GetRecord<T>();
+                return records;
+            }
             //var line = csvReader.GetRecord<VariantType>();
         }
 
-        return true;
+        return default;
     }
 
-    // public static bool FindRecordWithHeaderWithValue(string csvFile, string header, VariantType value)
-    // {
-    //     StreamReader reader = new(csvFile);
-    //     string headersString = reader.ReadLine();
-    //     string[] headersArray = headersString.Split(',');
-    //     List<string> headers = headersArray.ToList();
-    //     reader.Close();
-    //     int headerIndex = headers.FindIndex(item => item == header);
-        
-    //     from l in File.ReadLines(csvFile)
-    //     let x = l.Split(',')
-    //     select new
-    //     {
-    //         a = x.ToList()[headerIndex]
-            
-    //     }
-    // }
     public static bool Write(string csvFile, int id, string header)
     {
         using StreamWriter writer = new(csvFile);
         using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture); 
-        csvWriter.WriteRecord
+        //csvWriter.WriteRecord
         // csvWriter.WriteField()
         //writer.Close();
         return true;
@@ -97,6 +99,26 @@ public static class CsvHandler{
 
         reader.Close();
         return true;
+    }
+
+    public static int CountRecords(string csvFile)
+    {
+        var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
+            //https://stackoverflow.com/questions/49521193/csvhelper-ignore-case-for-header-names
+        };
+        using StreamReader reader = new(csvFile);
+        using CsvHelper.CsvReader csvReader = new(reader, config);
+        csvReader.Read();
+        csvReader.ReadHeader();
+
+        int count = 0;
+        while (csvReader.Read())
+        {
+            count++;
+        }
+        return count;
     }
 
    

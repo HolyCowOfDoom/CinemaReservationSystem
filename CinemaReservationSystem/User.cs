@@ -17,7 +17,7 @@ public class User
     [Name("Name")]
     public string Name {get; private set;} //we don't want _name to be able to be changed outside of this class
     [Name("BirthDate")]
-    public string BirthDate {get; private set;}
+    public string BirthDate {get; private set;} //could use a DateTime obj
     [Name("Email")]
     public string Email {get; private set;}
     [Name("Password")]
@@ -26,7 +26,7 @@ public class User
 
     public User(string name, string birthDate, string email, string password)
     {
-        //ID = GetUsersCount();
+        ID = CsvHandler.CountRecords(UserDBFilePath);
         Name = name;
         BirthDate = birthDate;
         Email = email;
