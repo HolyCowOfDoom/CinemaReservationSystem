@@ -1,5 +1,6 @@
 public class Helper
 {
+    //Can be used to filter char or multiple chars and can display menu with header and user options in a box graphic
     public static char ReadInput(Func<char, bool> validationCriteria, string reason="")
     {
         Graphics.BoxText(reason);
@@ -39,15 +40,17 @@ public class Helper
         return input;
     }
 
+    //Can be used to filter string and displayer menu with header and user options in a box graphic
+    // Displays user input key for key, user can backspace input
+    //Can be used for login page for input validation
     public static string ReadInput(Func<string, bool> stringValidationCriteria)
     {
         /*
-            // Validate input to be a string that starts with 'ABC'
+        Validate input to be a string that starts with 'ABC'
         string abcInput = ReadInput(s => s.StartsWith("ABC"));
 
-        // Validate input to be a string that contains only digits
+        Validate input to be a string that contains only digits
         string digitsInput = ReadInput(s => s.All(char.IsDigit));
-        
             */
         Console.CursorVisible = false;
         string input = string.Empty;
