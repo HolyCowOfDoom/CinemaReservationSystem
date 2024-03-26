@@ -70,7 +70,10 @@ public class Screening : ObjectHasID
         JsonHandler.Update(this, "ScreeningDB.Json");
     }
 
-    public void AddBundle(string bundleCode, string bundleDescription) => Bundles.Add(new Bundle(bundleCode, bundleDescription));
+    public void AddBundle(string bundleCode, string bundleDescription, int price)
+    {
+        Bundles.Add(new Bundle(bundleCode, bundleDescription, price));
+    }
 
     public void AddBundle(Bundle bundle) => Bundles.Add(bundle);
 }
