@@ -16,17 +16,16 @@ public class Movie : ObjectHasID
         {
             List<Movie> movieList = JsonHandler.Read<Movie>("MovieDB.json");
             int lastID = movieList.Count > 0 ? movieList[movieList.Count -1].ID : 0;
-            ID = lastID + 1;
+            ID = ++lastID;
             JsonHandler.Update(this, "MovieDB.json");
         }
         else ID = (int)id;
     }
 
-    public void AddScreening(Auditorium assignedAuditorium, string screeningDateTime)
+    public void AddScreening(Auditorium assignedAuditorium, DateTime? screeningDateTime)
     {
         Screening newScreening = new Screening(assignedAuditorium, screeningDateTime, this.ID);
         ScreeningIDs.Add(newScreening.ID);
-        JsonHandler.Update<Screening>(newScreening, "ScreeningDB.json");
         JsonHandler.Update<Movie>(this, "MovieDB.json");
     }
 

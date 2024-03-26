@@ -6,10 +6,10 @@ public class Screening : ObjectHasID
     public DateTime ScreeningDateTime;
     public int MovieID { get; }
     public int ID { get; }
-    public Screening(Auditorium assignedAuditorium, string? screeningDateTime, int movieID, int? id = null)
+    public Screening(Auditorium assignedAuditorium, DateTime? screeningDateTime, int movieID, int? id = null)
     {
         AssignedAuditorium = assignedAuditorium;
-        ScreeningDateTime = screeningDateTime != null ? DateTime.ParseExact(screeningDateTime, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture) : new DateTime(2000, 1, 1, 0, 0, 0);
+        ScreeningDateTime = (DateTime)(screeningDateTime ?? new DateTime(2000, 1, 1, 0, 0, 0));
         MovieID = movieID;
 
         if (id == null)
@@ -21,7 +21,7 @@ public class Screening : ObjectHasID
         }
         else ID = (int)id;
     }
-
+    
     public void AdjustDateTime(string dateTime)
     {
         try
