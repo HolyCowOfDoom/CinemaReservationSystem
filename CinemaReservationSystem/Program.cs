@@ -1,8 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.Security.AccessControl;
 
-Console.WriteLine("Hello, World!");
-
-
+Interface.GeneralMenu(false);
 Console.ReadLine(); //keeps external terminal open
 
