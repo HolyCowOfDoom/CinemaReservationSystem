@@ -1,5 +1,3 @@
-using CsvHelper.Configuration.Attributes;
-
 public class Movie : ObjectHasID
 {
     public string Title;

@@ -4,12 +4,14 @@ public class Screening : ObjectHasID
 {
     public Auditorium AssignedAuditorium;
     public DateTime ScreeningDateTime;
+    public List<Bundle> Bundles;
     public int MovieID { get; }
     public int ID { get; }
     public Screening(Auditorium assignedAuditorium, DateTime? screeningDateTime, int movieID, int? id = null)
     {
         AssignedAuditorium = assignedAuditorium;
         ScreeningDateTime = (DateTime)(screeningDateTime ?? new DateTime(2000, 1, 1, 0, 0, 0));
+        Bundles = new List<Bundle>();
         MovieID = movieID;
 
         if (id == null)
@@ -67,4 +69,8 @@ public class Screening : ObjectHasID
         AssignedAuditorium = newAuditorium;
         JsonHandler.Update(this, "ScreeningDB.Json");
     }
+
+    public void AddBundle(string bundleCode, string bundleDescription) => Bundles.Add(new Bundle(bundleCode, bundleDescription));
+
+    public void AddBundle(Bundle bundle) => Bundles.Add(bundle);
 }
