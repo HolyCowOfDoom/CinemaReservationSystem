@@ -12,11 +12,15 @@ public class User
     //private string _email;
     private string _password;
     private bool _fromCSV;
-
+    [Name("ID")]
     public int ID {get => _id; init => _id = value;}
+    [Name("Name")]
     public string Name {get; private set;} //we don't want _name to be able to be changed outside of this class
+    [Name("BirthDate")]
     public string BirthDate {get; private set;}
+    [Name("Email")]
     public string Email {get; private set;}
+    [Name("Password")]
     public string Password {get => EncryptPassword(_password); private set => _password = value;}
     //add custom set if allowing user to change password
 
