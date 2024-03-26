@@ -1,4 +1,4 @@
-public class Auditorium
+public class Auditorium : ObjectHasID
 {
     public List<Seat> Seats { get; }
     public int ID { get; }
@@ -62,9 +62,9 @@ public class Auditorium
         }
     }
 
-    public void WriteSeatDataToJson(string jsonFile)
+    public void UpdateAuditoriumJson()
     {
-        JsonHandler.Write(Seats, jsonFile);
+        JsonHandler.Update<Auditorium>(this, "AuditoriumDB.json");
     }
 
     public override string ToString()

@@ -15,7 +15,7 @@ public class Movie : ObjectHasID
             List<Movie> movieList = JsonHandler.Read<Movie>("MovieDB.json");
             int lastID = movieList.Count > 0 ? movieList[movieList.Count -1].ID : 0;
             ID = ++lastID;
-            JsonHandler.Update(this, "MovieDB.json");
+            UpdateMovie();
         }
         else ID = (int)id;
     }
@@ -24,12 +24,14 @@ public class Movie : ObjectHasID
     {
         Screening newScreening = new Screening(assignedAuditorium, screeningDateTime, this.ID);
         ScreeningIDs.Add(newScreening.ID);
-        JsonHandler.Update<Movie>(this, "MovieDB.json");
+        UpdateMovie();
     }
 
     public void RemoveScreening(int screeningID)
     {
+        ScreeningIDs.Remove(screeningID);
         JsonHandler.Remove<Screening>(screeningID, "ScreeningDB.json");
+        UpdateMovie();
     }
 
     public List<Screening> GetAllMovieScreenings()
@@ -48,4 +50,6 @@ public class Movie : ObjectHasID
         }
         return movieScreenings;
     }
+    
+    public void UpdateMovie() => JsonHandler.Update<Movie>(this, "MovieDB.json");
 }
