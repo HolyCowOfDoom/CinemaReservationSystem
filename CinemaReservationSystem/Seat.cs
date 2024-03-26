@@ -1,4 +1,4 @@
-public class Seat
+public class Seat : ObjectHasID
 {
     public string Color { get; }
     public int ID { get; }
