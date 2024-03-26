@@ -55,5 +55,4 @@ public class Helper
                 Console.WriteLine(model);
             }
         }
-    }
 }

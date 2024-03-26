@@ -3,14 +3,14 @@ class Interface{
     public static void GeneralMenu(bool login){
         if(login){
             Console.WriteLine("General Menu\n 1. View all movies\n 2. Register \n 3. Log in\n");
-            string inputmenu = Console.ReadLine().ToLower();
-            if(inputmenu == "1"){
+            char digitInput = ReadInput(char.IsDigit);
+            if(digitInput == "1"){
                 ViewMovies();
             }
-            else if(inputmenu == "2"){
+            else if(digitInput == "2"){
                 RegisterUser();
             }
-            else if(inputmenu == "3"){
+            else if(digitInput == "3"){
                 LogIn();
             }
             else{
@@ -21,17 +21,17 @@ class Interface{
 
         else{
             Console.WriteLine("General Menu\n 1. View all movies\n 2. Log out\n 3. View profile\n 4. Reserve seats");
-            string inputmenu = Console.ReadLine().ToLower();
-            if(inputmenu == "1"){
+            char digitInput = ReadInput(char.IsDigit)
+            if(digitInput == "1"){
                 ViewMovies();
             }
-            else if (inputmenu == "2"){
+            else if (digitInput == "2"){
                 LogOut();
             }
-            else if (inputmenu == "3"){
+            else if (digitInput == "3"){
                 ViewUser();
             }
-            else if(inputmenu == "4"){
+            else if(digitInput == "4"){
                 ReserveSeats();
             }
             else{
