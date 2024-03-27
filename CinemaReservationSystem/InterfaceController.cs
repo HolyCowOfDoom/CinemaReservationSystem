@@ -104,4 +104,19 @@ public static void ViewMovies(bool login){
     public static void ReserveSeats(){
         // Hier moet alle view materiaal in van reserving seats.
     }
+
+}
+
+internal class TestMovie{
+    public string Title;
+    public int AgeRating;
+    private static int _lastId = 0;
+    public int ID { get; }
+    public Movie(string title, int ageRating)
+    {
+        Title = title;
+        AgeRating = ageRating;
+        private static int _lastId = 0;
+    }
+
 }
