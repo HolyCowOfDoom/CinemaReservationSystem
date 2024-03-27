@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 using CsvHelper.Configuration.Attributes;
 
-public class User
+public class User : ObjectHasID
 {
     static string UserDBFilePath = Path.GetFullPath("UserDB.csv");
     private readonly int _id;
@@ -15,7 +15,9 @@ public class User
     [Name("ID")]
     public int ID {get => _id; init => _id = value;}
     [Name("Name")]
-    public string Name {get; private set;} //we don't want _name to be able to be changed outside of this class
+    
+    //Name set is set to public for testing in Program.cs. change back to private when done testing, as all changes should be done via User.cs
+    public string Name {get; set;} //we don't want _name to be able to be changed outside of this class
     [Name("BirthDate")]
     public string BirthDate {get; private set;} //could use a DateTime obj
     [Name("Email")]
@@ -40,7 +42,15 @@ public class User
         Name = name;
         BirthDate = birthDate;
         Email = email;
-        _password = password;
+        _password = DecryptPassword(password); //passwords in csv are encrypted
+    }
+    //for user by CsvHandler.WriteValueToRecordExtension()
+    public User(User user){
+        ID = user.ID;
+        Name = user.Name;
+        BirthDate = user.BirthDate;
+        Email = user.Email;
+        _password = user._password;
     }
     public static bool AddUser(User user)
     {
@@ -87,8 +97,8 @@ public class User
         string decrypted = "";
         foreach(char letter in password)
         {
-            if(letter % 2 != 0) decrypted += letter - 13; //odd -> even
-            else decrypted += letter - 9; //even -> odd 16 - 9 => 7
+            if(letter % 2 != 0) decrypted += ((char)(letter - 13)).ToString(); //odd -> even
+            else decrypted += ((char)(letter - 9)).ToString(); //even -> odd 16 - 9 => 7
         }
         return decrypted;
     }
