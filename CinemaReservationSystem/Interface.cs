@@ -1,11 +1,10 @@
 class Interface{
     // Eerste keer dat Menu word geroepen moet de bool op False beginnen.
-    public static void GeneralMenu(bool login){
-        if(!login){
-            char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3', 
-            "General Menu",  "1. View all movies\n 2. Register\n 3. Log in");
+    public static void GeneralMenu(){
+        char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3', 
+        "General Menu",  "1. View all movies\n 2. Register\n 3. Log in");
             if(DigitInput == '1'){
-                InterfaceController.ViewMovies(login);
+                InterfaceController.ViewMovies();
             }
             else if(DigitInput == '2'){
                 InterfaceController.RegisterUser();
@@ -14,28 +13,24 @@ class Interface{
                 InterfaceController.LogIn();
             }
             else{
-                GeneralMenu(login);
+                GeneralMenu();
             }
         }
 
-        else{
-            char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4',
-            "General Menu\n 1. View all movies\n 2. Register \n 3. Log in\n", "Menu Options: 1234");
+    public static void GeneralMenu(int id){
+        char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4',
+        "General Menu",  "1. View all movies / Reserve seats\n 2. See profile\n 3. Log out");
             if(DigitInput == '1'){
-                InterfaceController.ViewMovies(login);
+                InterfaceController.ViewMovies(id);
             }
             else if (DigitInput == '2'){
-                InterfaceController.LogOut();
+                InterfaceController.ViewUser(id);
             }
             else if (DigitInput == '3'){
-                InterfaceController.ViewUser();
-            }
-            else if(DigitInput == '4'){
-                InterfaceController.ReserveSeats();
+                InterfaceController.LogOut();
             }
             else{
-                GeneralMenu(login);
-            }
+                GeneralMenu(id);
         }
-    }
+    }   
 }
