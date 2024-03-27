@@ -3,17 +3,17 @@ public class InterfaceController
     public static void ViewMovies(){
 
     List<TestMovie> testMovies = CreateOrGetTestMovies(); // Moet weg nadat database gekoppeld staat
-        foreach(TestMovie movie in testMovies){
-            Console.WriteLine($"ID: {movie.ID}, Title: {movie.Title}, Age Rating: {movie.AgeRating}");
-        }
+    foreach (TestMovie movie in testMovies){
+        Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Synopsis: {movie.Synopsis}");
+    }
         XToGoBack();
     }
 
     public static void ViewMovies(int id){
 
     List<TestMovie> testMovies = CreateOrGetTestMovies(); // Moet weg nadat database gekoppeld staat
-        foreach(TestMovie movie in testMovies){
-            Console.WriteLine($"ID: {movie.ID}, Title: {movie.Title}, Age Rating: {movie.AgeRating}");
+        foreach (TestMovie movie in testMovies){
+            Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Synopsis: {movie.Synopsis}");
         }
         XToGoBack(id);
     }
@@ -58,6 +58,7 @@ public class InterfaceController
         string password = GetValidInput("Password needs to be atleast 6 characters long and have a digit in it.\nEnter password: ", IsValidPassword);
         TestUser user = new(username, email, password);
         CreateOrGetTestUser(user);
+        AddingFavmovies(user);
 
         Console.WriteLine("User registration successful!");
         Console.WriteLine($"Username: {user._username}");
@@ -110,7 +111,11 @@ public class InterfaceController
         // Hieronder is voor de demo, moet aangepast worden door middel van CSV/Json info te verkrijgen en displayen.
         foreach(TestUser user in _testUsers){
             if(id == user.ID){
-                Console.WriteLine($"Username: {user._username} \nEmail: {user._email}\n");
+                Console.WriteLine($"Username: {user._username,-10} | Email: {user._email}\n");
+                Console.WriteLine($"Favourite list");
+                foreach(TestMovie movie in user.Favlist){
+                Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Synopsis: {movie.Synopsis}");
+                }
             }
             else{
                 Console.WriteLine($"User not found");
@@ -135,8 +140,10 @@ public class InterfaceController
         }
     }
 
-// voor demo
+// voor demo \ kan misschien gebruikt worden om eerst met csv en json te testen. Maar moet later eruit.
     private static List<TestMovie> _testMovies;
+    private static List<TestMovie> _testFavMovies;
+    
     private static List<TestMovie> CreateOrGetTestMovies() {
         _testMovies ??= CreateTestMovies();
         return _testMovies;
@@ -145,12 +152,45 @@ public class InterfaceController
     {
         List<TestMovie> testMovies =
         [
-            new TestMovie("The Matrix", 15),
-            new TestMovie("Inception", 12),
-            new TestMovie("The Shawshank Redemption", 18),
+            new TestMovie("The Matrix", 15, "A mind-bending sci-fi classic where reality is not what it seems."),
+            new TestMovie("Inception", 12, "Explore the depths of the human mind in this mind-bending thriller."),
+            new TestMovie("The Shawshank Redemption", 18, "A tale of hope and redemption in the most unlikely of places."),
+            new TestMovie("The Godfather", 18, "An epic saga of crime, family, and power."),
+            new TestMovie("Pulp Fiction", 18, "A stylish and unforgettable journey through the criminal underworld."),
+            new TestMovie("Fight Club", 18, "An intense exploration of masculinity and identity."),
+            new TestMovie("Forrest Gump", 12, "Life is like a box of chocolates in this heartwarming tale."),
+            new TestMovie("The Dark Knight", 12, "The legendary battle between the Batman and the Joker."),
+            new TestMovie("The Lord of the Rings: The Fellowship of the Ring", 12, "Embark on an epic adventure to save Middle-earth."),
+            new TestMovie("The Lord of the Rings: The Two Towers", 12, "The fellowship divides as the forces of darkness gather."),
+            new TestMovie("The Lord of the Rings: The Return of the King", 12, "The final showdown for the fate of Middle-earth."),
+            new TestMovie("The Godfather: Part II", 18, "A gripping continuation of the Corleone family saga."),
+            new TestMovie("Schindler's List", 18, "A powerful true story of one man's fight against evil."),
+            new TestMovie("12 Angry Men", 18, "A riveting courtroom drama that challenges your perceptions."),
+            new TestMovie("Pokemon: The movie", 6, "Join Ash and Pikachu on an adventure to save the world of Pokémon.")
         ];
 
         return testMovies;
+    }
+
+
+private static List<TestMovie> CreateOrGetFav() {
+        _testFavMovies ??= CreateFav();
+        return _testFavMovies;
+    }
+
+    private static List<TestMovie> CreateFav()
+    {
+        List<TestMovie> testFavMovies =
+        [
+            new TestMovie("The Matrix", 15, "A mind-bending sci-fi classic where reality is not what it seems."),
+            new TestMovie("Inception", 12, "Explore the depths of the human mind in this mind-bending thriller."),
+            new TestMovie("Fight Club", 18, "An intense exploration of masculinity and identity."),
+            new TestMovie("The Dark Knight", 12, "The legendary battle between the Batman and the Joker."),
+            new TestMovie("The Lord of the Rings: The Fellowship of the Ring", 12, "Embark on an epic adventure to save Middle-earth."),
+            new TestMovie("Pokemon: The movie", 6, "Join Ash and Pikachu on an adventure to save the world of Pokémon.")
+        ];
+
+        return testFavMovies;
     }
 
     private static List<TestUser> _testUsers;
@@ -160,18 +200,34 @@ public class InterfaceController
         _testUsers.Add(user); // Add user to the list
         return _testUsers;
     }
+
+private static void AddingFavmovies(TestUser user){
+    CreateOrGetFav();
+    foreach(TestMovie movie in _testFavMovies){
+        Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Synopsis: {movie.Synopsis}");
+        // Prompt for 'x' or 'y' after displaying each movie
+        Console.WriteLine("Press x to continue to the next movie or press y to add the movie to your favorites list.");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x' || c == 'y');
+        if (specificLetterInput == 'y'){
+            // If user presses 'y', add the movie to the favorites list
+            user.AddToFavorites(movie);
+    }
 }
 
+}
+}
 internal class TestMovie{
     public string Title;
     public int AgeRating;
+    public string Synopsis;
     private static int _lastId = 0;
     public int ID { get; }
-    public TestMovie(string title, int ageRating)
+    public TestMovie(string title, int ageRating, string synopsis)
     {
         Title = title;
         AgeRating = ageRating;
-        ID = _lastId++;
+        Synopsis = synopsis;
+        ID = ++_lastId;
     }
 }
 
@@ -181,11 +237,16 @@ internal class TestUser{
     private readonly string _password;
     public readonly int ID;
     private static int _latestID = 0;
+    public List<TestMovie> Favlist;
     public TestUser(string user, string email, string password){
         _username = user;
         _email = email;
         _password = password;
         ID = ++_latestID;
+        Favlist = new List<TestMovie>();
     }
     public int UserID => ID;
+    public void AddToFavorites(TestMovie movie){
+        Favlist.Add(movie);
+    }
 }
