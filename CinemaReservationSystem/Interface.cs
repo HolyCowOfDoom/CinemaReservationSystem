@@ -1,5 +1,8 @@
 class Interface{
-    // Eerste keer dat Menu word geroepen moet de bool op False beginnen.
+    // Als het menu word geroepen moet er gekeken worden of er al is ingelogd. Zo ja, id erbij callen.
+    // Reserve seats is een wip
+    // Inloggen kan alleen dmv Register User. Bij inloggen word id 100 toegekend, hierdoor werkt viewuser niet en kan je verder weinig laten zien
+    // ViewMovies is nu nog hetzelfde bij wel of niet inloggen.
     public static void GeneralMenu(){
         char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3', 
         "General Menu",  "1. View all movies\n 2. Register\n 3. Log in");
