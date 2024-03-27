@@ -23,8 +23,10 @@ public class User : ObjectHasID
     [Name("Email")]
     public string Email {get; private set;}
     [Name("Password")]
-    public string Password {get => EncryptPassword(_password); private set => _password = value;}
+    //public string Password {get => EncryptPassword(_password); private set => _password = value;}
+    public string Password {get => _password; private set => _password = value;}
     //add custom set if allowing user to change password
+    
 
     public User(string name, string birthDate, string email, string password)
     {
@@ -42,7 +44,8 @@ public class User : ObjectHasID
         Name = name;
         BirthDate = birthDate;
         Email = email;
-        _password = DecryptPassword(password); //passwords in csv are encrypted
+        _password = password;
+        //_password = DecryptPassword(password); //passwords in csv are encrypted
     }
     //for user by CsvHandler.WriteValueToRecordExtension()
     public User(User user){
@@ -76,32 +79,33 @@ public class User : ObjectHasID
     public static bool ValidatePassword(int id, string name, string password)
     {
         //int id = GetIDFromName(name);
-        string userPassword = DecryptPassword(GetPasswordFromID(id)); //gets directly from DB rather than Users List
+        //string userPassword = DecryptPassword(GetPasswordFromID(id)); //gets directly from DB rather than Users List
+        string userPassword = GetPasswordFromID(id);
         if(password == userPassword) return true;
         else return false;
     }
 
-    private static string EncryptPassword(string password)
-    {
-        string encrypted = "";
-        foreach(char letter in password)
-        {
-            if(letter % 2 == 0) encrypted += letter + 13; //even -> odd
-            else encrypted += (char)(letter + 9); //odd -> even 7 + 9 -> 16
-        }
-        return encrypted;
-    }
+    // private static string EncryptPassword(string password)
+    // {
+    //     string encrypted = "";
+    //     foreach(char letter in password)
+    //     {
+    //         if(letter % 2 == 0) encrypted += letter + 13; //even -> odd
+    //         else encrypted += (char)(letter + 9); //odd -> even 7 + 9 -> 16
+    //     }
+    //     return encrypted;
+    // }
 
-    private static string DecryptPassword(string password)
-    {
-        string decrypted = "";
-        foreach(char letter in password)
-        {
-            if(letter % 2 != 0) decrypted += ((char)(letter - 13)).ToString(); //odd -> even
-            else decrypted += ((char)(letter - 9)).ToString(); //even -> odd 16 - 9 => 7
-        }
-        return decrypted;
-    }
+    // private static string DecryptPassword(string password)
+    // {
+    //     string decrypted = "";
+    //     foreach(char letter in password)
+    //     {
+    //         if(letter % 2 != 0) decrypted += (char)(letter - 13); //odd -> even
+    //         else decrypted += (char)(letter - 9); //even -> odd 16 - 9 => 7
+    //     }
+    //     return decrypted;
+    // }
     public static bool ChangeName(int id, string newName){
         string currentName = GetNameFromID(id);
         if(newName == currentName){

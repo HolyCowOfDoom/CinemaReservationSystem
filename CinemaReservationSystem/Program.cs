@@ -16,7 +16,7 @@ User? tempUser2 = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "ID", 1);
 Console.WriteLine(tempUser.ID + "   " + tempUser.Name);
 Console.WriteLine(tempUser2.ID + "   " + tempUser2.Name);
 
-CsvHandler.UpdateRecordOfID<User>("UserDB.csv", 0, new User(tempUser) {Name = "Bob!"});
+CsvHandler.UpdateRecordOfID<User>("UserDB.csv", tempUser.ID, new User(tempUser) {Name = "Bob!"});
 // foreach(User user in tempUserList){
 //     Console.WriteLine(user.Name);
 // }
