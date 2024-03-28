@@ -40,7 +40,8 @@ public class InterfaceController
                 if (passin == user.Password)
                 {
                     int id = user.ID;
-                    Interface.GeneralMenu(id);
+                    Console.WriteLine($"Succesfully logged into {user.Name}");
+                    XToGoBack(id);
                 }
                 else
                 {
@@ -49,7 +50,8 @@ public class InterfaceController
                 }
             }
         }
-        Interface.GeneralMenu();
+        Console.WriteLine("Attempt limit reached on trying passwords.");
+        XToGoBack();
     }
 
     public static void LogOut(){
@@ -62,9 +64,9 @@ public class InterfaceController
     {
         Console.WriteLine("USER REGISTRATION\n-------------------------------------");
         // passed naar een validator, kan ook nog in ander file als we willen dat dit alleen view is.
-        string username = GetValidInput("Username needs to be atleast 3 characters or more.\nEnter username: ", IsValidUsername);
+        string username = GetValidInput("Username needs to be atleast 3 characters and not more than 20 characters.\nEnter username: ", IsValidUsername);
         string birthDate = GetValidInput("Birthdate needs to be dd-MM-yyyy.\nEnter birthdate: ", IsValidBD);
-        string email = GetValidInput("An email address needs to include a @ & a .\nEnter email: ", IsValidEmail);
+        string email = GetValidInput("An email address needs to include (@) and (.).\nEnter email: ", IsValidEmail);
         string password = GetValidInput("Password needs to be atleast 6 characters long and have a digit in it.\nEnter password: ", IsValidPassword);
         Console.Clear();
         User user = new User(username, birthDate, email, password);
@@ -87,29 +89,22 @@ public class InterfaceController
             return input;
         }
 
-        static bool IsValidUsername(string input)
-        {
-            return !string.IsNullOrWhiteSpace(input) && input.Length >= 3;
-        }
+        static bool IsValidUsername(string input) => !string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 21;
+        static bool IsValidEmail(string input) => !string.IsNullOrWhiteSpace(input) && input.Contains('@') && input.Contains('.') && input.Length < 31;
 
-        static bool IsValidEmail(string input)
-        {
-            return !string.IsNullOrWhiteSpace(input) && input.Contains('@') && input.Contains('.');
-        }
+        // static bool IsValidName(string input)
+        // {
+        //     if (string.IsNullOrWhiteSpace(input))
+        //     {
+        //         return false;
+        //     }
+        //     string[] words = input.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-        static bool IsValidName(string input)
-        {
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                return false;
-            }
-            string[] words = input.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (string word in words){
-                if(word.Length < 2) return false;
-            }
-            return true;
-        }
+        //     foreach (string word in words){
+        //         if(word.Length < 2) return false;
+        //     }
+        //     return true;
+        // }
 
         static bool IsValidPassword(string input)
         {
@@ -142,19 +137,19 @@ public class InterfaceController
 
     }
     public static void ViewUser(int id){
-        // Pakt alle data uit de csv en print het voor de user.
-        // Dit kan gedaan worden door middel van het ophalen van de ID en daar de gegevens van krijgen.
-        // Console.WriteLine($"Username: {username}\n Email: {email}\n Date of birth: {birthdate}\n");
         User user = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "ID", id);
-            Console.WriteLine($"Username: {user.Name,-10} | Email: {user.Email,-5} | Birth date: {user.BirthDate}\n");
+        Console.WriteLine("┌───────────────────────────────┬───────────────────────────────────────┬────────────────────────┐");
+        Console.WriteLine($"│{"Username:"} {user.Name,-20} │ {"Email:"} {user.Email,-30} │ {"Birth date:"} {user.BirthDate} │");
+        Console.WriteLine("└───────────────────────────────┴───────────────────────────────────────┴────────────────────────┘");
+        XToGoBack(id);
+    }
+            // Oude code voor de favorite list, kan nu niet meer gebruikt worden omdat er geen fav list is op het moment :(
             // Console.WriteLine($"Favourite list");
             // foreach(Movie movie in user.Favlist){
             // Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
-        XToGoBack(id);
-    }
 
     private static void XToGoBack(){
-        Console.WriteLine("Press x to go back");
+        Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
         if (specificLetterInput == 'x'){
             Interface.GeneralMenu();
@@ -162,7 +157,7 @@ public class InterfaceController
     }
 
     private static void XToGoBack(int id){
-        Console.WriteLine("Press x to go back");
+        Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
         if (specificLetterInput == 'x'){
             Console.Clear();
