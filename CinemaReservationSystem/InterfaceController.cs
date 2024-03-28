@@ -50,8 +50,7 @@ public class InterfaceController
 
     public static void RegisterUser()
     {
-        Console.WriteLine("User Registration");
-        Console.WriteLine("-----------------");
+        Console.WriteLine("USER REGISTRATION\n-------------------------------------");
         // passed naar een validator, kan ook nog in ander file als we willen dat dit alleen view is.
         string username = GetValidInput("Username needs to be atleast 3 characters or more.\nEnter username: ", IsValidUsername);
         string fullname = GetValidInput("Full name is atleast two words or more\nEnter Fullname: ", IsValidName);
@@ -60,6 +59,7 @@ public class InterfaceController
         TestUser user = new(username, email, fullname, password);
         CreateOrGetTestUser(user);
         AddingFavmovies(user);
+        Console.Clear();
 
         Console.WriteLine("User registration successful!");
         Console.WriteLine($"Username: {user._username}");
@@ -152,11 +152,13 @@ public class InterfaceController
         Console.WriteLine("Press x to go back");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
         if (specificLetterInput == 'x'){
+            Console.Clear();
             Interface.GeneralMenu(id);
         }
     }
 
 // voor demo \ kan misschien gebruikt worden om eerst met csv en json te testen. Maar moet later eruit.
+// Maakt een test movie list aan en een favorite movie list
     private static List<TestMovie> _testMovies;
     private static List<TestMovie> _testFavMovies;
     
