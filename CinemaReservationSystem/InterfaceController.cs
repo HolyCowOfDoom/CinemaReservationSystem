@@ -1,45 +1,53 @@
 public class InterfaceController
 {
     public static void ViewMovies(){
-
-    List<TestMovie> testMovies = CreateOrGetTestMovies(); // Moet weg nadat database gekoppeld staat
-    foreach (TestMovie movie in testMovies){
-        Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
-    }
-        XToGoBack();
+        List<Movie> Movies = JsonHandler.Read<Movie>("JsonHandler.json");
+        foreach (Movie movie in Movies)
+        {
+            Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
+        }
+            XToGoBack();
     }
 
     public static void ViewMovies(int id){
-
-    List<TestMovie> testMovies = CreateOrGetTestMovies(); // Moet weg nadat database gekoppeld staat
-        foreach (TestMovie movie in testMovies){
+        List<Movie> Movies = JsonHandler.Read<Movie>("JsonHandler.json");
+        foreach (Movie movie in Movies)
+        {
             Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
         }
         XToGoBack(id);
     }
 
     public static void LogIn(){
-        for(int i = 0; i < 4; i++){
-            string passout = "Test"; // !!! weghalen nadat het geimplementeerd is
-            Console.WriteLine("Enter your username or press q to quit.");
-            string username = Console.ReadLine(); // !!! word nog niet getest op username
-            if(username == "q"){
-                Interface.GeneralMenu();
-            }
-            // hier CSV handler die username krijgt en ID + Password returned om in te loggen.
-            Console.WriteLine($"Enter the password associated with the username: {username}");
-            string passin = Console.ReadLine();
-            // called hier een method van user.cs en krijgt een user ID gereturned
+       
+        Console.WriteLine("Enter your username or press q to quit.");
 
-            if(passin == passout) // !!! moet anders
+        string username = Console.ReadLine(); // !!! word nog niet getest op username
+        if(username == "q") Interface.GeneralMenu();
+        User? user = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "Name", username);
+        if (user != null)
+        {
+            // hier CSV handler die username krijgt en ID + Password returned om in te loggen.
+            int attempts = 3;
+            while (attempts > 0)
             {
-                int id = 100;
-                Interface.GeneralMenu(id);
-            }
-            else{
-                Console.WriteLine($"{4 - i} attempts remaining.");
+                Console.WriteLine($"Enter the password associated with the username: {username}");
+                string passin = Console.ReadLine();
+                // called hier een method van user.cs en krijgt een user ID gereturned
+
+                if (passin == user.Password)
+                {
+                    int id = user.ID;
+                    Interface.GeneralMenu(id);
+                }
+                else
+                {
+                    attempts--;
+                    Console.WriteLine($"{attempts} attempts remaining.");
+                }
             }
         }
+        Interface.GeneralMenu();
     }
 
     public static void LogOut(){
@@ -53,19 +61,17 @@ public class InterfaceController
         Console.WriteLine("USER REGISTRATION\n-------------------------------------");
         // passed naar een validator, kan ook nog in ander file als we willen dat dit alleen view is.
         string username = GetValidInput("Username needs to be atleast 3 characters or more.\nEnter username: ", IsValidUsername);
-        string fullname = GetValidInput("Full name is atleast two words or more\nEnter Fullname: ", IsValidName);
+        string birthDate = GetValidInput("Birthdate needs to be dd-MM-yyyy.\nEnter birthdate: ", IsValidUsername); // IS VALID BD MAKEN
         string email = GetValidInput("An email address needs to include a @ & a .\nEnter email: ", IsValidEmail);
         string password = GetValidInput("Password needs to be atleast 6 characters long and have a digit in it.\nEnter password: ", IsValidPassword);
-        TestUser user = new(username, email, fullname, password);
-        CreateOrGetTestUser(user);
-        AddingFavmovies(user);
         Console.Clear();
-
+        User user = new User(username, birthDate, email, password);
         Console.WriteLine("User registration successful!");
-        Console.WriteLine($"Username: {user._username}");
-        Console.WriteLine($"Email: {user._email}");
-        Console.WriteLine($"Full name: {user.Fullname}");
-        XToGoBack(user.UserID);
+        Console.WriteLine($"Username: {user.Name}");
+        Console.WriteLine($"Full name: {user.BirthDate}");
+        Console.WriteLine($"Email: {user.Email}");
+        
+        XToGoBack(user.ID);
 
         static string GetValidInput(string prompt, Func<string, bool> validation)
         {
@@ -123,21 +129,12 @@ public class InterfaceController
         // Pakt alle data uit de csv en print het voor de user.
         // Dit kan gedaan worden door middel van het ophalen van de ID en daar de gegevens van krijgen.
         // Console.WriteLine($"Username: {username}\n Email: {email}\n Date of birth: {birthdate}\n");
-
-        // Hieronder is voor de demo, moet aangepast worden door middel van CSV/Json info te verkrijgen en displayen.
-        foreach(TestUser user in _testUsers){
-            if(id == user.ID){
-                Console.WriteLine($"Username: {user._username,-10} | Email: {user._email,-5} | Full name: {user.Fullname}\n");
-                Console.WriteLine($"Favourite list");
-                foreach(TestMovie movie in user.Favlist){
-                Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
-                }
-            }
-            else{
-                Console.WriteLine($"User not found");
-            }
+        User user = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "ID", id);
+            Console.WriteLine($"Username: {user.Name,-10} | Email: {user.Email,-5} | Full name: {user.BirthDate}\n");
+            // Console.WriteLine($"Favourite list");
+            // foreach(Movie movie in user.Favlist){
+            // Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
         XToGoBack(id);
-        }
     }
 
     private static void XToGoBack(){
@@ -155,119 +152,5 @@ public class InterfaceController
             Console.Clear();
             Interface.GeneralMenu(id);
         }
-    }
-
-// voor demo \ kan misschien gebruikt worden om eerst met csv en json te testen. Maar moet later eruit.
-// Maakt een test movie list aan en een favorite movie list
-    private static List<TestMovie> _testMovies;
-    private static List<TestMovie> _testFavMovies;
-    
-    private static List<TestMovie> CreateOrGetTestMovies() {
-        _testMovies ??= CreateTestMovies();
-        return _testMovies;
-    }
-    private static List<TestMovie> CreateTestMovies()
-    {
-        List<TestMovie> testMovies =
-        [
-            new TestMovie("The Matrix", 15, "A mind-bending sci-fi classic where reality is not what it seems."),
-            new TestMovie("Inception", 12, "Explore the depths of the human mind in this mind-bending thriller."),
-            new TestMovie("The Shawshank Redemption", 18, "A tale of hope and redemption in the most unlikely of places."),
-            new TestMovie("The Godfather", 18, "An epic saga of crime, family, and power."),
-            new TestMovie("Pulp Fiction", 18, "A stylish and unforgettable journey through the criminal underworld."),
-            new TestMovie("Fight Club", 18, "An intense exploration of masculinity and identity."),
-            new TestMovie("Forrest Gump", 12, "Life is like a box of chocolates in this heartwarming tale."),
-            new TestMovie("The Dark Knight", 12, "The legendary battle between the Batman and the Joker."),
-            new TestMovie("The Lord of the Rings: The Fellowship of the Ring", 12, "Embark on an epic adventure to save Middle-earth."),
-            new TestMovie("The Lord of the Rings: The Two Towers", 12, "The fellowship divides as the forces of darkness gather."),
-            new TestMovie("The Lord of the Rings: The Return of the King", 12, "The final showdown for the fate of Middle-earth."),
-            new TestMovie("The Godfather: Part II", 18, "A gripping continuation of the Corleone family saga."),
-            new TestMovie("Schindler's List", 18, "A powerful true story of one man's fight against evil."),
-            new TestMovie("12 Angry Men", 18, "A riveting courtroom drama that challenges your perceptions."),
-            new TestMovie("Pokemon: The movie", 6, "Join Ash and Pikachu on an adventure to save the world of Pokémon.")
-        ];
-
-        return testMovies;
-    }
-
-
-    private static List<TestMovie> CreateOrGetFav() {
-        _testFavMovies ??= CreateFav();
-        return _testFavMovies;
-    }
-
-    private static List<TestMovie> CreateFav()
-    {
-        List<TestMovie> testFavMovies =
-        [
-            new TestMovie("The Matrix", 15, "A mind-bending sci-fi classic where reality is not what it seems."),
-            new TestMovie("Inception", 12, "Explore the depths of the human mind in this mind-bending thriller."),
-            new TestMovie("Fight Club", 18, "An intense exploration of masculinity and identity."),
-            new TestMovie("The Dark Knight", 12, "The legendary battle between the Batman and the Joker."),
-            new TestMovie("The Lord of the Rings: The Fellowship of the Ring", 12, "Embark on an epic adventure to save Middle-earth."),
-            new TestMovie("Pokemon: The movie", 6, "Join Ash and Pikachu on an adventure to save the world of Pokémon.")
-        ];
-
-        return testFavMovies;
-    }
-
-    private static List<TestUser> _testUsers;
-
-    private static List<TestUser> CreateOrGetTestUser(TestUser user) {
-        _testUsers ??= new List<TestUser>();
-        _testUsers.Add(user); // Add user to the list
-        return _testUsers;
-    }
-
-    private static void AddingFavmovies(TestUser user){
-        CreateOrGetFav();
-            foreach(TestMovie movie in _testFavMovies){
-                Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
-                // Prompt for 'x' or 'y' after displaying each movie
-                Console.WriteLine("Press x to continue to the next movie or press y to add the movie to your favorites list.");
-                char specificLetterInput = Helper.ReadInput((char c) => c == 'x' || c == 'y');
-                if (specificLetterInput == 'y'){
-                    // If user presses 'y', add the movie to the favorites list
-                    user.AddToFavorites(movie);
-            }
-        }   
-    }
-    
-}
-
-internal class TestMovie{
-    public string Title;
-    public int AgeRating;
-    public string Description;
-    private static int _lastId = 0;
-    public int ID { get; }
-    public TestMovie(string title, int ageRating, string description)
-    {
-        Title = title;
-        AgeRating = ageRating;
-        Description = description;
-        ID = ++_lastId;
-    }
-}
-
-internal class TestUser{
-    public readonly string _username;
-    public readonly string _email;
-    public readonly string Fullname;
-    private readonly string _password;
-    public readonly int ID;
-    private static int _latestID = 0;
-    public List<TestMovie> Favlist;
-    public TestUser(string user, string email, string fullname, string password){
-        _username = user;
-        _email = email;
-        _password = password;
-        Fullname = fullname;
-        ID = ++_latestID;
-        Favlist = new List<TestMovie>();
-    }
-    public int UserID => ID;
-    public void AddToFavorites(TestMovie movie){
-        Favlist.Add(movie);
     }
 }
