@@ -8,11 +8,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Collections.Concurrent;
 
-public interface ObjectHasID //ty Julian
-{
-    int ID { get; }
-}
-
 public static class CsvHandler{
 
     public static List<T> Read<T>(string csvFile)
