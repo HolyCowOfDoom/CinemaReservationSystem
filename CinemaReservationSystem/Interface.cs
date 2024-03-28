@@ -21,8 +21,8 @@ class Interface{
         }
 
     public static void GeneralMenu(int id){
-        char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4',
-        "General Menu",  "1. View all movies / Reserve seats\n 2. See profile\n 3. Log out");
+        char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4' || c == '5',
+        "General Menu",  "1. View all movies / Reserve seats\n 2. See profile\n 3. Log out\n 4. Create Movie (ADMIN)\n 5. Add Screening (ADMIN)");
             if(DigitInput == '1'){
                 InterfaceController.ViewMovies(id); 
                 // called overloaded versie van ViewMovies, kan dus gebruikt worden om
@@ -34,6 +34,12 @@ class Interface{
             else if (DigitInput == '3'){
                 InterfaceController.LogOut();
                 // Heeft geen id nodig, want called GeneralMenu zonder id.
+            }
+            else if (DigitInput == '4'){
+                InterfaceController.CreateMovie(id);
+            }
+            else if (DigitInput == '5'){
+                InterfaceController.AddScreening(id);
             }
             else{
                 GeneralMenu(id);

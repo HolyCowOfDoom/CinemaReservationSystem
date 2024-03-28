@@ -171,7 +171,7 @@ public class InterfaceController
     }
 
     //TEMPORARY METHODS FOR THE DEMO
-    public static void CreateMovie()
+    public static void CreateMovie(int id)
     {
         Console.WriteLine("Please input movie title:");
         string title = Console.ReadLine();
@@ -181,9 +181,11 @@ public class InterfaceController
         int ageRating = Convert.ToInt32(Console.ReadLine());
 
         Movie addedMovie = new Movie(title, ageRating, description);
+
+        XToGoBack(id);
     }
 
-    public static void AddScreening()
+    public static void AddScreening(int id)
     {
         Console.WriteLine("Please enter movie ID");
         int movieID = Convert.ToInt32(Console.ReadLine());
@@ -191,5 +193,7 @@ public class InterfaceController
         Console.WriteLine("Please input auditorium ID related to the screening:");
         int auditID = Convert.ToInt32(Console.ReadLine());
         movie.AddScreening(JsonHandler.Get<Auditorium>(auditID, "AuditoriumDB.json"), null);
+
+        XToGoBack(id);
     }
 }
