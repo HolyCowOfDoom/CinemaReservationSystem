@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Collections.Concurrent;
+using System.Reflection;
 
 public static class CsvHandler{
 
@@ -37,7 +38,6 @@ public static class CsvHandler{
         var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
         {
             // Don't write the header again.
-            
             HasHeaderRecord = fileEmpty ? true : false, //write header if file is empty
         };
         //Console.WriteLine(csvFile);
@@ -102,115 +102,130 @@ public static class CsvHandler{
         //this is not enough, as I can't just write to that location.
         //T record = GetRecordWithValue<T>(csvFile, "ID", id); //get record with matching ID
 
-        // var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
-        // {
-        //     PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
-        //     //https://stackoverflow.com/questions/49521193/csvhelper-ignore-case-for-header-names
-        // };
-        // using StreamReader reader = new(csvFile);
-        // using CsvHelper.CsvReader csvReader = new(reader, config);
-
-        // //read to get index of record in db, re-uses some code of GetRecordWithValue so consider if it's possible to abstract.
-        // int indexOfRecord = 0; //start at 1 to include Header line
-        // csvReader.Read();
-        // csvReader.ReadHeader(); 
-        // //T recordinDB;
-        // while (csvReader.Read()) 
-        // {
-        //     indexOfRecord++;
-        //     var field = csvReader.GetField("ID");
-        //     //recordinDB = csvReader.GetRecord<T>(); //stores the record in DB with the matcing ID
-        //     if(field.Equals(id))
-        //     {
-        //         break;
-        //     }
-        // }
-        // reader.Close();
-        
-        // var options = new FileStreamOptions();
-        // options.Access = FileAccess.Write;
-        // options.Mode = FileMode.Open;
-        // using StreamWriter writer = new(csvFile, options);
-        // writer.BaseStream.Position = 0;
-        // using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
-        // while(indexOfRecord > 1)
-        // {
-        //     csvWriter.NextRecord(); //move writer 'cursor' to the correct line using index
-        //     indexOfRecord--;
-        // }
-        // csvWriter.WriteRecord(newRecord);
-        // csvWriter.Flush();
-
-        List<T> recordsList = Read<T>(csvFile);
-        for(int i = 0; i < recordsList.Count; i++)
+        var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            if(recordsList[i].ID == id)
+            PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
+            //https://stackoverflow.com/questions/49521193/csvhelper-ignore-case-for-header-names
+        };
+        using StreamReader reader = new(csvFile);
+        using CsvHelper.CsvReader csvReader = new(reader, config);
+
+        //read to get index of record in db, re-uses some code of GetRecordWithValue so consider if it's possible to abstract.
+        int indexOfRecord = 0; //start at 1 to include Header line
+        csvReader.Read();
+        csvReader.ReadHeader(); 
+        while (csvReader.Read()) 
+        {
+            indexOfRecord++;
+            var field = csvReader.GetField("ID");
+            //recordinDB = csvReader.GetRecord<T>(); //stores the record in DB with the matcing ID
+            if(field.Equals(id.ToString()))
             {
-                recordsList[i] = newRecord;
+                break;
             }
         }
+        reader.Close();
+        
+        var options = new FileStreamOptions();
+        options.Access = FileAccess.Write;
+        options.Mode = FileMode.Open;
+        using StreamWriter writer = new(csvFile, options);
+    
+        writer.BaseStream.Position = 0;
+        using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
+        csvWriter.WriteHeader(newRecord.GetType());
+        for (int i = 0; i < indexOfRecord; i++)
+        {
+            csvWriter.NextRecord(); //move writer 'cursor' to the correct line using index
+            //indexOfRecord--;
+        }
+        csvWriter.WriteRecord(newRecord);
+        csvWriter.NextRecord();
+    
+        //functional for demo
+        // List<T> recordsList = Read<T>(csvFile);
+        // for(int i = 0; i < recordsList.Count; i++)
+        // {
+        //     if(recordsList[i].ID == id)
+        //     {
+        //         recordsList[i] = newRecord;
+        //     }
+        // }
 
-        Write(csvFile, recordsList);
-
-
-
-
-
-
-
-
-
-
-
-
+        // Write(csvFile, recordsList);
 
         return true;
     }
 
-    // private static bool WriteValueToRecordExtension<T, J>(string csvFile, T newRecord)
-    // {
-    //     var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
-    //     {
-    //         PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
-    //         //https://stackoverflow.com/questions/49521193/csvhelper-ignore-case-for-header-names
-    //     };
-    //     using StreamReader reader = new(csvFile);
-    //     using CsvHelper.CsvReader csvReader = new(reader, config);
 
-    //     //read to get index of record in db, re-uses some code of GetRecordWithValue so consider if it's possible to abstract.
-    //     int indexOfRecord = 1; //start at 1 to include Header line
-    //     csvReader.Read();
-    //     csvReader.ReadHeader(); 
-    //     T recordinDB;
-    //     while (csvReader.Read()) 
-    //     {
-    //         indexOfRecord++;
-    //         J field = csvReader.GetField<J>(header);
-    //         recordinDB = csvReader.GetRecord<T>();
-    //         if(recordinDB.Equals(record))
-    //         {
-    //             break;
-    //         }
-    //         //var line = csvReader.GetRecord<VariantType>();
-    //     }
+    public static bool UpdateRecordWithValue<T>(string csvFile, T record, string header, object value)
+    {
+        var method = typeof(CsvHandler).GetMethod("UpdateRecordWithValueExtension");
+        var CsvHandlerRef = method.MakeGenericMethod(typeof(T), typeof(object));
+        return (bool)CsvHandlerRef.Invoke(null, new object[] {csvFile, record, header, value});
+    }
+    public static bool UpdateRecordWithValueExtension<T, J>(string csvFile, T record, string header, J value)
+    {
+        var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
+            //https://stackoverflow.com/questions/49521193/csvhelper-ignore-case-for-header-names
+        };
+        using StreamReader reader = new(csvFile);
+        using CsvHelper.CsvReader csvReader = new(reader, config);
+
+        //read to get index of record in db, re-uses some code of GetRecordWithValue so consider if it's possible to abstract.
+        int indexOfRecord = 0; 
+        csvReader.Read();
+        csvReader.ReadHeader(); 
+        T recordinDB;
+        while (csvReader.Read()) 
+        {
+            indexOfRecord++;
+            var field = csvReader.GetField(header);
+            recordinDB = csvReader.GetRecord<T>();
+            if(recordinDB.Equals(record))
+            {
+                break;
+            }
+        }
+        reader.Close();
         
-    //     using StreamWriter writer = new(csvFile);
-    //     using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
-    //     while(indexOfRecord > 1)
-    //     {
-    //         csvWriter.NextRecord(); //move writer 'cursor' to the correct line using index
-    //         indexOfRecord--;
-    //     }
-    //     record.
-    //     csvWriter.
+        var options = new FileStreamOptions();
+        options.Access = FileAccess.Write;
+        options.Mode = FileMode.Open;
+        using StreamWriter writer = new(csvFile, options);
+        writer.BaseStream.Position = 0;
+        using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
         
+        csvWriter.WriteHeader(record.GetType());
+        for (int i = 0; i < indexOfRecord; i++) //index = 3, row CsvWriter.row becomes 2! so this should work!!
+        {
+            csvWriter.NextRecord(); //move writer 'cursor' to the correct line using index
+            //indexOfRecord--;
+        }
+        
+        var constructor = typeof(T).GetConstructor(new[] {typeof(T)}); //gets copy constructor of record
+        T newRecord = (T)constructor.Invoke(new object[] {record}); //creates T object using said constructor
+        MethodInfo method = typeof(CsvHandler).GetMethod("SetField"); //gets SetField method
+        var genericmethod = method.MakeGenericMethod(typeof(T), typeof(J)); //makes it a generic method(glues <T, J> to it)
+        genericmethod.Invoke(null, new object[] {newRecord, header, value}); //calls method with parameters
+        //the SetField method sets newRecord.header = value
 
-    //     return true;
-    // }
+        csvWriter.WriteRecord(newRecord);
+        csvWriter.NextRecord();
 
-   
+        return true;
+    }
 
-    
+    public static void SetField<T, J>(T obj, string fieldToChange, J value)
+    {
+        //var field = typeof(T).GetField(fieldToChange);
+        var field = typeof(T).GetProperty(fieldToChange);
+        field.SetValue(obj, value);
+    } 
+
+
 
     public static int CountRecords(string csvFile)
     {
