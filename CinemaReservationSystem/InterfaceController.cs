@@ -1,7 +1,9 @@
+using System.Globalization;
+
 public class InterfaceController
 {
     public static void ViewMovies(){
-        List<Movie> Movies = JsonHandler.Read<Movie>("JsonHandler.json");
+        List<Movie> Movies = JsonHandler.Read<Movie>("MovieDB.json");
         foreach (Movie movie in Movies)
         {
             Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
@@ -10,7 +12,7 @@ public class InterfaceController
     }
 
     public static void ViewMovies(int id){
-        List<Movie> Movies = JsonHandler.Read<Movie>("JsonHandler.json");
+        List<Movie> Movies = JsonHandler.Read<Movie>("MovieDB.json");
         foreach (Movie movie in Movies)
         {
             Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
@@ -61,14 +63,14 @@ public class InterfaceController
         Console.WriteLine("USER REGISTRATION\n-------------------------------------");
         // passed naar een validator, kan ook nog in ander file als we willen dat dit alleen view is.
         string username = GetValidInput("Username needs to be atleast 3 characters or more.\nEnter username: ", IsValidUsername);
-        string birthDate = GetValidInput("Birthdate needs to be dd-MM-yyyy.\nEnter birthdate: ", IsValidUsername); // IS VALID BD MAKEN
+        string birthDate = GetValidInput("Birthdate needs to be dd-MM-yyyy.\nEnter birthdate: ", IsValidBD);
         string email = GetValidInput("An email address needs to include a @ & a .\nEnter email: ", IsValidEmail);
         string password = GetValidInput("Password needs to be atleast 6 characters long and have a digit in it.\nEnter password: ", IsValidPassword);
         Console.Clear();
         User user = new User(username, birthDate, email, password);
         Console.WriteLine("User registration successful!");
         Console.WriteLine($"Username: {user.Name}");
-        Console.WriteLine($"Full name: {user.BirthDate}");
+        Console.WriteLine($"Birth date: {user.BirthDate}");
         Console.WriteLine($"Email: {user.Email}");
         
         XToGoBack(user.ID);
@@ -124,13 +126,27 @@ public class InterfaceController
             }
             return false;
         }
+
+        static bool IsValidBD(string input)
+        {
+            string dateFormat = "dd-MM-yyyy";
+            if (DateTime.TryParseExact(input, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
     public static void ViewUser(int id){
         // Pakt alle data uit de csv en print het voor de user.
         // Dit kan gedaan worden door middel van het ophalen van de ID en daar de gegevens van krijgen.
         // Console.WriteLine($"Username: {username}\n Email: {email}\n Date of birth: {birthdate}\n");
         User user = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "ID", id);
-            Console.WriteLine($"Username: {user.Name,-10} | Email: {user.Email,-5} | Full name: {user.BirthDate}\n");
+            Console.WriteLine($"Username: {user.Name,-10} | Email: {user.Email,-5} | Birth date: {user.BirthDate}\n");
             // Console.WriteLine($"Favourite list");
             // foreach(Movie movie in user.Favlist){
             // Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");

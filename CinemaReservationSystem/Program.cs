@@ -16,11 +16,10 @@
 // //     Console.WriteLine(user.Name);
 // // }
 
-// Interface.GeneralMenu();
+Interface.GeneralMenu();
 // Console.ReadLine(); //keeps external terminal open
 
 List<Movie> demoMovies = JsonHandler.Read<Movie>("MovieDB.json");
 List<User> demoUsers = CsvHandler.Read<User>("UserDB.csv");
 List<Auditorium> demoAuds = JsonHandler.Read<Auditorium>("AuditoriumDB.json");
-
 
