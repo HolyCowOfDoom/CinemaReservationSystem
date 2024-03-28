@@ -4,7 +4,7 @@ public class InterfaceController
 
     List<TestMovie> testMovies = CreateOrGetTestMovies(); // Moet weg nadat database gekoppeld staat
     foreach (TestMovie movie in testMovies){
-        Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Synopsis: {movie.Synopsis}");
+        Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
     }
         XToGoBack();
     }
@@ -13,16 +13,16 @@ public class InterfaceController
 
     List<TestMovie> testMovies = CreateOrGetTestMovies(); // Moet weg nadat database gekoppeld staat
         foreach (TestMovie movie in testMovies){
-            Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Synopsis: {movie.Synopsis}");
+            Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
         }
         XToGoBack(id);
     }
 
     public static void LogIn(){
         for(int i = 0; i < 4; i++){
-            string passout = "Test"; // weghalen nadat het geimplementeerd is
+            string passout = "Test"; // !!! weghalen nadat het geimplementeerd is
             Console.WriteLine("Enter your username or press q to quit.");
-            string username = Console.ReadLine();
+            string username = Console.ReadLine(); // !!! word nog niet getest op username
             if(username == "q"){
                 Interface.GeneralMenu();
             }
@@ -43,7 +43,7 @@ public class InterfaceController
     }
 
     public static void LogOut(){
-        // een method voor de logica om te zorgen dat je niet meer bij login only data kan.
+        // (optioneel) een method voor de logica om te zorgen dat je niet meer bij login only data kan.
         Console.WriteLine("You have been succesfully logged out");
         XToGoBack();
     }
@@ -54,15 +54,17 @@ public class InterfaceController
         Console.WriteLine("-----------------");
         // passed naar een validator, kan ook nog in ander file als we willen dat dit alleen view is.
         string username = GetValidInput("Username needs to be atleast 3 characters or more.\nEnter username: ", IsValidUsername);
+        string fullname = GetValidInput("Full name is atleast two words or more\nEnter Fullname: ", IsValidName);
         string email = GetValidInput("An email address needs to include a @ & a .\nEnter email: ", IsValidEmail);
         string password = GetValidInput("Password needs to be atleast 6 characters long and have a digit in it.\nEnter password: ", IsValidPassword);
-        TestUser user = new(username, email, password);
+        TestUser user = new(username, email, fullname, password);
         CreateOrGetTestUser(user);
         AddingFavmovies(user);
 
         Console.WriteLine("User registration successful!");
         Console.WriteLine($"Username: {user._username}");
         Console.WriteLine($"Email: {user._email}");
+        Console.WriteLine($"Full name: {user.Fullname}");
         XToGoBack(user.UserID);
 
         static string GetValidInput(string prompt, Func<string, bool> validation)
@@ -85,6 +87,20 @@ public class InterfaceController
         static bool IsValidEmail(string input)
         {
             return !string.IsNullOrWhiteSpace(input) && input.Contains('@') && input.Contains('.');
+        }
+
+        static bool IsValidName(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return false;
+            }
+            string[] words = input.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string word in words){
+                if(word.Length < 2) return false;
+            }
+            return true;
         }
 
         static bool IsValidPassword(string input)
@@ -111,10 +127,10 @@ public class InterfaceController
         // Hieronder is voor de demo, moet aangepast worden door middel van CSV/Json info te verkrijgen en displayen.
         foreach(TestUser user in _testUsers){
             if(id == user.ID){
-                Console.WriteLine($"Username: {user._username,-10} | Email: {user._email}\n");
+                Console.WriteLine($"Username: {user._username,-10} | Email: {user._email,-5} | Full name: {user.Fullname}\n");
                 Console.WriteLine($"Favourite list");
                 foreach(TestMovie movie in user.Favlist){
-                Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Synopsis: {movie.Synopsis}");
+                Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
                 }
             }
             else{
@@ -173,7 +189,7 @@ public class InterfaceController
     }
 
 
-private static List<TestMovie> CreateOrGetFav() {
+    private static List<TestMovie> CreateOrGetFav() {
         _testFavMovies ??= CreateFav();
         return _testFavMovies;
     }
@@ -201,32 +217,33 @@ private static List<TestMovie> CreateOrGetFav() {
         return _testUsers;
     }
 
-private static void AddingFavmovies(TestUser user){
-    CreateOrGetFav();
-    foreach(TestMovie movie in _testFavMovies){
-        Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Synopsis: {movie.Synopsis}");
-        // Prompt for 'x' or 'y' after displaying each movie
-        Console.WriteLine("Press x to continue to the next movie or press y to add the movie to your favorites list.");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'x' || c == 'y');
-        if (specificLetterInput == 'y'){
-            // If user presses 'y', add the movie to the favorites list
-            user.AddToFavorites(movie);
+    private static void AddingFavmovies(TestUser user){
+        CreateOrGetFav();
+            foreach(TestMovie movie in _testFavMovies){
+                Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
+                // Prompt for 'x' or 'y' after displaying each movie
+                Console.WriteLine("Press x to continue to the next movie or press y to add the movie to your favorites list.");
+                char specificLetterInput = Helper.ReadInput((char c) => c == 'x' || c == 'y');
+                if (specificLetterInput == 'y'){
+                    // If user presses 'y', add the movie to the favorites list
+                    user.AddToFavorites(movie);
+            }
+        }   
     }
+    
 }
 
-}
-}
 internal class TestMovie{
     public string Title;
     public int AgeRating;
-    public string Synopsis;
+    public string Description;
     private static int _lastId = 0;
     public int ID { get; }
-    public TestMovie(string title, int ageRating, string synopsis)
+    public TestMovie(string title, int ageRating, string description)
     {
         Title = title;
         AgeRating = ageRating;
-        Synopsis = synopsis;
+        Description = description;
         ID = ++_lastId;
     }
 }
@@ -234,14 +251,16 @@ internal class TestMovie{
 internal class TestUser{
     public readonly string _username;
     public readonly string _email;
+    public readonly string Fullname;
     private readonly string _password;
     public readonly int ID;
     private static int _latestID = 0;
     public List<TestMovie> Favlist;
-    public TestUser(string user, string email, string password){
+    public TestUser(string user, string email, string fullname, string password){
         _username = user;
         _email = email;
         _password = password;
+        Fullname = fullname;
         ID = ++_latestID;
         Favlist = new List<TestMovie>();
     }

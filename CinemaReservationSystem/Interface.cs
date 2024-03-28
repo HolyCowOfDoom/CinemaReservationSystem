@@ -24,13 +24,16 @@ class Interface{
         char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4',
         "General Menu",  "1. View all movies / Reserve seats\n 2. See profile\n 3. Log out");
             if(DigitInput == '1'){
-                InterfaceController.ViewMovies(id);
+                InterfaceController.ViewMovies(id); 
+                // called overloaded versie van ViewMovies, kan dus gebruikt worden om
+                // seats te reserveren en op te slaan in de id van een employee. 
             }
             else if (DigitInput == '2'){
                 InterfaceController.ViewUser(id);
             }
             else if (DigitInput == '3'){
                 InterfaceController.LogOut();
+                // Heeft geen id nodig, want called GeneralMenu zonder id.
             }
             else{
                 GeneralMenu(id);
