@@ -169,4 +169,27 @@ public class InterfaceController
             Interface.GeneralMenu(id);
         }
     }
+
+    //TEMPORARY METHODS FOR THE DEMO
+    public static void CreateMovie()
+    {
+        Console.WriteLine("Please input movie title:");
+        string title = Console.ReadLine();
+        Console.WriteLine("Please add movie description:");
+        string description = Console.ReadLine();
+        Console.WriteLine("Please add movie age rating:");
+        int ageRating = Convert.ToInt32(Console.ReadLine());
+
+        Movie addedMovie = new Movie(title, ageRating, description);
+    }
+
+    public static void AddScreening()
+    {
+        Console.WriteLine("Please enter movie ID");
+        int movieID = Convert.ToInt32(Console.ReadLine());
+        Movie movie = JsonHandler.Get<Movie>(movieID, "MovieDB.json");
+        Console.WriteLine("Please input auditorium ID related to the screening:");
+        int auditID = Convert.ToInt32(Console.ReadLine());
+        movie.AddScreening(JsonHandler.Get<Auditorium>(auditID, "AuditoriumDB.json"), null);
+    }
 }
