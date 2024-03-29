@@ -54,17 +54,19 @@ public static class CsvHandler{
 
     //example (UserDBFilePath, "ID", 1) -> returns User obj with ID 1
     //example (UserDBFilePath, "Name", "Utku") -> returns User obj with Name Utku
-    public static T? GetRecordWithValue<T>(string csvFile, string header, object value)
+    //the only point of using two methods here is to avoid having to specify the type of value in the generic mathod call
+    //so GetRecordWithValue<User> rather than GetRecordWithValue<User, string>
+    public static T? GetRecordWithValue<T>(string csvFile, string header, object value) 
     {
-        var method = typeof(CsvHandler).GetMethod("GetRecordWithValueExtension");
-        var CsvHandlerRef = method.MakeGenericMethod(typeof(T), value.GetType());
-        return (T)CsvHandlerRef.Invoke(null, new object[] {csvFile, header, value});
+        var method = typeof(CsvHandler).GetMethod("GetRecordWithValueExtension"); //gets GetRecordWithValueExtension() method
+        var CsvHandlerRef = method.MakeGenericMethod(typeof(T), value.GetType()); //makes method generic (glues <T, J> to it)
+        return (T)CsvHandlerRef.Invoke(null, new object[] {csvFile, header, value}); //calls method using given parameters
         //https://stackoverflow.com/questions/3957817/calling-generic-method-with-type-variable
         
         //this doesn't work!
         //FindRecordWithHeaderWithValue2<T, value.GetType()>(csvFile, header, value);
     }
-    public static T? GetRecordWithValueExtension<T, J>(string csvFile, string header, J value) // invoke above wn't work if private?
+    public static T? GetRecordWithValueExtension<T, J>(string csvFile, string header, J value) // invoke above won't work if private?
     {
         var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
         {
@@ -74,14 +76,9 @@ public static class CsvHandler{
         };
         using StreamReader reader = new(csvFile);
         using CsvHelper.CsvReader csvReader = new(reader, config);
-
-        // string headersString = reader.ReadLine();
-        // List<string> headers = headersString.Split(',').ToList();
-        // int headerIndex = headers.FindIndex(item => item == header);
         
         csvReader.Read();
         csvReader.ReadHeader();
-
         while (csvReader.Read())
         {
             J field = csvReader.GetField<J>(header);
@@ -90,14 +87,13 @@ public static class CsvHandler{
                 T records = csvReader.GetRecord<T>();
                 return records;
             }
-            //var line = csvReader.GetRecord<VariantType>();
         }
-
         return default;
     }
 
-    public static bool UpdateRecordOfID<T>(string csvFile, int id, T newRecord) where T : ObjectHasID //the newRecord MUST be instantiated using old ID in constructor!
-                                                                                //OR use the copy constructor and change the field you want to change
+    public static bool UpdateRecordOfID<T>(string csvFile, int id, T newRecord) where T : ObjectHasID 
+    //the newRecord MUST be instantiated using old ID in constructor!
+    //OR use the copy constructor and change the field you want to change
     {
         //this is not enough, as I can't just write to that location.
         //T record = GetRecordWithValue<T>(csvFile, "ID", id); //get record with matching ID
@@ -111,14 +107,13 @@ public static class CsvHandler{
         using CsvHelper.CsvReader csvReader = new(reader, config);
 
         //read to get index of record in db, re-uses some code of GetRecordWithValue so consider if it's possible to abstract.
-        int indexOfRecord = 0; //start at 1 to include Header line
-        csvReader.Read();
+        int indexOfRecord = 0;
+        csvReader.Read(); 
         csvReader.ReadHeader(); 
-        while (csvReader.Read()) 
+        while (csvReader.Read()) //gets index of User with id in .csv to know which line to rewrite
         {
             indexOfRecord++;
             var field = csvReader.GetField("ID");
-            //recordinDB = csvReader.GetRecord<T>(); //stores the record in DB with the matcing ID
             if(field.Equals(id.ToString()))
             {
                 break;
@@ -126,34 +121,21 @@ public static class CsvHandler{
         }
         reader.Close();
         
+        //these options are necessary as StreamWrite by default creates/clears the given file, which we don't want
         var options = new FileStreamOptions();
         options.Access = FileAccess.Write;
         options.Mode = FileMode.Open;
         using StreamWriter writer = new(csvFile, options);
     
-        writer.BaseStream.Position = 0;
+        writer.BaseStream.Position = 0; //for assurance, might be obsolete
         using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
         csvWriter.WriteHeader(newRecord.GetType());
         for (int i = 0; i < indexOfRecord; i++)
         {
             csvWriter.NextRecord(); //move writer 'cursor' to the correct line using index
-            //indexOfRecord--;
         }
         csvWriter.WriteRecord(newRecord);
         csvWriter.NextRecord();
-    
-        //functional for demo
-        // List<T> recordsList = Read<T>(csvFile);
-        // for(int i = 0; i < recordsList.Count; i++)
-        // {
-        //     if(recordsList[i].ID == id)
-        //     {
-        //         recordsList[i] = newRecord;
-        //     }
-        // }
-
-        // Write(csvFile, recordsList);
-
         return true;
     }
 
