@@ -11,15 +11,6 @@ public class InterfaceController
             XToGoBack();
     }
 
-    public static void ViewMovies(int id){
-        List<Movie> Movies = JsonHandler.Read<Movie>("MovieDB.json");
-        foreach (Movie movie in Movies)
-        {
-            Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
-        }
-        XToGoBack(id);
-    }
-
     public static void LogIn(){
        
         Console.WriteLine("Enter your username or press q to quit.");
@@ -51,12 +42,6 @@ public class InterfaceController
             }
         }
         Console.WriteLine("Attempt limit reached on trying passwords.");
-        XToGoBack();
-    }
-
-    public static void LogOut(){
-        // (optioneel) een method voor de logica om te zorgen dat je niet meer bij login only data kan.
-        Console.WriteLine("You have been succesfully logged out");
         XToGoBack();
     }
 
@@ -134,20 +119,8 @@ public class InterfaceController
                 return false;
             }
         }
-
     }
-    public static void ViewUser(int id){
-        User user = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "ID", id);
-        Console.WriteLine("┌───────────────────────────────┬───────────────────────────────────────┬────────────────────────┐");
-        Console.WriteLine($"│{"Username:"} {user.Name,-20} │ {"Email:"} {user.Email,-30} │ {"Birth date:"} {user.BirthDate} │");
-        Console.WriteLine("└───────────────────────────────┴───────────────────────────────────────┴────────────────────────┘");
-        XToGoBack(id);
-    }
-            // Oude code voor de favorite list, kan nu niet meer gebruikt worden omdat er geen fav list is op het moment :(
-            // Console.WriteLine($"Favourite list");
-            // foreach(Movie movie in user.Favlist){
-            // Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
-
+    
     private static void XToGoBack(){
         Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
@@ -160,35 +133,9 @@ public class InterfaceController
         Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
         if (specificLetterInput == 'x'){
-            Console.Clear();
-            Interface.GeneralMenu(id);
+            UserInterface.GeneralMenu(id);
         }
     }
 
     //TEMPORARY METHODS FOR THE DEMO
-    public static void CreateMovie(int id)
-    {
-        Console.WriteLine("Please input movie title:");
-        string title = Console.ReadLine();
-        Console.WriteLine("Please add movie description:");
-        string description = Console.ReadLine();
-        Console.WriteLine("Please add movie age rating:");
-        int ageRating = Convert.ToInt32(Console.ReadLine());
-
-        Movie addedMovie = new Movie(title, ageRating, description);
-
-        XToGoBack(id);
-    }
-
-    public static void AddScreening(int id)
-    {
-        Console.WriteLine("Please enter movie ID");
-        int movieID = Convert.ToInt32(Console.ReadLine());
-        Movie movie = JsonHandler.Get<Movie>(movieID, "MovieDB.json");
-        Console.WriteLine("Please input auditorium ID related to the screening:");
-        int auditID = Convert.ToInt32(Console.ReadLine());
-        movie.AddScreening(JsonHandler.Get<Auditorium>(auditID, "AuditoriumDB.json"), null);
-
-        XToGoBack(id);
-    }
 }
