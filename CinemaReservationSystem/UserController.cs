@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Globalization;
 
 public class UserController
@@ -12,7 +13,47 @@ public class UserController
         List<Movie> Movies = JsonHandler.Read<Movie>("MovieDB.json");
         foreach (Movie movie in Movies)
         {
-            Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
+            Console.WriteLine($"Title: {movie.Title,-40} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
+        }
+        XToGoBack(id);
+    }
+
+    public static void FilterMovies(int id){
+        char FilterInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4' || c == '5',
+        "Filter Options",  "1. General Audience (G)\n2. Parental Guidance Suggested (PG)\n3. (PG-13)\n4. Restricted (R)\n5. No One 17 and Under (NC-17)");
+        List<Movie> Movies = JsonHandler.Read<Movie>("MovieDB.json");
+        List<Movie> sortedMovies = Movies.OrderBy(movie => movie.AgeRating).ToList(); // kan ook in de JsonHandler.cs
+        int rating = 0;
+        switch(FilterInput)
+        {
+            case '1':
+                rating = 6;
+                break;
+            case '2':
+                rating = 9;
+                break;
+            case '3':
+                rating = 12;
+                break;
+            case '4':
+                rating = 15;
+                break;
+            case '5':
+                rating = 18;
+                break;
+        }
+        int currentrating = 0;
+        foreach (Movie movie in sortedMovies)
+        {
+            if (rating >= movie.AgeRating) 
+            {
+                if (currentrating < movie.AgeRating)
+                {
+                    currentrating = movie.AgeRating;
+                    Console.WriteLine($"\n│ Suitable for an audience under {currentrating,-2} years old.");
+                }
+                Console.WriteLine($"│ Title: {movie.Title,-40} │ Age Rating: {movie.AgeRating,-3} │ Description: {movie.Description} │");
+            }
         }
         XToGoBack(id);
     }

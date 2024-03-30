@@ -6,7 +6,7 @@ public class InterfaceController
         List<Movie> Movies = JsonHandler.Read<Movie>("MovieDB.json");
         foreach (Movie movie in Movies)
         {
-            Console.WriteLine($"Title: {movie.Title,-50} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
+            Console.WriteLine($"Title: {movie.Title,-40} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
         }
             XToGoBack();
     }
@@ -136,6 +136,4 @@ public class InterfaceController
             UserInterface.GeneralMenu(id);
         }
     }
-
-    //TEMPORARY METHODS FOR THE DEMO
 }
