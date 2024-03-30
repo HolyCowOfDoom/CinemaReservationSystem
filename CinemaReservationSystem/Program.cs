@@ -34,6 +34,10 @@
 //     // Add more movie entries as needed
 // };
 
+// List<Auditorium> auditoriums = JsonHandler.Read<Auditorium>("AuditoriumDB.json");
+// JsonHandler.Write<Auditorium>(auditoriums, "AuditoriumDB.json");
+
+
 
 Interface.GeneralMenu();
 // Console.ReadLine(); //keeps external terminal open
