@@ -11,7 +11,7 @@ public interface ObjectHasID
 
 public static class JsonHandler
 {
-    // Writes given object list to given json file.
+    // Writes given object list to given json file. (formatting can be adjusted.)
     public static void Write<T>(List<T> dataToWrite, string jsonFile)
     {
         try

@@ -3,6 +3,7 @@
     "Title": "The Matrix",
     "AgeRating": 15,
     "Description": "A mind-bending sci-fi classic",
+    "Genre": "Placeholder",
     "ScreeningIDs": [],
     "ID": 1
   },
@@ -10,6 +11,7 @@
     "Title": "Inception",
     "AgeRating": 12,
     "Description": "Explore the depths of the human mind",
+    "Genre": "Placeholder",
     "ScreeningIDs": [],
     "ID": 2
   },
@@ -17,6 +19,7 @@
     "Title": "The Shawshank Redemption",
     "AgeRating": 18,
     "Description": "A tale of hope and redemption",
+    "Genre": "Placeholder",
     "ScreeningIDs": [],
     "ID": 3
   },
@@ -24,6 +27,7 @@
     "Title": "The Godfather",
     "AgeRating": 18,
     "Description": "An epic saga of crime and family",
+    "Genre": "Placeholder",
     "ScreeningIDs": [],
     "ID": 4
   },
@@ -31,6 +35,7 @@
     "Title": "Pulp Fiction",
     "AgeRating": 18,
     "Description": "A stylish journey through the criminal underworld",
+    "Genre": "Placeholder",
     "ScreeningIDs": [],
     "ID": 5
   },
@@ -38,6 +43,7 @@
     "Title": "Fight Club",
     "AgeRating": 18,
     "Description": "An intense exploration of masculinity and identity",
+    "Genre": "Placeholder",
     "ScreeningIDs": [],
     "ID": 6
   },
@@ -45,6 +51,7 @@
     "Title": "Forrest Gump",
     "AgeRating": 12,
     "Description": "Life is like a box of chocolates",
+    "Genre": "Placeholder",
     "ScreeningIDs": [],
     "ID": 7
   },
@@ -52,6 +59,7 @@
     "Title": "The Dark Knight",
     "AgeRating": 12,
     "Description": "The legendary battle between Batman and Joker",
+    "Genre": "Placeholder",
     "ScreeningIDs": [],
     "ID": 8
   },
@@ -59,6 +67,7 @@
     "Title": "The Lord of the Rings: The Two Towers",
     "AgeRating": 12,
     "Description": "Embark on an epic adventure",
+    "Genre": "Placeholder",
     "ScreeningIDs": [],
     "ID": 9
   },
@@ -66,6 +75,7 @@
     "Title": "Schindler's List",
     "AgeRating": 18,
     "Description": "A powerful true story of one man's fight against evil",
+    "Genre": "Placeholder",
     "ScreeningIDs": [],
     "ID": 10
   },
@@ -73,6 +83,7 @@
     "Title": "12 Angry Men",
     "AgeRating": 18,
     "Description": "A riveting courtroom drama",
+    "Genre": "Placeholder",
     "ScreeningIDs": [],
     "ID": 11
   },
@@ -80,6 +91,7 @@
     "Title": "Pokemon: The Movie",
     "AgeRating": 6,
     "Description": "Join Ash and Pikachu on an adventure",
+    "Genre": "Placeholder",
     "ScreeningIDs": [],
     "ID": 12
   }

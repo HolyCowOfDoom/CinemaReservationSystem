@@ -3,13 +3,15 @@ public class Movie : ObjectHasID
     public string Title;
     public int AgeRating;
     public string Description;
+    public string Genre;
     public List<int> ScreeningIDs;
     public int ID { get; }
-    public Movie(string title, int ageRating, string description, List<int>? screenings = null, int? id = null)
+    public Movie(string title, int ageRating, string description, string genre, List<int>? screenings = null, int? id = null)
     {
         Title = title;
         AgeRating = ageRating;
         Description = description;
+        Genre = genre;
         ScreeningIDs = screenings == null ? new List<int>() : screenings;
 
         if (id == null)
