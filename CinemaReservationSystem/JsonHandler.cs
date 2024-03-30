@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using System.Linq;
+using System.Text.Json;
 
 
 // Necessary interface for the ID system to fuction.
@@ -17,7 +18,8 @@ public static class JsonHandler
         {
             using (StreamWriter writer = new StreamWriter(jsonFile))
             {
-                string stringToWrite = JsonConvert.SerializeObject(dataToWrite);
+                JsonSerializerSettings settings = new JsonSerializerSettings { Formatting = Formatting.Indented };
+                string stringToWrite = JsonConvert.SerializeObject(dataToWrite, settings);
                 writer.Write(stringToWrite);
             }
         }
