@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 public class UserInterface
 {
     public static void GeneralMenu(int id){
@@ -11,8 +13,34 @@ public class UserInterface
                 // called overloaded versie van ViewMovies, kan dus gebruikt worden om
                 // seats te reserveren en op te slaan in de id van een employee.
             case '2':
-                UserController.FilterMovies(id);
-                break; 
+                char FilterOption = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4',
+                "Filter options",  "1. Filter movies by the Age Rating\n 2. Filter Movies by Genre\n 3. Filter Movies by both\n 4. Exit Menu");
+                if(FilterOption == '1')
+                {
+                    string option = "Age"; 
+                    UserController.FilterMovies(id, option);
+                    break; 
+                }
+                else if(FilterOption == '2')
+                {
+                    string option = "Genre";
+                    UserController.FilterMovies(id, option);
+                    break;
+                }
+                else if(FilterOption == '3')
+                {
+                    string option = "Both";
+                    UserController.FilterMovies(id, option);
+                    break;
+                }
+                else if(FilterOption == '4') 
+                {
+                    GeneralMenu(id);
+                    break;
+                }
+                else{
+                    break;
+                }
             case '3':
                 UserController.ViewUser(id);
                 break;
