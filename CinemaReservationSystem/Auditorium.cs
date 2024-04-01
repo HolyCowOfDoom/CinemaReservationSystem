@@ -1,9 +1,9 @@
 public class Auditorium : ObjectHasID
 {
     public List<Seat> Seats { get; }
-    public int ID { get; }
+    public string ID { get; }
 
-    public Auditorium(int id, int numberOfSeats)
+    public Auditorium(string id, int numberOfSeats)
     {
         ID = id;
         Seats = new List<Seat>();
@@ -23,7 +23,7 @@ public class Auditorium : ObjectHasID
         }
     }
 
-    public string GetSeatInfo(int seatID)
+    public string GetSeatInfo(string seatID)
     {
         foreach (Seat seat in Seats)
         {
@@ -38,17 +38,17 @@ public class Auditorium : ObjectHasID
         switch (auditoriumNumber)
         {
             case 1:
-                return new Auditorium(1, 150);
+                return new Auditorium("1", 150);
             case 2:
-                return new Auditorium(2, 300);
+                return new Auditorium("2", 300);
             case 3:
-                return new Auditorium(3, 500);
+                return new Auditorium("3", 500);
             default:
                 throw new ArgumentOutOfRangeException("Invalid auditorium number.");
         }
     }
 
-    public void ReserveSeat(int seatID)
+    public void ReserveSeat(string seatID)
     {
         Seat? seat = Seats.Find(s => s.ID == seatID);
         if (seat != null && !seat.IsReserved)

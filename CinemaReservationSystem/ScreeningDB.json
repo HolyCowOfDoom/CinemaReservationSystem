@@ -1,0 +1,224 @@
+[
+  {
+    "AssignedAuditorium": {
+      "Seats": [
+        {
+          "Color": "Blue",
+          "ID": "61",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "62",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "63",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "64",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "65",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "66",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "67",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "68",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "69",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "70",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "71",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "72",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "73",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "74",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "75",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "76",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "77",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "78",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "79",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "80",
+          "IsReserved": false
+        }
+      ],
+      "ID": "1"
+    },
+    "ScreeningDateTime": "2000-01-01T00:00:00",
+    "Bundles": [],
+    "MovieID": "9fc9d821-1fac-47bd-9a3c-792fd305b8fb",
+    "ID": "46e54be5-3c48-4590-bc85-67ff261ab70b"
+  },
+  {
+    "AssignedAuditorium": {
+      "Seats": [
+        {
+          "Color": "Blue",
+          "ID": "1",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "2",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "3",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "4",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "5",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "6",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "7",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "8",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "9",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "10",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "11",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "12",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "13",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "14",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "15",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "16",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "17",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "18",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "19",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "20",
+          "IsReserved": false
+        }
+      ],
+      "ID": "1"
+    },
+    "ScreeningDateTime": "2000-01-01T00:00:00",
+    "Bundles": [],
+    "MovieID": "9fc9d821-1fac-47bd-9a3c-792fd305b8fb",
+    "ID": "1b8c7be0-f08c-425f-b780-caf50229a8ac"
+  }
+]

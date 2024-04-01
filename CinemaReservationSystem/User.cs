@@ -6,14 +6,14 @@ using CsvHelper.Configuration.Attributes;
 public class User : ObjectHasID
 {
     static string UserDBFilePath = Path.GetFullPath("UserDB.csv");
-    private readonly int _id;
+    private readonly string _id;
     //private string _name; 
     //private string _birthDate;
     //private string _email;
     private string _password;
     private bool _fromCSV;
     [Name("ID")]
-    public int ID {get => _id; init => _id = value;}
+    public string ID {get => _id; init => _id = value;}
     [Name("Name")]
     
     //Name set is set to public for testing in Program.cs. change back to private when done testing, as all changes should be done via User.cs
@@ -30,7 +30,8 @@ public class User : ObjectHasID
 
     public User(string name, string birthDate, string email, string password)
     {
-        ID = CsvHandler.CountRecords(UserDBFilePath);
+        // ID = CsvHandler.CountRecords(UserDBFilePath);
+        ID = Guid.NewGuid().ToString();
         Name = name;
         BirthDate = birthDate;
         Email = email;
@@ -38,7 +39,7 @@ public class User : ObjectHasID
         AddUser(this);
     }
     //for use by CsVHandler.Read() (it instantiates User objects)
-    public User(int id, string name, string birthDate, string email, string password)
+    public User(string id, string name, string birthDate, string email, string password)
     {
         ID = id;
         Name = name;

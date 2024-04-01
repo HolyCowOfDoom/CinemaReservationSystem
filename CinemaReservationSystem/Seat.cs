@@ -1,7 +1,9 @@
+using System.Collections;
+
 public class Seat : ObjectHasID
 {
     public string Color { get; }
-    public int ID { get; }
+    public string ID { get; }
     public bool IsReserved { get; private set; }
 
     private static int lastID = 0;
@@ -9,7 +11,9 @@ public class Seat : ObjectHasID
     public Seat(string color)
     {
         Color = color;
-        ID = ++lastID;
+        int intID = Convert.ToInt32(ID);
+        intID = ++lastID;
+        ID = Convert.ToString(intID);
         IsReserved = false;
     }
 

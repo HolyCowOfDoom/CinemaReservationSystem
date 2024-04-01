@@ -9,7 +9,7 @@ public class UserController
         XToGoBack();
     }
 
-    public static void ViewMovies(int id){
+    public static void ViewMovies(string id){
         List<Movie> Movies = JsonHandler.Read<Movie>("MovieDB.json");
         foreach (Movie movie in Movies)
         {
@@ -18,7 +18,7 @@ public class UserController
         XToGoBack(id);
     }
 
-    public static void FilterMovies(int id){
+    public static void FilterMovies(string id){
         char FilterInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4' || c == '5',
         "Filter Options",  "1. General Audience (G)\n2. Parental Guidance Suggested (PG)\n3. (PG-13)\n4. Restricted (R)\n5. No One 17 and Under (NC-17)");
         List<Movie> Movies = JsonHandler.Read<Movie>("MovieDB.json");
@@ -58,7 +58,7 @@ public class UserController
         XToGoBack(id);
     }
 
-    public static void ViewUser(int id){
+    public static void ViewUser(string id){
         User user = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "ID", id);
         Console.WriteLine("┌────────────────────────────────┬───────────────────────────────────────┬────────────────────────┐");
         Console.WriteLine($"│ Username: {user.Name,-20} │ Email: {user.Email,-30} │ Birth date: {user.BirthDate} │");
@@ -80,7 +80,7 @@ public class UserController
             Interface.GeneralMenu();
         }
     }
-    private static void XToGoBack(int id)
+    private static void XToGoBack(string id)
     {
         Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');

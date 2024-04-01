@@ -1,6 +1,6 @@
 public class AdminInterface
 {
-    public static void GeneralMenu(int id){
+    public static void GeneralMenu(string id){
         char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4' || c == '5',
         "General Menu",  "1. View all movies / Reserve seats\n 2. See profile\n 3. Log out\n 4. Create Movie (ADMIN)\n 5. Add Screening (ADMIN)");
         switch(DigitInput) 

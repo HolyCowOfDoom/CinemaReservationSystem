@@ -4,24 +4,26 @@ public class Movie : ObjectHasID
     public int AgeRating;
     public string Description;
     public string Genre;
-    public List<int> ScreeningIDs;
-    public int ID { get; }
-    public Movie(string title, int ageRating, string description, string genre, List<int>? screenings = null, int? id = null)
+    public List<string> ScreeningIDs;
+    public string ID { get; }
+    public Movie(string title, int ageRating, string description, string genre, List<string>? screenings = null, string? id = null)
     {
         Title = title;
         AgeRating = ageRating;
         Description = description;
         Genre = genre;
-        ScreeningIDs = screenings == null ? new List<int>() : screenings;
+        ScreeningIDs = screenings == null ? new List<string>() : screenings;
 
         if (id == null)
         {
-            List<Movie> movieList = JsonHandler.Read<Movie>("MovieDB.json");
-            int lastID = movieList.Count > 0 ? movieList[movieList.Count -1].ID : 0;
-            ID = ++lastID;
+
+            // List<Movie> movieList = JsonHandler.Read<Movie>("MovieDB.json");
+            // int lastID = movieList.Count > 0 ? movieList[movieList.Count -1].ID : 0;
+            // ID = ++lastID;
+            ID = Guid.NewGuid().ToString();
             UpdateMovie();
         }
-        else ID = (int)id;
+        else ID = (string)id;
     }
 
     public void AddScreening(Auditorium assignedAuditorium, DateTime? screeningDateTime)
@@ -31,7 +33,7 @@ public class Movie : ObjectHasID
         UpdateMovie();
     }
 
-    public void RemoveScreening(int screeningID)
+    public void RemoveScreening(string screeningID)
     {
         ScreeningIDs.Remove(screeningID);
         JsonHandler.Remove<Screening>(screeningID, "ScreeningDB.json");
@@ -44,7 +46,7 @@ public class Movie : ObjectHasID
         List<Screening> movieScreenings = new List<Screening>();
         if (allScreenings != null)
         {
-            foreach (int screeningID in ScreeningIDs)
+            foreach (string screeningID in ScreeningIDs)
             {
                 foreach (Screening screening in allScreenings)
                 {

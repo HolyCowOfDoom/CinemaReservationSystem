@@ -96,7 +96,7 @@ public static class CsvHandler{
         return default;
     }
 
-    public static bool UpdateRecordOfID<T>(string csvFile, int id, T newRecord) where T : ObjectHasID //the newRecord MUST be instantiated using old ID in constructor!
+    public static bool UpdateRecordOfID<T>(string csvFile, string id, T newRecord) where T : ObjectHasID //the newRecord MUST be instantiated using old ID in constructor!
                                                                                 //OR use the copy constructor and change the field you want to change
     {
         //this is not enough, as I can't just write to that location.
