@@ -79,6 +79,19 @@ public static class JsonHandler
         return default;
     }
 
+    public static Movie? GetByMovieName(string name)
+    {
+        List<Movie> listOfObjects = Read<Movie>("MovieDB.json");
+        foreach (Movie item in listOfObjects)
+        {
+            if (item.Title == name)
+            {
+                return item;
+            }
+        }
+        return default;
+    }
+
     // Gets index of item in read list, returns -1 if item was not found.
     public static int GetIndex<T>(string objectID, string jsonFile) where T : ObjectHasID
     {

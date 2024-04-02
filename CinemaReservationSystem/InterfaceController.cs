@@ -8,7 +8,7 @@ public class InterfaceController
         {
             Console.WriteLine($"Title: {movie.Title,-40} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
         }
-            XToGoBack();
+        XToGoBack();
     }
 
     public static void LogIn(){

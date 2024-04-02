@@ -127,6 +127,7 @@ public class Helper
         Console.SetCursorPosition(0, Console.CursorTop - 1);
 
     }
+
     public static void WriteInCenter(string data)
     {
         foreach (var model in data.Split('\n'))
@@ -135,6 +136,7 @@ public class Helper
             Console.WriteLine(model);
         }
     }
+
     public static void WriteColoredLetter(string letters)
     {
         Char[] array = letters.ToCharArray();
@@ -160,6 +162,7 @@ public class Helper
         }
         Console.WriteLine();
     }
+
     public static string ReplaceAt(string input, int index, char newChar)
     {
         char[] chars = input.ToCharArray();
@@ -169,46 +172,59 @@ public class Helper
 
 
     public static string GetValidInput(string prompt, Func<string, bool> validation)
+    {
+        string input;
+        do
         {
-            string input;
-            do
-            {
-                Console.Write(prompt);
-                input = Console.ReadLine();
-            } while (!validation(input));
+            Console.Write(prompt);
+            input = Console.ReadLine();
+        } while (!validation(input));
 
-            return input;
-        }
-        public static bool IsNotNull(string input) => !string.IsNullOrWhiteSpace(input);
-        public static bool IsValidUsername(string input) => !string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 21;
-        public static bool IsValidEmail(string input) => !string.IsNullOrWhiteSpace(input) && input.Contains('@') && input.Contains('.') && input.Length < 31;
+        return input;
+    }
+    public static bool IsNotNull(string input) => !string.IsNullOrWhiteSpace(input);
+    public static bool IsValidUsername(string input) => !string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 21;
+    public static bool IsValidEmail(string input) => !string.IsNullOrWhiteSpace(input) && input.Contains('@') && input.Contains('.') && input.Length < 31;
 
-        public static bool IsValidPassword(string input)
+    public static bool IsValidPassword(string input)
+    {
+        // test op lege string of string onder de 6 chars.
+        if (!string.IsNullOrWhiteSpace(input) && input.Length >= 6)
         {
-            // test op lege string of string onder de 6 chars.
-            if (!string.IsNullOrWhiteSpace(input) && input.Length >= 6)
+            foreach (char c in input)
             {
-                foreach (char c in input)
+                if (char.IsDigit(c))
                 {
-                    if (char.IsDigit(c))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
+        }
+        return false;
+    }
+
+    public static bool IsValidBD(string input)
+    {
+        string dateFormat = "dd-MM-yyyy";
+        if (DateTime.TryParseExact(input, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result))
+        {
+            return true;
+        }
+        else
+        {
             return false;
         }
+    }
 
-        public static bool IsValidBD(string input)
+    public static bool IsValidDT(string input)
+    {
+        string dateFormat = "dd-MM-yyyy HH:mm";
+        if (DateTime.TryParseExact(input, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result))
         {
-            string dateFormat = "dd-MM-yyyy";
-            if (DateTime.TryParseExact(input, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

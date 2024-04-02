@@ -15,14 +15,18 @@ public class AdminController
         XToGoBack(id);
     }
 
-    public static void AddScreening(Movie movie)
+    public static void AddScreening(Movie movie, string id)
     {
-        Console.WriteLine("Please input auditorium ID related to the screening:");
-        string auditID = GetValidInput(Console.ReadLine(), Helper.IsNotNull);
+        Auditorium? screeningAud;
+        do
+        {
+        string auditID = Helper.GetValidInput("Please input valid auditorium ID related to the screening:", Helper.IsNotNull);
+        screeningAud = JsonHandler.Get<Auditorium>(auditID, "AuditoriumDB.json");
+        } while (screeningAud == null);
 
-        Console.WriteLine("Please enter the date and time of the screening: <DD-MM-YYYY HH>");
-        string DateTimeString = GetValidInput(Console.ReadLine(), Helper.IsValidDT) + ":00:00";
-        movie.AddScreening(JsonHandler.Get<Auditorium>(auditID, "AuditoriumDB.json"), DateTimeString);
+        string dateTimeString = Helper.GetValidInput("Please input screening date: <DD-MM-YYYY HH:MM>", Helper.IsValidDT);
+        DateTime screeningDT = DateTime.ParseExact(dateTimeString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+        movie.AddScreening(screeningAud, screeningDT);
 
         XToGoBack(id);
     }

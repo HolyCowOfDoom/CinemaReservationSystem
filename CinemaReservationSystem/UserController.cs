@@ -18,7 +18,7 @@ public class UserController
         {
             Console.WriteLine($"{movie.Title,-40} | {movie.AgeRating,-11} | {movie.Genre, -11} | {movie.Description}");
         }
-        XToGoBack(id);
+        WouldYouLikeToSearch(id);
         Console.Clear();
     }
     public static void FilterMovies(string id, string option)
@@ -177,5 +177,32 @@ public class UserController
             Console.Clear();
             UserInterface.GeneralMenu(id);
         }
+    }
+
+    private static void WouldYouLikeToSearch(string id)
+    {
+        Console.WriteLine("Would you like to select a movie? Y / N");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'y' || c == 'n');
+        if (specificLetterInput == 'y'){
+            SelectMovie(id);
+        }
+        XToGoBack(id);
+    }
+
+    private static void SelectMovie(string id)
+    {
+        Movie? movie;
+        do{
+        string MovieName = Helper.GetValidInput("Please type movie title: ", Helper.IsNotNull);
+        movie = JsonHandler.GetByMovieName(MovieName);
+        } while (movie == null);
+        MovieInterface(movie, id);
+    }
+
+    private static void MovieInterface(Movie movie, string id)
+    {
+        Console.Clear();
+        Console.WriteLine($"Title: {movie.Title,-40} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
+        XToGoBack(id);
     }
 }
