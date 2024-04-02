@@ -28,10 +28,10 @@ public class User : ObjectHasID
     //add custom set if allowing user to change password
     
 
-    public User(string name, string birthDate, string email, string password)
+    public User(string name, string birthDate, string email, string password, bool admin = false)
     {
         // ID = CsvHandler.CountRecords(UserDBFilePath);
-        ID = Guid.NewGuid().ToString();
+        ID = admin ? "admin-" + Guid.NewGuid().ToString() : Guid.NewGuid().ToString();
         Name = name;
         BirthDate = birthDate;
         Email = email;
