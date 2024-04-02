@@ -54,6 +54,50 @@ public class AdminController
         XToGoBack();
     }
 
+     public static void AdminMovieInterface(Movie movie, string id)
+    {
+        Console.Clear();
+        Console.WriteLine($"Title: {movie.Title,-40} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
+        List<Screening> screenings = movie.GetAllMovieScreenings();
+        foreach (Screening screening in screenings)
+        {
+            Console.WriteLine($"Date and Time: {screening.ScreeningDateTime, -40:dd-MM-yyyy HH:mm} | Auditorium: {screening.AssignedAuditorium.ID}");
+        }
+        string input = AdminInputMovie(id);
+        if (input == "Select")
+        {
+            AdminScreeningSelect(id);
+        }
+        if (input == "Add")
+        {
+            AddScreening(movie, id);
+        }
+
+        XToGoBack(id);
+    }
+
+    public static string AdminInputMovie(string id)
+    {
+        while (true) {
+        char genreFilterInput = Helper.ReadInput((char c) => c == '1' || c == '2',
+            "Movie Options", "1. Select Screening\n2. Add Screening");
+
+        switch (genreFilterInput) {
+            case '1':
+                return "Select";
+            case '2':
+                return "Add";
+            }
+        }
+    }
+
+    public static void AdminScreeningSelect(string id)
+    {
+        Console.Clear();
+        Console.WriteLine("You got this far.");
+        XToGoBack(id);
+    }
+
 
 
     private static void XToGoBack(string id)

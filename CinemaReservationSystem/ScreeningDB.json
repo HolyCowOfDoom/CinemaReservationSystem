@@ -1,0 +1,88 @@
+[
+  {
+    "AssignedAuditorium": {
+      "Seats": [
+        {
+          "Color": "Yellow",
+          "ID": "16",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "17",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "18",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "19",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "20",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "21",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "22",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "23",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "24",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "25",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "26",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "27",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "28",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "29",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "30",
+          "IsReserved": false
+        }
+      ],
+      "ID": "A1"
+    },
+    "ScreeningDateTime": "2024-03-20T12:30:00",
+    "Bundles": [],
+    "MovieID": "1",
+    "ID": "c95e6637-05cb-48ab-b39b-711dc3aabcd9"
+  }
+]

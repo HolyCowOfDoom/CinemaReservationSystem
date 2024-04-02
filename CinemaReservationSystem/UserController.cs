@@ -196,7 +196,8 @@ public class UserController
         string MovieName = Helper.GetValidInput("Please type movie title: ", Helper.IsNotNull);
         movie = JsonHandler.GetByMovieName(MovieName);
         } while (movie == null);
-        MovieInterface(movie, id);
+        if (id.StartsWith("admin-")) AdminController.AdminMovieInterface(movie, id);
+        else MovieInterface(movie, id);
     }
 
     private static void MovieInterface(Movie movie, string id)
@@ -208,6 +209,37 @@ public class UserController
         {
             Console.WriteLine($"Date and Time: {screening.ScreeningDateTime, -40:dd-MM-yyyy HH:mm} | Auditorium: {screening.AssignedAuditorium.ID}");
         }
+        string input = InputMovie(id);
+        if (input == "Select")
+        {
+            ScreeningSelect(id);
+        }
+        if (input == "Return")
+        {
+            UserInterface.GeneralMenu(id);
+        }
+    }
+
+    public static string InputMovie(string id)
+    {
+        while (true) {
+        char genreFilterInput = Helper.ReadInput((char c) => c == '1' || c == '2',
+            "Movie Options", "1. Select Screening\n2. Go Back");
+
+        switch (genreFilterInput) {
+            case '1':
+                return "Select";
+            case '2':
+                return "Return";
+            }
+        }
+    }
+
+    public static void ScreeningSelect(string id)
+    {
+        Console.Clear();
+        Console.WriteLine("You got this far.");
         XToGoBack(id);
     }
+
 }

@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "Seats": [
+      {
+        "Color": "Yellow",
+        "ID": "1",
+        "IsReserved": false
+      },
+      {
+        "Color": "Yellow",
+        "ID": "2",
+        "IsReserved": false
+      },
+      {
+        "Color": "Red",
+        "ID": "3",
+        "IsReserved": false
+      },
+      {
+        "Color": "Yellow",
+        "ID": "4",
+        "IsReserved": false
+      },
+      {
+        "Color": "Blue",
+        "ID": "5",
+        "IsReserved": false
+      },
+      {
+        "Color": "Yellow",
+        "ID": "6",
+        "IsReserved": false
+      },
+      {
+        "Color": "Red",
+        "ID": "7",
+        "IsReserved": false
+      },
+      {
+        "Color": "Yellow",
+        "ID": "8",
+        "IsReserved": false
+      },
+      {
+        "Color": "Yellow",
+        "ID": "9",
+        "IsReserved": false
+      },
+      {
+        "Color": "Yellow",
+        "ID": "10",
+        "IsReserved": false
+      },
+      {
+        "Color": "Blue",
+        "ID": "11",
+        "IsReserved": false
+      },
+      {
+        "Color": "Blue",
+        "ID": "12",
+        "IsReserved": false
+      },
+      {
+        "Color": "Red",
+        "ID": "13",
+        "IsReserved": false
+      },
+      {
+        "Color": "Yellow",
+        "ID": "14",
+        "IsReserved": false
+      },
+      {
+        "Color": "Yellow",
+        "ID": "15",
+        "IsReserved": false
+      }
+    ],
+    "ID": "A1"
+  }
+]

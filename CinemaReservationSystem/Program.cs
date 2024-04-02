@@ -1,4 +1,5 @@
-﻿using System.Security.AccessControl;
+﻿using System.Formats.Asn1;
+using System.Security.AccessControl;
 
 // List<User> tempUserList = new();
 // tempUserList = CsvHandler.Read<User>(Path.GetFullPath("UserDB.csv"));
@@ -34,8 +35,7 @@
 //     // Add more movie entries as needed
 // };
 
-// List<Auditorium> auditoriums = JsonHandler.Read<Auditorium>("AuditoriumDB.json");
-// JsonHandler.Write<Auditorium>(auditoriums, "AuditoriumDB.json");
+JsonHandler.Update<Auditorium>(new Auditorium("A1", 15), "AuditoriumDB.json");
 
 
 

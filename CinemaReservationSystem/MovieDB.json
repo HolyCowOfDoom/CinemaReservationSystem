@@ -4,8 +4,10 @@
     "AgeRating": 15,
     "Description": "A mind-bending sci-fi classic",
     "Genre": "Action",
-    "ScreeningIDs": [],
-    "ID": 1
+    "ScreeningIDs": [
+      "c95e6637-05cb-48ab-b39b-711dc3aabcd9"
+    ],
+    "ID": "1"
   },
   {
     "Title": "Inception",
@@ -13,7 +15,7 @@
     "Description": "Explore the depths of the human mind",
     "Genre": "Action",
     "ScreeningIDs": [],
-    "ID": 2
+    "ID": "2"
   },
   {
     "Title": "The Shawshank Redemption",
@@ -21,7 +23,7 @@
     "Description": "A tale of hope and redemption",
     "Genre": "Drama",
     "ScreeningIDs": [],
-    "ID": 3
+    "ID": "3"
   },
   {
     "Title": "The Godfather",
@@ -29,7 +31,7 @@
     "Description": "An epic saga of crime and family",
     "Genre": "Drama",
     "ScreeningIDs": [],
-    "ID": 4
+    "ID": "4"
   },
   {
     "Title": "Pulp Fiction",
@@ -37,7 +39,7 @@
     "Description": "A stylish journey through the criminal underworld",
     "Genre": "Drama",
     "ScreeningIDs": [],
-    "ID": 5
+    "ID": "5"
   },
   {
     "Title": "Fight Club",
@@ -45,7 +47,7 @@
     "Description": "An intense exploration of masculinity and identity",
     "Genre": "Drama",
     "ScreeningIDs": [],
-    "ID": 6
+    "ID": "6"
   },
   {
     "Title": "Forrest Gump",
@@ -53,7 +55,7 @@
     "Description": "Life is like a box of chocolates",
     "Genre": "Drama",
     "ScreeningIDs": [],
-    "ID": 7
+    "ID": "7"
   },
   {
     "Title": "The Dark Knight",
@@ -61,7 +63,7 @@
     "Description": "The legendary battle between Batman and Joker",
     "Genre": "Action",
     "ScreeningIDs": [],
-    "ID": 8
+    "ID": "8"
   },
   {
     "Title": "The Lord of the Rings: The Two Towers",
@@ -69,7 +71,7 @@
     "Description": "Embark on an epic adventure",
     "Genre": "Adventure",
     "ScreeningIDs": [],
-    "ID": 9
+    "ID": "9"
   },
   {
     "Title": "Schindler's List",
@@ -77,7 +79,7 @@
     "Description": "A powerful true story of one man's fight against evil",
     "Genre": "Drama",
     "ScreeningIDs": [],
-    "ID": 10
+    "ID": "10"
   },
   {
     "Title": "13 Angry Men",
@@ -85,7 +87,7 @@
     "Description": "A riveting courtroom drama",
     "Genre": "Drama",
     "ScreeningIDs": [],
-    "ID": 11
+    "ID": "11"
   },
   {
     "Title": "Pokemon: The Movie",
@@ -93,7 +95,7 @@
     "Description": "Join Ash and Pikachu on an adventure",
     "Genre": "Adventure",
     "ScreeningIDs": [],
-    "ID": 13
+    "ID": "13"
   },
   {
     "Title": "The Conjuring",
@@ -101,7 +103,7 @@
     "Description": "A family encounters supernatural forces in their new home",
     "Genre": "Horror",
     "ScreeningIDs": [],
-    "ID": 14
+    "ID": "14"
   },
   {
     "Title": "Hereditary",
@@ -109,7 +111,7 @@
     "Description": "A family uncovers dark secrets about their ancestry",
     "Genre": "Horror",
     "ScreeningIDs": [],
-    "ID": 15
+    "ID": "15"
   },
   {
     "Title": "Get Out",
@@ -117,7 +119,7 @@
     "Description": "A chilling thriller about racism and social dynamics",
     "Genre": "Horror",
     "ScreeningIDs": [],
-    "ID": 16
+    "ID": "16"
   },
   {
     "Title": "Superbad",
@@ -125,7 +127,7 @@
     "Description": "A wild adventure of two high school friends",
     "Genre": "Comedy",
     "ScreeningIDs": [],
-    "ID": 17
+    "ID": "17"
   },
   {
     "Title": "The Hangover",
@@ -133,7 +135,7 @@
     "Description": "A bachelor party gone wild in Las Vegas",
     "Genre": "Comedy",
     "ScreeningIDs": [],
-    "ID": 18
+    "ID": "18"
   },
   {
     "Title": "Anchorman: The Legend of Ron Burgundy",
@@ -141,46 +143,46 @@
     "Description": "The misadventures of a clueless news anchor",
     "Genre": "Comedy",
     "ScreeningIDs": [],
-    "ID": 19
+    "ID": "19"
   },
   {
-  "Title": "Finding Nemo",
-  "AgeRating": 6,
-  "Description": "An adventurous clownfish searches for his son.",
-  "Genre": "Drama",
-  "ScreeningIDs": [],
-  "ID": 1
+    "Title": "Finding Nemo",
+    "AgeRating": 6,
+    "Description": "An adventurous clownfish searches for his son.",
+    "Genre": "Drama",
+    "ScreeningIDs": [],
+    "ID": "1"
   },
   {
-  "Title": "Toy Story",
-  "AgeRating": 6,
-  "Description": "Toys come to life and embark on an adventure.",
-  "Genre": "Comedy",
-  "ScreeningIDs": [],
-  "ID": 2
+    "Title": "Toy Story",
+    "AgeRating": 6,
+    "Description": "Toys come to life and embark on an adventure.",
+    "Genre": "Comedy",
+    "ScreeningIDs": [],
+    "ID": "2"
   },
   {
-  "Title": "The Lion King",
-  "AgeRating": 6,
-  "Description": "A young lion cub's journey to become king.",
-  "Genre": "Drama",
-  "ScreeningIDs": [],
-  "ID": 3
+    "Title": "The Lion King",
+    "AgeRating": 6,
+    "Description": "A young lion cub's journey to become king.",
+    "Genre": "Drama",
+    "ScreeningIDs": [],
+    "ID": "3"
   },
   {
-  "Title": "Frozen",
-  "AgeRating": 6,
-  "Description": "Two sisters navigate through an icy adventure.",
-  "Genre": "Adventure",
-  "ScreeningIDs": [],
-  "ID": 4
+    "Title": "Frozen",
+    "AgeRating": 6,
+    "Description": "Two sisters navigate through an icy adventure.",
+    "Genre": "Adventure",
+    "ScreeningIDs": [],
+    "ID": "4"
   },
   {
-  "Title": "Harry Potter and the Philosopher's Stone",
-  "AgeRating": 9,
-  "Description": "A young wizard begins his magical education.",
-  "Genre": "Adventure",
-  "ScreeningIDs": [],
-  "ID": 5
+    "Title": "Harry Potter and the Philosopher's Stone",
+    "AgeRating": 9,
+    "Description": "A young wizard begins his magical education.",
+    "Genre": "Adventure",
+    "ScreeningIDs": [],
+    "ID": "5"
   }
 ]
