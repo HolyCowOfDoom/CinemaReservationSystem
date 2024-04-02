@@ -23,29 +23,46 @@ public class User : ObjectHasID
     [Name("Email")]
     public string Email {get; private set;}
     [Name("Password")]
+    public bool Admin { get; }
+    [Name("Admin")]
     //public string Password {get => EncryptPassword(_password); private set => _password = value;}
     public string Password {get => _password; private set => _password = value;}
     //add custom set if allowing user to change password
     
 
-    public User(string name, string birthDate, string email, string password, bool admin = false)
+    public User(string name, string birthDate, string email, string password, bool admin)
     {
         // ID = CsvHandler.CountRecords(UserDBFilePath);
+
         ID = admin ? "admin-" + Guid.NewGuid().ToString() : Guid.NewGuid().ToString();
         Name = name;
         BirthDate = birthDate;
         Email = email;
         _password = password;
+        Admin = admin;
+        AddUser(this);
+    }
+    public User(string name, string birthDate, string email, string password)
+    {
+        // ID = CsvHandler.CountRecords(UserDBFilePath);
+        
+        ID = Guid.NewGuid().ToString();
+        Name = name;
+        BirthDate = birthDate;
+        Email = email;
+        _password = password;
+        Admin = false;
         AddUser(this);
     }
     //for use by CsVHandler.Read() (it instantiates User objects)
-    public User(string id, string name, string birthDate, string email, string password)
+    public User(string id, string name, string birthDate, string email, string password, bool admin)
     {
         ID = id;
         Name = name;
         BirthDate = birthDate;
         Email = email;
         _password = password;
+        Admin = admin;
         //_password = DecryptPassword(password); //passwords in csv are encrypted
     }
     //for user by CsvHandler.WriteValueToRecordExtension()
@@ -55,6 +72,7 @@ public class User : ObjectHasID
         BirthDate = user.BirthDate;
         Email = user.Email;
         _password = user._password;
+        Admin = user.Admin;
     }
     public static bool AddUser(User user)
     {
