@@ -203,6 +203,11 @@ public class UserController
     {
         Console.Clear();
         Console.WriteLine($"Title: {movie.Title,-40} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
+        List<Screening> screenings = movie.GetAllMovieScreenings();
+        foreach (Screening screening in screenings)
+        {
+            Console.WriteLine($"Date and Time: {screening.ScreeningDateTime, -40:dd-MM-yyyy HH:mm} | Auditorium: {screening.AssignedAuditorium.ID}");
+        }
         XToGoBack(id);
     }
 }
