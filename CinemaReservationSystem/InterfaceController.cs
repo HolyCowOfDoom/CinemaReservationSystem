@@ -30,7 +30,7 @@ public class InterfaceController
 
                 if (passin == user.Password)
                 {
-                    int id = user.ID;
+                    string id = user.ID;
                     Console.WriteLine($"Succesfully logged into {user.Name}");
                     XToGoBack(id);
                 }
@@ -129,7 +129,7 @@ public class InterfaceController
         }
     }
 
-    private static void XToGoBack(int id){
+    private static void XToGoBack(string id){
         Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
         if (specificLetterInput == 'x'){

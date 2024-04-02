@@ -1,6 +1,6 @@
 public class AdminController
 {
-    public static void CreateMovie(int id)
+    public static void CreateMovie(string id)
     {
         Console.WriteLine("Please input movie title:");
         string title = Console.ReadLine();
@@ -16,7 +16,7 @@ public class AdminController
         XToGoBack(id);
     }
 
-    public static void AddScreening(int id)
+    public static void AddScreening(string id)
     {
         Console.WriteLine("Please enter movie ID");
         int movieID = Convert.ToInt32(Console.ReadLine());
@@ -28,7 +28,7 @@ public class AdminController
         XToGoBack(id);
     }
 
-    private static void XToGoBack(int id)
+    private static void XToGoBack(string id)
     {
         Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
