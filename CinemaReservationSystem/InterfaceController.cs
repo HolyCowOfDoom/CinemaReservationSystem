@@ -32,6 +32,9 @@ public class InterfaceController
                 {
                     string id = user.ID;
                     Console.WriteLine($"Succesfully logged into {user.Name}");
+                    if(user.Admin == true){
+                        XToGoAdmin(id);
+                    }
                     XToGoBack(id);
                 }
                 else
@@ -134,6 +137,13 @@ public class InterfaceController
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
         if (specificLetterInput == 'x'){
             UserInterface.GeneralMenu(id);
+        }
+    }
+    private static void XToGoAdmin(string id){
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            AdminInterface.GeneralMenu(id);
         }
     }
 }
