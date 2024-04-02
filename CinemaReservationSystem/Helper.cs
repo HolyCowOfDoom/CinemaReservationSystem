@@ -1,3 +1,4 @@
+using System.Globalization;
 public interface ObjectHasID
 {
     string ID { get; }
@@ -164,5 +165,50 @@ public class Helper
         char[] chars = input.ToCharArray();
         chars[index] = newChar;
         return new string(chars);
+    }
+
+
+    public static string GetValidInput(string prompt, Func<string, bool> validation)
+        {
+            string input;
+            do
+            {
+                Console.Write(prompt);
+                input = Console.ReadLine();
+            } while (!validation(input));
+
+            return input;
+        }
+        public static bool IsNotNull(string input) => !string.IsNullOrWhiteSpace(input);
+        public static bool IsValidUsername(string input) => !string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 21;
+        public static bool IsValidEmail(string input) => !string.IsNullOrWhiteSpace(input) && input.Contains('@') && input.Contains('.') && input.Length < 31;
+
+        public static bool IsValidPassword(string input)
+        {
+            // test op lege string of string onder de 6 chars.
+            if (!string.IsNullOrWhiteSpace(input) && input.Length >= 6)
+            {
+                foreach (char c in input)
+                {
+                    if (char.IsDigit(c))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public static bool IsValidBD(string input)
+        {
+            string dateFormat = "dd-MM-yyyy";
+            if (DateTime.TryParseExact(input, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
     }
 }

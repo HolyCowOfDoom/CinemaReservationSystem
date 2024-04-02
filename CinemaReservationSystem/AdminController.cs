@@ -4,14 +4,11 @@ public class AdminController
 {
     public static void CreateMovie(string id)
     {
-        Console.WriteLine("Please input movie title:");
-        string title = Console.ReadLine();
-        Console.WriteLine("Please add movie description:");
-        string description = Console.ReadLine();
-        Console.WriteLine("Please add movie age rating:");
-        int ageRating = Convert.ToInt32(Console.ReadLine());
+        string title = Helper.GetValidInput("Please input movie title:", Helper.IsNotNull);
+        string description = Helper.GetValidInput("Please add movie description:", Helper.IsNotNull);
+        int ageRating = Convert.ToInt32(Helper.GetValidInput("Please add movie age rating:", Helper.IsNotNull));
         Console.WriteLine("Please add a genre to the movie:");
-        string genre = Console.ReadLine();
+        string genre = Helper.GetValidInput("Please input movie title:", Helper.IsNotNull);
 
         Movie addedMovie = new Movie(title, ageRating, description, genre);
 
@@ -34,10 +31,10 @@ public class AdminController
     {
         Console.WriteLine("ADMIN REGISTRATION\n─────────────────────────────────");
         // passed naar een validator, kan ook nog in ander file als we willen dat dit alleen view is.
-        string username = GetValidInput("Username needs to be atleast 3 characters and not more than 20 characters.\nEnter username: ", IsValidUsername);
-        string birthDate = GetValidInput("Birthdate needs to be dd-MM-yyyy.\nEnter birthdate: ", IsValidBD);
-        string email = GetValidInput("An email address needs to include (@) and (.).\nEnter email: ", IsValidEmail);
-        string password = GetValidInput("Password needs to be atleast 6 characters long and have a digit in it.\nEnter password: ", IsValidPassword);
+        string username = Helper.GetValidInput("Username needs to be atleast 3 characters and not more than 20 characters.\nEnter username: ", Helper.IsValidUsername);
+        string birthDate = Helper.GetValidInput("Birthdate needs to be dd-MM-yyyy.\nEnter birthdate: ", Helper.IsValidBD);
+        string email = Helper.GetValidInput("An email address needs to include (@) and (.).\nEnter email: ", Helper.IsValidEmail);
+        string password = Helper.GetValidInput("Password needs to be atleast 6 characters long and have a digit in it.\nEnter password: ", Helper.IsValidPassword);
         Console.Clear();
         User user = new User(username, birthDate, email, password, true);
         Console.WriteLine("User registration successful!");
@@ -46,64 +43,6 @@ public class AdminController
         Console.WriteLine($"Email: {user.Email}");
         
         XToGoBack(id);
-
-        static string GetValidInput(string prompt, Func<string, bool> validation)
-        {
-            string input;
-            do
-            {
-                Console.Write(prompt);
-                input = Console.ReadLine();
-            } while (!validation(input));
-
-            return input;
-        }
-
-        static bool IsValidUsername(string input) => !string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 21;
-        static bool IsValidEmail(string input) => !string.IsNullOrWhiteSpace(input) && input.Contains('@') && input.Contains('.') && input.Length < 31;
-
-        // static bool IsValidName(string input)
-        // {
-        //     if (string.IsNullOrWhiteSpace(input))
-        //     {
-        //         return false;
-        //     }
-        //     string[] words = input.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-        //     foreach (string word in words){
-        //         if(word.Length < 2) return false;
-        //     }
-        //     return true;
-        // }
-
-        static bool IsValidPassword(string input)
-        {
-            // test op lege string of string onder de 6 chars.
-            if (!string.IsNullOrWhiteSpace(input) && input.Length >= 6)
-            {
-                foreach (char c in input)
-                {
-                    if (char.IsDigit(c))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        static bool IsValidBD(string input)
-        {
-            string dateFormat = "dd-MM-yyyy";
-            if (DateTime.TryParseExact(input, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
     }
 
     public static void LogOut(){
