@@ -1,7 +1,7 @@
 public class Seat : ObjectHasID
 {
     public string Color { get; }
-    public int ID { get; }
+    public string ID { get; }
     public bool IsReserved { get; private set; }
 
     private static int lastID = 0;
@@ -9,7 +9,7 @@ public class Seat : ObjectHasID
     public Seat(string color)
     {
         Color = color;
-        ID = ++lastID;
+        ID = Convert.ToString(++lastID);
         IsReserved = false;
     }
 

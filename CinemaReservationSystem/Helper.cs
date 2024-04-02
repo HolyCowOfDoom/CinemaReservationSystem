@@ -1,3 +1,9 @@
+public interface ObjectHasID
+{
+    string ID { get; }
+}
+
+
 public class Helper
 {
     //Can be used to filter char or multiple chars and can display menu with header and user options in a box graphic

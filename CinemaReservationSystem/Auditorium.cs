@@ -23,7 +23,7 @@ public class Auditorium : ObjectHasID
         }
     }
 
-    public string GetSeatInfo(int seatID)
+    public string GetSeatInfo(string seatID)
     {
         foreach (Seat seat in Seats)
         {
@@ -48,7 +48,7 @@ public class Auditorium : ObjectHasID
         }
     }
 
-    public void ReserveSeat(int seatID)
+    public void ReserveSeat(string seatID)
     {
         Seat? seat = Seats.Find(s => s.ID == seatID);
         if (seat != null && !seat.IsReserved)
