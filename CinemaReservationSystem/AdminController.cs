@@ -15,14 +15,14 @@ public class AdminController
         XToGoBack(id);
     }
 
-    public static void AddScreening(string id)
+    public static void AddScreening(Movie movie)
     {
-        Console.WriteLine("Please enter movie ID");
-        string movieID = Console.ReadLine();
-        Movie movie = JsonHandler.Get<Movie>(movieID, "MovieDB.json");
         Console.WriteLine("Please input auditorium ID related to the screening:");
-        string auditID = Console.ReadLine();
-        movie.AddScreening(JsonHandler.Get<Auditorium>(auditID, "AuditoriumDB.json"), null);
+        string auditID = GetValidInput(Console.ReadLine(), Helper.IsNotNull);
+
+        Console.WriteLine("Please enter the date and time of the screening: <DD-MM-YYYY HH>");
+        string DateTimeString = GetValidInput(Console.ReadLine(), Helper.IsValidDT) + ":00:00";
+        movie.AddScreening(JsonHandler.Get<Auditorium>(auditID, "AuditoriumDB.json"), DateTimeString);
 
         XToGoBack(id);
     }
