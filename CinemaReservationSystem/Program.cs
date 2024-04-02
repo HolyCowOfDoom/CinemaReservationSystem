@@ -35,9 +35,9 @@ using System.Security.AccessControl;
 //     // Add more movie entries as needed
 // };
 
-JsonHandler.Update<Auditorium>(new Auditorium("A1", 15), "AuditoriumDB.json");
+// JsonHandler.Update<Auditorium>(new Auditorium("A1", 15), "AuditoriumDB.json");
 
 
-
+Console.Clear();
 Interface.GeneralMenu();
 // Console.ReadLine(); //keeps external terminal open

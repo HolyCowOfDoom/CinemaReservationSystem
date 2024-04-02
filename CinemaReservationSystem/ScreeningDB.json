@@ -4,77 +4,77 @@
       "Seats": [
         {
           "Color": "Yellow",
-          "ID": "16",
+          "ID": "181",
           "IsReserved": false
         },
         {
           "Color": "Yellow",
-          "ID": "17",
+          "ID": "182",
           "IsReserved": false
         },
         {
           "Color": "Red",
-          "ID": "18",
+          "ID": "183",
           "IsReserved": false
         },
         {
           "Color": "Yellow",
-          "ID": "19",
+          "ID": "184",
           "IsReserved": false
         },
         {
           "Color": "Blue",
-          "ID": "20",
+          "ID": "185",
           "IsReserved": false
         },
         {
           "Color": "Yellow",
-          "ID": "21",
+          "ID": "186",
           "IsReserved": false
         },
         {
           "Color": "Red",
-          "ID": "22",
+          "ID": "187",
           "IsReserved": false
         },
         {
           "Color": "Yellow",
-          "ID": "23",
+          "ID": "188",
           "IsReserved": false
         },
         {
           "Color": "Yellow",
-          "ID": "24",
+          "ID": "189",
           "IsReserved": false
         },
         {
           "Color": "Yellow",
-          "ID": "25",
+          "ID": "190",
           "IsReserved": false
         },
         {
           "Color": "Blue",
-          "ID": "26",
+          "ID": "191",
           "IsReserved": false
         },
         {
           "Color": "Blue",
-          "ID": "27",
+          "ID": "192",
           "IsReserved": false
         },
         {
           "Color": "Red",
-          "ID": "28",
+          "ID": "193",
           "IsReserved": false
         },
         {
           "Color": "Yellow",
-          "ID": "29",
+          "ID": "194",
           "IsReserved": false
         },
         {
           "Color": "Yellow",
-          "ID": "30",
+          "ID": "195",
           "IsReserved": false
         }
       ],
@@ -84,5 +84,177 @@
     "Bundles": [],
     "MovieID": "1",
     "ID": "c95e6637-05cb-48ab-b39b-711dc3aabcd9"
+  },
+  {
+    "AssignedAuditorium": {
+      "Seats": [
+        {
+          "Color": "Red",
+          "ID": "196",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "197",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "198",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "199",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "200",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "201",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "202",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "203",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "204",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "205",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "206",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "207",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "208",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "209",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "210",
+          "IsReserved": false
+        }
+      ],
+      "ID": "A1"
+    },
+    "ScreeningDateTime": "2024-02-20T15:00:00",
+    "Bundles": [],
+    "MovieID": "3e9f6830-1af4-4dc7-99a4-36166f216b43",
+    "ID": "87f78340-91f7-4f79-8240-e9986c534ca6"
+  },
+  {
+    "AssignedAuditorium": {
+      "Seats": [
+        {
+          "Color": "Red",
+          "ID": "136",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "137",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "138",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "139",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "140",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "141",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "142",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "143",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "144",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "145",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "146",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "147",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "148",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "149",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "150",
+          "IsReserved": false
+        }
+      ],
+      "ID": "A1"
+    },
+    "ScreeningDateTime": "2024-12-20T14:00:00",
+    "Bundles": [],
+    "MovieID": "3e9f6830-1af4-4dc7-99a4-36166f216b43",
+    "ID": "7bdba5aa-72d4-4bb0-b244-c22604409dcc"
   }
 ]

@@ -184,5 +184,16 @@
     "Genre": "Adventure",
     "ScreeningIDs": [],
     "ID": "5"
+  },
+  {
+    "Title": "The Testening",
+    "AgeRating": 18,
+    "Description": "its a me test",
+    "Genre": "Action",
+    "ScreeningIDs": [
+      "87f78340-91f7-4f79-8240-e9986c534ca6",
+      "7bdba5aa-72d4-4bb0-b244-c22604409dcc"
+    ],
+    "ID": "3e9f6830-1af4-4dc7-99a4-36166f216b43"
   }
 ]

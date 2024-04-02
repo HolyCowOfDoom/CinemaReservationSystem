@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
 
 public class InterfaceController
 {
@@ -32,9 +33,6 @@ public class InterfaceController
                 {
                     string id = user.ID;
                     Console.WriteLine($"Succesfully logged into {user.Name}");
-                    if(user.Admin == true){
-                        XToGoAdmin(id);
-                    }
                     XToGoBack(id);
                 }
                 else
@@ -65,7 +63,7 @@ public class InterfaceController
         XToGoBack(user.ID);
     }
     
-    private static void XToGoBack(){
+    public static void XToGoBack(){
         Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
         if (specificLetterInput == 'x'){
@@ -73,19 +71,20 @@ public class InterfaceController
         }
     }
 
-    private static void XToGoBack(string id){
+    public static void XToGoBack(string id){
         Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
         if (specificLetterInput == 'x'){
-            UserInterface.GeneralMenu(id);
+            if (id.StartsWith("admin-")) AdminInterface.GeneralMenu(id);
+            else UserInterface.GeneralMenu(id);
         }
     }
 
-    private static void XToGoAdmin(string id){
-        Console.WriteLine("Press x to go back to the main menu");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-        if (specificLetterInput == 'x'){
-            AdminInterface.GeneralMenu(id);
-        }
-    }
+//     private static void XToGoAdmin(string id){
+//         Console.WriteLine("Press x to go back to the main menu");
+//         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+//         if (specificLetterInput == 'x'){
+//             AdminInterface.GeneralMenu(id);
+//         }
+//     }
 }

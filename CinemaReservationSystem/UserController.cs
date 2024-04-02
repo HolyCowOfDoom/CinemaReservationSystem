@@ -158,26 +158,6 @@ public class UserController
         // Console.WriteLine("┌───────────────────────────────┬───────────────────────────────────────┬────────────────────────┬");
         // Console.WriteLine($"│ Username: {user.Name,-20} │ Email: {user.Email,-30} │ Birth date: {user.BirthDate} │ User type: {user.uType} "); uType print welk user een customer of admin is.
         // Console.WriteLine("└───────────────────────────────┴───────────────────────────────────────┴────────────────────────┴");
-       
-
-    private static void XToGoBack()
-    {
-        Console.WriteLine("Press x to go back to the main menu");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-        if (specificLetterInput == 'x'){
-            Console.Clear();
-            Interface.GeneralMenu();
-        }
-    }
-    private static void XToGoBack(string id)
-    {
-        Console.WriteLine("Press x to go back to the main menu");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-        if (specificLetterInput == 'x'){
-            Console.Clear();
-            UserInterface.GeneralMenu(id);
-        }
-    }
 
     private static void WouldYouLikeToSearch(string id)
     {
@@ -240,6 +220,16 @@ public class UserController
         Console.Clear();
         Console.WriteLine("You got this far.");
         XToGoBack(id);
+    }
+
+    private static void XToGoBack(string id)
+    {
+        InterfaceController.XToGoBack(id);
+    }
+
+    private static void XToGoBack()
+    {
+        InterfaceController.XToGoBack();
     }
 
 }

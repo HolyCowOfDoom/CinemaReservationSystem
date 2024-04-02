@@ -102,20 +102,11 @@ public class AdminController
 
     private static void XToGoBack(string id)
     {
-        Console.WriteLine("Press x to go back to the main menu");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-        if (specificLetterInput == 'x'){
-            Console.Clear();
-            UserInterface.GeneralMenu(id);
-        }
+        InterfaceController.XToGoBack(id);
     }
 
-    private static void XToGoBack(){
-        Console.WriteLine("Press x to go back to the main menu");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-        if (specificLetterInput == 'x'){
-            Console.Clear();
-            Interface.GeneralMenu();
-        }
+    private static void XToGoBack()
+    {
+        InterfaceController.XToGoBack();
     }
 }

@@ -2,27 +2,27 @@
   {
     "Seats": [
       {
-        "Color": "Yellow",
+        "Color": "Red",
         "ID": "1",
         "IsReserved": false
       },
       {
-        "Color": "Yellow",
+        "Color": "Red",
         "ID": "2",
         "IsReserved": false
       },
       {
-        "Color": "Red",
+        "Color": "Yellow",
         "ID": "3",
         "IsReserved": false
       },
       {
-        "Color": "Yellow",
+        "Color": "Blue",
         "ID": "4",
         "IsReserved": false
       },
       {
-        "Color": "Blue",
+        "Color": "Red",
         "ID": "5",
         "IsReserved": false
       },
@@ -32,7 +32,7 @@
         "IsReserved": false
       },
       {
-        "Color": "Red",
+        "Color": "Yellow",
         "ID": "7",
         "IsReserved": false
       },
@@ -42,7 +42,7 @@
         "IsReserved": false
       },
       {
-        "Color": "Yellow",
+        "Color": "Blue",
         "ID": "9",
         "IsReserved": false
       },
@@ -52,27 +52,27 @@
         "IsReserved": false
       },
       {
-        "Color": "Blue",
+        "Color": "Yellow",
         "ID": "11",
         "IsReserved": false
       },
       {
-        "Color": "Blue",
+        "Color": "Yellow",
         "ID": "12",
         "IsReserved": false
       },
       {
-        "Color": "Red",
+        "Color": "Blue",
         "ID": "13",
         "IsReserved": false
       },
       {
-        "Color": "Yellow",
+        "Color": "Blue",
         "ID": "14",
         "IsReserved": false
       },
       {
-        "Color": "Yellow",
+        "Color": "Red",
         "ID": "15",
         "IsReserved": false
       }
