@@ -4,11 +4,6 @@ using System.Text.Json;
 
 
 // Necessary interface for the ID system to fuction.
-public interface ObjectHasID
-{
-    int ID { get; }
-}
-
 public static class JsonHandler
 {
     // Writes given object list to given json file. (formatting can be adjusted.)
@@ -57,7 +52,7 @@ public static class JsonHandler
     }
 
     // Removes object based on object.ID, works with all json related classes.
-    public static void Remove<T>(int removalID, string jsonFile) where T: ObjectHasID
+    public static void Remove<T>(string removalID, string jsonFile) where T: ObjectHasID
     {
         int objectIndex = GetIndex<T>(removalID, jsonFile);
         
@@ -71,7 +66,7 @@ public static class JsonHandler
     }
 
     // returns T object based on object.ID, returns null if object does not exist in JSON.
-    public static T? Get<T>(int objectID, string jsonFile) where T : ObjectHasID
+    public static T? Get<T>(string objectID, string jsonFile) where T : ObjectHasID
     {
         List<T> listOfObjects = Read<T>(jsonFile);
         foreach (T item in listOfObjects)
@@ -85,7 +80,7 @@ public static class JsonHandler
     }
 
     // Gets index of item in read list, returns -1 if item was not found.
-    public static int GetIndex<T>(int objectID, string jsonFile) where T : ObjectHasID
+    public static int GetIndex<T>(string objectID, string jsonFile) where T : ObjectHasID
     {
         List<T> listOfObjects = Read<T>(jsonFile);
         foreach (T item in listOfObjects)
