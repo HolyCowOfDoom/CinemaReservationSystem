@@ -142,5 +142,45 @@
     "Genre": "Comedy",
     "ScreeningIDs": [],
     "ID": 19
+  },
+  {
+  "Title": "Finding Nemo",
+  "AgeRating": 6,
+  "Description": "An adventurous clownfish searches for his son.",
+  "Genre": "Drama",
+  "ScreeningIDs": [],
+  "ID": 1
+  },
+  {
+  "Title": "Toy Story",
+  "AgeRating": 6,
+  "Description": "Toys come to life and embark on an adventure.",
+  "Genre": "Comedy",
+  "ScreeningIDs": [],
+  "ID": 2
+  },
+  {
+  "Title": "The Lion King",
+  "AgeRating": 6,
+  "Description": "A young lion cub's journey to become king.",
+  "Genre": "Drama",
+  "ScreeningIDs": [],
+  "ID": 3
+  },
+  {
+  "Title": "Frozen",
+  "AgeRating": 6,
+  "Description": "Two sisters navigate through an icy adventure.",
+  "Genre": "Adventure",
+  "ScreeningIDs": [],
+  "ID": 4
+  },
+  {
+  "Title": "Harry Potter and the Philosopher's Stone",
+  "AgeRating": 9,
+  "Description": "A young wizard begins his magical education.",
+  "Genre": "Adventure",
+  "ScreeningIDs": [],
+  "ID": 5
   }
 ]

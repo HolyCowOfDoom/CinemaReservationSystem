@@ -8,8 +8,10 @@ public class AdminController
         string description = Console.ReadLine();
         Console.WriteLine("Please add movie age rating:");
         int ageRating = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Please add a genre to the movie:");
+        string genre = Console.ReadLine();
 
-        Movie addedMovie = new Movie(title, ageRating, description);
+        Movie addedMovie = new Movie(title, ageRating, description, genre);
 
         XToGoBack(id);
     }
