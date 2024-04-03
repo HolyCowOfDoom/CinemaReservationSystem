@@ -54,7 +54,7 @@ public class AdminController
         XToGoBack();
     }
 
-     public static void AdminMovieInterface(Movie movie, string id)
+    public static void AdminMovieInterface(Movie movie, string id)
     {
         Console.Clear();
         Console.WriteLine($"Title: {movie.Title,-40} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
@@ -66,7 +66,7 @@ public class AdminController
         string input = AdminInputMovie(id);
         if (input == "Select")
         {
-            AdminScreeningSelect(id);
+            UserController.ScreeningSelect(screenings, id);
         }
         if (input == "Add")
         {
@@ -91,14 +91,11 @@ public class AdminController
         }
     }
 
-    public static void AdminScreeningSelect(string id)
+    public static void AdminScreeningInterface(Screening screening, string id)
     {
-        Console.Clear();
-        Console.WriteLine("You got this far.");
+        Console.WriteLine("Reserve seats and display audit plan in this menu...");
         XToGoBack(id);
     }
-
-
 
     private static void XToGoBack(string id)
     {

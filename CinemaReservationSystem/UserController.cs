@@ -173,8 +173,8 @@ public class UserController
     {
         Movie? movie;
         do{
-        string MovieName = Helper.GetValidInput("Please type movie title: ", Helper.IsNotNull);
-        movie = JsonHandler.GetByMovieName(MovieName);
+        string movieName = Helper.GetValidInput("Please type movie title: ", Helper.IsNotNull);
+        movie = JsonHandler.GetByMovieName(movieName);
         } while (movie == null);
         if (id.StartsWith("admin-")) AdminController.AdminMovieInterface(movie, id);
         else MovieInterface(movie, id);
@@ -192,7 +192,7 @@ public class UserController
         string input = InputMovie(id);
         if (input == "Select")
         {
-            ScreeningSelect(id);
+            ScreeningSelect(screenings, id);
         }
         if (input == "Return")
         {
@@ -214,11 +214,30 @@ public class UserController
             }
         }
     }
-
-    public static void ScreeningSelect(string id)
+    
+    public static void ScreeningSelect(List<Screening> screenings, string id)
     {
         Console.Clear();
-        Console.WriteLine("You got this far.");
+
+        Screening? chosenScreening = null;
+        do{
+        string screeningDate = Helper.GetValidInput("Please type screening date: ", Helper.IsValidDT);
+        foreach (Screening screening in screenings)
+        {
+            if (screening.ScreeningDateTime == DateTime.ParseExact(screeningDate, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture))
+            {
+                chosenScreening = screening;
+            }
+        }
+        } while (chosenScreening == null);
+
+        if (id.StartsWith("admin-")) AdminController.AdminScreeningInterface(chosenScreening, id);
+        else ScreeningInterface(chosenScreening, id);
+    }
+
+    private static void ScreeningInterface(Screening screening, string id)
+    {
+        Console.WriteLine("Reserve seats and display audit plan in this menu...");
         XToGoBack(id);
     }
 
