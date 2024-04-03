@@ -2,6 +2,7 @@
 
 User Utku = new("Utku", "08-04-2000", "ut.ozyurt@gmail.com", "moo");
 User Utku2 = new("Utku2", "09-04-2000", "ut.ozyurt@gmail.com", "moo2");
+User Oektoek = new("Oektoek", "01-02-1999", "Oektoek@gmail.com", "ok");
 
 List<User> tempUserList = new();
 tempUserList = CsvHandler.Read<User>(Path.GetFullPath("UserDB.csv"));
@@ -11,11 +12,13 @@ for(int i = 0; i < tempUserList.Count; i++){
 
 User? tempUser = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "Name", "Utku");
 User? tempUser2 = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "ID", 1);
+User? tempUser3 = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "ID", 1);
 Console.WriteLine(tempUser.ID + "   " + tempUser.Name);
 Console.WriteLine(tempUser2.ID + "   " + tempUser2.Name);
 
 CsvHandler.UpdateRecordOfID<User>("UserDB.csv", tempUser.ID, new User(tempUser) {Name = "Bob!"});
-//CsvHandler.UpdateRecordWithValue("UserDB.csv", tempUser2, "Email", "dumbo@gmail.com");
+CsvHandler.UpdateRecordOfID<User>("UserDB.csv", 3, new User(tempUser) {Name = "Steve"});
+CsvHandler.UpdateRecordWithValue("UserDB.csv", tempUser2, "Email", "utku_ozyurt@live.nl");
 // foreach(User user in tempUserList){
 //     Console.WriteLine(user.Name);
 // }

@@ -9,7 +9,8 @@ using System.Security.Cryptography;
 using System.Collections.Concurrent;
 using System.Reflection;
 
-public static class CsvHandler{
+public static class CsvHandler
+{
 
     public static List<T> Read<T>(string csvFile)
     {
@@ -91,7 +92,7 @@ public static class CsvHandler{
         return default;
     }
 
-    public static bool UpdateRecordOfID<T>(string csvFile, int id, T newRecord) where T : ObjectHasID 
+    public static bool UpdateRecordOfID<T>(string csvFile, int id, T newRecord)
     //the newRecord MUST be instantiated using old ID in constructor!
     //OR use the copy constructor and change the field you want to change
     {
@@ -110,14 +111,17 @@ public static class CsvHandler{
         int indexOfRecord = 0;
         csvReader.Read(); 
         csvReader.ReadHeader(); 
+        bool matchFound = false;
         while (csvReader.Read()) //gets index of User with id in .csv to know which line to rewrite
         {
             indexOfRecord++;
             var field = csvReader.GetField("ID");
             if(field.Equals(id.ToString()))
             {
+                matchFound = true;
                 break;
             }
+            if(!matchFound) return false;
         }
         reader.Close();
         
@@ -134,8 +138,10 @@ public static class CsvHandler{
         {
             csvWriter.NextRecord(); //move writer 'cursor' to the correct line using index
         }
+        Console.WriteLine($"writing to row {csvWriter.Row}");
         csvWriter.WriteRecord(newRecord);
-        csvWriter.NextRecord();
+        csvWriter.Flush();
+        //csvWriter.NextRecord();
         return true;
     }
 
@@ -146,7 +152,7 @@ public static class CsvHandler{
         var CsvHandlerRef = method.MakeGenericMethod(typeof(T), typeof(object));
         return (bool)CsvHandlerRef.Invoke(null, new object[] {csvFile, record, header, value});
     }
-    public static bool UpdateRecordWithValueExtension<T, J>(string csvFile, T record, string header, J value)
+    public static bool UpdateRecordWithValueExtension<T, J>(string csvFile, T record, string header, J value) 
     {
         var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
         {
@@ -161,6 +167,7 @@ public static class CsvHandler{
         csvReader.Read();
         csvReader.ReadHeader(); 
         T recordinDB;
+        bool matchFound = false;
         while (csvReader.Read()) 
         {
             indexOfRecord++;
@@ -168,10 +175,14 @@ public static class CsvHandler{
             recordinDB = csvReader.GetRecord<T>();
             if(recordinDB.Equals(record))
             {
+                matchFound = true;
                 break;
             }
         }
+        if(!matchFound) return false;
+
         reader.Close();
+        csvReader.Dispose();
         
         var options = new FileStreamOptions();
         options.Access = FileAccess.Write;
@@ -194,8 +205,12 @@ public static class CsvHandler{
         genericmethod.Invoke(null, new object[] {newRecord, header, value}); //calls method with parameters
         //the SetField method sets newRecord.header = value
 
-        csvWriter.WriteRecord(newRecord);
-        csvWriter.NextRecord();
+        Console.WriteLine($"writing to row {csvWriter.Row}");
+        //csvWriter.WriteRecord(newRecord);
+        csvWriter.WriteRecord(new User(1, "Utku2", "09-04-2000", "utku_ozyurt@live.nl", "moo2"));
+        csvWriter.Flush();
+    
+        //csvWriter.NextRecord();
 
         return true;
     }
