@@ -42,7 +42,9 @@ public class User
         Email = email;
         _password = password;
         Admin = admin;
+        Reservations = new();
         AddUser(this);
+        
     }
     public User(string name, string birthDate, string email, string password)
     {
@@ -54,6 +56,7 @@ public class User
         Email = email;
         _password = password;
         Admin = false;
+        Reservations = new();
         AddUser(this);
     }
     //for use by CsVHandler.Read() (it instantiates User objects)
@@ -65,6 +68,7 @@ public class User
         Email = email;
         _password = password;
         Admin = admin;
+        Reservations = new();
         //_password = DecryptPassword(password); //passwords in csv are encrypted
     }
     //for user by CsvHandler.WriteValueToRecordExtension()
