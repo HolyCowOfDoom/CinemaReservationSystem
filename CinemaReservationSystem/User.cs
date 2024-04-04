@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 using CsvHelper.Configuration.Attributes;
 
-public class User : IEquatable<User>
+public class User
 {
     static string UserDBFilePath = Path.GetFullPath("UserDB.csv");
     private readonly string _id;
