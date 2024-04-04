@@ -189,8 +189,8 @@ public class UserController
 
     private static void WouldYouLikeToSearch(string id)
     {
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'y' || c == 'n',
-        "Would you like to select a movie?", "Y. Select a screening.\n N. Return to main menu.");
+        Console.WriteLine("Would you like to select a movie? Y / N");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'y' || c == 'n');
         if (specificLetterInput == 'y'){
             SelectMovie(id);
         }
@@ -200,12 +200,6 @@ public class UserController
     private static void SelectMovie(string id)
     {
         Movie? movie;
-        List<Movie> Movies = JsonHandler.Read<Movie>("MovieDB.json");
-        Console.WriteLine($"{"Title:",-40} | {"Age Rating:",-11} | {"Genre:",-11}");
-        foreach (Movie film in Movies)
-        {
-            Console.WriteLine($"{film.Title,-40} | {film.AgeRating,-11} | {film.Genre, -11}");
-        }
         do{
         string movieName = Helper.GetValidInput("Please type movie title: ", Helper.IsNotNull);
         movie = JsonHandler.GetByMovieName(movieName);
@@ -310,7 +304,7 @@ public class UserController
         {
             string seatID = Helper.GetValidInput("Please enter valid seat number: ", Helper.IsNotNull);
             reservedSeatIDs.Add(seatID);
-            screening.AssignedAuditorium.ReserveSeat(seatID);
+            screening.ReserveSeat(seatID);
         }
 
         //insert price calculation here>

@@ -91,6 +91,12 @@ public class Screening : ObjectHasID
         UpdateScreening();
     }
 
+    public void ReserveSeat(string seatID)
+    {
+        AssignedAuditorium.ReserveSeat(seatID);
+        UpdateScreening();
+    }
+
     // updates this.screening to the database
     public void UpdateScreening() => JsonHandler.Update<Screening>(this, "ScreeningDB.json");
 }
