@@ -55,24 +55,11 @@ public static class CsvHandler
 
     //example (UserDBFilePath, "ID", 1) -> returns User obj with ID 1
     //example (UserDBFilePath, "Name", "Utku") -> returns User obj with Name Utku
-    //the only point of using two methods here is to avoid having to specify the type of value in the generic mathod call
-    //so GetRecordWithValue<User> rather than GetRecordWithValue<User, string>
     public static T? GetRecordWithValue<T>(string csvFile, string header, object value) 
     {
-        var method = typeof(CsvHandler).GetMethod("GetRecordWithValueExtension"); //gets GetRecordWithValueExtension() method
-        var CsvHandlerRef = method.MakeGenericMethod(typeof(T), value.GetType()); //makes method generic (glues <T, J> to it)
-        return (T)CsvHandlerRef.Invoke(null, new object[] {csvFile, header, value}); //calls method using given parameters
-        //https://stackoverflow.com/questions/3957817/calling-generic-method-with-type-variable
-        
-        //this doesn't work!
-        //FindRecordWithHeaderWithValue2<T, value.GetType()>(csvFile, header, value);
-    }
-    public static T? GetRecordWithValueExtension<T, J>(string csvFile, string header, J value) // invoke above won't work if private?
-    {
-        var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
+         var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
         {
             PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
-            
             //https://stackoverflow.com/questions/49521193/csvhelper-ignore-case-for-header-names
         };
         using StreamReader reader = new(csvFile);
@@ -82,7 +69,7 @@ public static class CsvHandler
         csvReader.ReadHeader();
         while (csvReader.Read())
         {
-            J field = csvReader.GetField<J>(header);
+            object field = csvReader.GetField<object>(header); 
             if(value.Equals(field))
             {
                 T records = csvReader.GetRecord<T>();
@@ -94,135 +81,85 @@ public static class CsvHandler
 
     public static bool UpdateRecordOfID<T>(string csvFile, int id, T newRecord)
     //the newRecord MUST be instantiated using old ID in constructor!
-    //OR use the copy constructor and change the field you want to change
+    //OR use the copy constructor and change the field you want to change like new User(oldUser){Name = newName}
     {
-        //this is not enough, as I can't just write to that location.
-        //T record = GetRecordWithValue<T>(csvFile, "ID", id); //get record with matching ID
-
-        var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
+        List<T> records = Read<T>(csvFile);
+        for(int i = 0; i < records.Count; i++)
         {
-            PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
-            //https://stackoverflow.com/questions/49521193/csvhelper-ignore-case-for-header-names
-        };
-        using StreamReader reader = new(csvFile);
-        using CsvHelper.CsvReader csvReader = new(reader, config);
-
-        //read to get index of record in db, re-uses some code of GetRecordWithValue so consider if it's possible to abstract.
-        int indexOfRecord = 0;
-        csvReader.Read(); 
-        csvReader.ReadHeader(); 
-        bool matchFound = false;
-        while (csvReader.Read()) //gets index of User with id in .csv to know which line to rewrite
-        {
-            indexOfRecord++;
-            var field = csvReader.GetField("ID");
-            if(field.Equals(id.ToString()))
-            {
-                matchFound = true;
-                break;
+            object property = MyGetProperty(records[i], "ID");
+            if(property != null){
+                int record_ID = (int)property;
+                if(record_ID == id){
+                    records[i] = newRecord;
+                    if (Write(csvFile, records)){
+                        Console.WriteLine("record changed succesfully");
+                        return true;
+                    }
+                    else Console.WriteLine("writing to file failed, somewhow");
+                }
             }
-            if(!matchFound) return false;
+            else
+            {
+                Console.WriteLine("No property ID was found in record"); 
+                //break ?
+            }
         }
-        reader.Close();
-        
-        //these options are necessary as StreamWrite by default creates/clears the given file, which we don't want
-        var options = new FileStreamOptions();
-        options.Access = FileAccess.Write;
-        options.Mode = FileMode.Open;
-        using StreamWriter writer = new(csvFile, options);
-    
-        writer.BaseStream.Position = 0; //for assurance, might be obsolete
-        using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
-        csvWriter.WriteHeader(newRecord.GetType());
-        for (int i = 0; i < indexOfRecord; i++)
-        {
-            csvWriter.NextRecord(); //move writer 'cursor' to the correct line using index
-        }
-        Console.WriteLine($"writing to row {csvWriter.Row}");
-        csvWriter.WriteRecord(newRecord);
-        csvWriter.Flush();
-        //csvWriter.NextRecord();
-        return true;
+        return false;
     }
 
 
     public static bool UpdateRecordWithValue<T>(string csvFile, T record, string header, object value)
     {
-        var method = typeof(CsvHandler).GetMethod("UpdateRecordWithValueExtension");
-        var CsvHandlerRef = method.MakeGenericMethod(typeof(T), typeof(object));
-        return (bool)CsvHandlerRef.Invoke(null, new object[] {csvFile, record, header, value});
-    }
-    public static bool UpdateRecordWithValueExtension<T, J>(string csvFile, T record, string header, J value) 
-    {
-        var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
-            //https://stackoverflow.com/questions/49521193/csvhelper-ignore-case-for-header-names
-        };
-        using StreamReader reader = new(csvFile);
-        using CsvHelper.CsvReader csvReader = new(reader, config);
+        // var method = typeof(CsvHandler).GetMethod("UpdateRecordWithValueExtension");
+        // var CsvHandlerRef = method.MakeGenericMethod(typeof(T), typeof(object));
+        // return (bool)CsvHandlerRef.Invoke(null, new object[] {csvFile, record, header, value});
 
-        //read to get index of record in db, re-uses some code of GetRecordWithValue so consider if it's possible to abstract.
-        int indexOfRecord = 0; 
-        csvReader.Read();
-        csvReader.ReadHeader(); 
-        T recordinDB;
-        bool matchFound = false;
-        while (csvReader.Read()) 
+        List<T> records = Read<T>(csvFile);
+        for(int i = 0; i < records.Count; i++)
         {
-            indexOfRecord++;
-            var field = csvReader.GetField(header);
-            recordinDB = csvReader.GetRecord<T>();
-            if(recordinDB.Equals(record))
-            {
-                matchFound = true;
-                break;
+            object propertyObject = MyGetProperty(records[i], header);
+            if(propertyObject != null){
+                
+                // Type propertyType = propertyObject.GetType();
+                // var property= Convert.ChangeType(propertyObject, propertyType);
+                if(propertyObject == value){
+                    MySetProperty(records[i], header, value);
+                    Console.WriteLine($"Property {header} of record changed succesfully");
+                    return true;
+                }
             }
         }
-        if(!matchFound) return false;
-
-        reader.Close();
-        csvReader.Dispose();
-        
-        var options = new FileStreamOptions();
-        options.Access = FileAccess.Write;
-        options.Mode = FileMode.Open;
-        using StreamWriter writer = new(csvFile, options);
-        writer.BaseStream.Position = 0;
-        using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
-        
-        csvWriter.WriteHeader(record.GetType());
-        for (int i = 0; i < indexOfRecord; i++) //index = 3, row CsvWriter.row becomes 2! so this should work!!
-        {
-            csvWriter.NextRecord(); //move writer 'cursor' to the correct line using index
-            //indexOfRecord--;
-        }
-        
-        var constructor = typeof(T).GetConstructor(new[] {typeof(T)}); //gets copy constructor of record
-        T newRecord = (T)constructor.Invoke(new object[] {record}); //creates T object using said constructor
-        MethodInfo method = typeof(CsvHandler).GetMethod("SetField"); //gets SetField method
-        var genericmethod = method.MakeGenericMethod(typeof(T), typeof(J)); //makes it a generic method(glues <T, J> to it)
-        genericmethod.Invoke(null, new object[] {newRecord, header, value}); //calls method with parameters
-        //the SetField method sets newRecord.header = value
-
-        Console.WriteLine($"writing to row {csvWriter.Row}");
-        //csvWriter.WriteRecord(newRecord);
-        csvWriter.WriteRecord(new User(1, "Utku2", "09-04-2000", "utku_ozyurt@live.nl", "moo2"));
-        csvWriter.Flush();
-    
-        //csvWriter.NextRecord();
-
-        return true;
+        Console.WriteLine("No record found with property matching value");
+        return false;
     }
 
-    public static void SetField<T, J>(T obj, string fieldToChange, J value)
+
+    public static void MySetProperty<T, J>(T obj, string propertyToChange, J value)
     {
-        //var field = typeof(T).GetField(fieldToChange);
-        var field = typeof(T).GetProperty(fieldToChange);
-        field.SetValue(obj, value);
+        PropertyInfo? property = typeof(T).GetProperty(propertyToChange);
+        if(property != null) property.SetValue(obj, value);
+        else Console.WriteLine($"property {propertyToChange} remains unchanged");
     } 
 
-
+    public static object MyGetProperty<T>(T record, string propertyToGet)
+    {
+        PropertyInfo? propertyInfo = typeof(T).GetProperty(propertyToGet);
+        if(propertyInfo != null)
+            {
+            var property = propertyInfo.GetValue(record);
+            if(property != null) return property;
+            else
+            {
+                Console.WriteLine($"property {propertyToGet} was not found or is null (2)");
+                return null;
+            }
+        }
+        else 
+        {
+            Console.WriteLine($"property {propertyToGet} was not found or is null (1)");
+            return null;
+        }
+    }
 
     public static int CountRecords(string csvFile)
     {
@@ -252,5 +189,6 @@ public static class CsvHandler
         return count;
     }
 
+   
    
 }
