@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Collections.Concurrent;
 using System.Reflection;
+using System.Collections;
 
 public static class CsvHandler
 {
@@ -86,7 +87,7 @@ public static class CsvHandler
         List<T> records = Read<T>(csvFile);
         for(int i = 0; i < records.Count; i++)
         {
-            object property = MyGetProperty(records[i], "ID");
+            object property = MyGetProperty<string, T>(records[i], "ID");
             if(property != null){
                 string record_ID = (string)property;
                 if(record_ID == id){
@@ -108,26 +109,45 @@ public static class CsvHandler
     }
 
 
-    public static bool UpdateRecordWithValue<T>(string csvFile, T record, string header, object value)
+    public static bool UpdateRecordWithValue<T>(string csvFile, T record, string header, object value)// where T : IEquatable<T>
     {
         // var method = typeof(CsvHandler).GetMethod("UpdateRecordWithValueExtension");
         // var CsvHandlerRef = method.MakeGenericMethod(typeof(T), typeof(object));
         // return (bool)CsvHandlerRef.Invoke(null, new object[] {csvFile, record, header, value});
 
+        // //change field of newRecord. using reflection because it's type T
+        // var constructor = typeof(T).GetConstructor(new[] {typeof(T)}); //gets copy constructor of record
+        // T newRecord = (T)constructor.Invoke(new object[] {record}); //creates T object using said constructor
+        // MethodInfo method = typeof(CsvHandler).GetMethod("MySetProperty"); //gets SetField method
+        // var genericmethod = method.MakeGenericMethod(typeof(T), typeof(J)); //makes it a generic method(glues <T, J> to it)
+        // genericmethod.Invoke(null, new object[] {newRecord, header, value}); //calls method with parameters
+        // //the SetField method sets newRecord.header = value
+
         List<T> records = Read<T>(csvFile);
         for(int i = 0; i < records.Count; i++)
         {
-            object propertyObject = MyGetProperty(records[i], header);
-            if(propertyObject != null){
-                
-                // Type propertyType = propertyObject.GetType();
-                // var property= Convert.ChangeType(propertyObject, propertyType);
-                if(propertyObject == value){
+            if(records[i].Equals(record))
+            {
+                object propertyObject = MyGetProperty<object, T>(records[i], header);
+                if(propertyObject == null) break;
+                //if(propertyObject.GetType() == typeof(List<>))
+                if(propertyObject is IEnumerable) //if object associated with header is e.g. a List
+                {
+                    //Type myListElementType = propertyObject.GetType().GetGenericArguments().Single();
+                    //https://stackoverflow.com/questions/4452590/c-sharp-get-the-item-type-for-a-generic-list
+                    ((List<object>)propertyObject).Add(value); //add to List
+                }
+                else
+                {
+                    // Type propertyType = propertyObject.GetType();
+                    // var property= Convert.ChangeType(propertyObject, propertyType);
+
                     MySetProperty(records[i], header, value);
                     Console.WriteLine($"Property {header} of record changed succesfully");
                     return true;
                 }
             }
+            
         }
         Console.WriteLine("No record found with property matching value");
         return false;
@@ -141,23 +161,23 @@ public static class CsvHandler
         else Console.WriteLine($"property {propertyToChange} remains unchanged");
     } 
 
-    public static object MyGetProperty<T>(T record, string propertyToGet)
+    public static J MyGetProperty<J, T>(T record, string propertyToGet)
     {
         PropertyInfo? propertyInfo = typeof(T).GetProperty(propertyToGet);
         if(propertyInfo != null)
             {
-            var property = propertyInfo.GetValue(record);
+            J property = (J)propertyInfo.GetValue(record);
             if(property != null) return property;
             else
             {
                 Console.WriteLine($"property {propertyToGet} was not found or is null (2)");
-                return null;
+                return default;
             }
         }
         else 
         {
             Console.WriteLine($"property {propertyToGet} was not found or is null (1)");
-            return null;
+            return default;
         }
     }
 

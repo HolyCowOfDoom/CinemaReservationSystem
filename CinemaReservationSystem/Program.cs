@@ -12,13 +12,13 @@ using System.Security.AccessControl;
 // }
 
 // User? tempUser = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "Name", "Utku");
-// User? tempUser2 = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "ID", 1);
+// User? tempUser2 = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "ID", "43a8c080-3303-4556-b37f-ec08519c6bf9");
 // User? tempUser3 = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "Name", "Oektoek");
 // Console.WriteLine(tempUser.ID + "   " + tempUser.Name);
 // Console.WriteLine(tempUser2.ID + "   " + tempUser2.Name);
 
 // CsvHandler.UpdateRecordOfID<User>("UserDB.csv", tempUser.ID, new User(tempUser) {Name = "Bob!"});
-// CsvHandler.UpdateRecordOfID<User>("UserDB.csv", 1, new User(tempUser2) {Name = "Steve"});
+// CsvHandler.UpdateRecordOfID<User>("UserDB.csv", tempUser2.ID, new User(tempUser2) {Name = "Steve"});
 // CsvHandler.UpdateRecordWithValue("UserDB.csv", tempUser3, "Email", "Oektoek@live.nl");
 
 
