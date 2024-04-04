@@ -171,6 +171,8 @@ public class Helper
     }
 
 
+
+// everything about getting the valid input.
     public static string GetValidInput(string prompt, Func<string, bool> validation)
     {
         string input;
@@ -183,6 +185,7 @@ public class Helper
         return input;
     }
     public static bool IsNotNull(string input) => !string.IsNullOrWhiteSpace(input);
+    public static bool IsValidInt(string input) => input.All(char.IsDigit);
     public static bool IsValidUsername(string input) => !string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 21;
     public static bool IsValidEmail(string input) => !string.IsNullOrWhiteSpace(input) && input.Contains('@') && input.Contains('.') && input.Length < 31;
 
