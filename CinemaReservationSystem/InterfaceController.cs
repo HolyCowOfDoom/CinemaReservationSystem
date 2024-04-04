@@ -13,11 +13,12 @@ public class InterfaceController
     }
 
     public static void LogIn(){
-       
+        bool quit = false;
+        do{
         Console.WriteLine("Enter your username or press q to quit.");
 
-        string username = Console.ReadLine(); // !!! word nog niet getest op username
-        if(username == "q") Interface.GeneralMenu();
+        string username = Console.ReadLine();
+        if(username.ToLower() == "q") quit = true;
         User? user = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "Name", username);
         if (user != null)
         {
@@ -34,6 +35,7 @@ public class InterfaceController
                     string id = user.ID;
                     Console.WriteLine($"Succesfully logged into {user.Name}");
                     XToGoBack(id);
+                    break;
                 }
                 else
                 {
@@ -43,6 +45,9 @@ public class InterfaceController
             }
         }
         Console.WriteLine("Attempt limit reached on trying passwords.");
+        XToGoBack();
+        break;
+        } while (!quit);
         XToGoBack();
     }
 
@@ -80,11 +85,4 @@ public class InterfaceController
         }
     }
 
-//     private static void XToGoAdmin(string id){
-//         Console.WriteLine("Press x to go back to the main menu");
-//         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-//         if (specificLetterInput == 'x'){
-//             AdminInterface.GeneralMenu(id);
-//         }
-//     }
 }
