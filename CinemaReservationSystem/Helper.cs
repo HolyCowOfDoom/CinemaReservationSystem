@@ -227,4 +227,20 @@ public class Helper
             return false;
         }
     }
+
+    public static int GetUserAge(User user)
+    {
+        string DoB = user.BirthDate;
+        string DateFormat = "dd-MM-yyyy";
+        DateTime birthDate;
+        
+        DateTime.TryParseExact(DoB, DateFormat, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out birthDate);
+        DateTime today = DateTime.Today;
+        int age = today.Year - birthDate.Year;
+        if (birthDate > today.AddYears(-age))
+        {
+            age--; // The user hasn't had their birthday yet this year
+        }
+        return age;
+    }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Globalization;
 using System.Net;
 using System.Runtime.CompilerServices;
+using CsvHelper.Configuration.Attributes;
 
 public class UserController
 {
@@ -25,24 +26,50 @@ public class UserController
     {
         char genreFilterInput;
         List<Movie> Movies = JsonHandler.Read<Movie>("MovieDB.json");
+        User user = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "ID", id);
+        int age = Helper.GetUserAge(user);
         List<Movie> sortedMovies = Movies.OrderBy(movie => movie.AgeRating).ToList(); // kan ook in de JsonHandler.cs
         int rating = 0;
         string genre = "";
         if(option == "Age")
         {
             rating = InputAge();
-            FilterMoviesAge(rating, sortedMovies);
+            if(age >= rating)
+            {
+                FilterMoviesAge(rating, sortedMovies);
+            }
+            else
+            {
+                Console.WriteLine("You are too young too see these movies. Press X to go back.");
+                char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+                if (specificLetterInput == 'x'){
+                    if (id.StartsWith("admin-")) AdminInterface.GeneralMenu(id);
+                    else UserInterface.GeneralMenu(id);    
+                }
+            }
         }
         if(option == "Genre")
         {
             genre = InputGenre();
-            FilterMoviesGenre(genre, sortedMovies);
+            FilterMoviesGenre(genre, sortedMovies, age);
         }
         if(option == "Both")
         {
             rating = InputAge();
-            genre = InputGenre();
-            FilterMoviesAgeAndGenre(genre, rating, sortedMovies);
+            if(age >= rating)
+            {
+                genre = InputGenre();
+                FilterMoviesAgeAndGenre(genre, rating, sortedMovies);
+            }
+            else
+            {
+                Console.WriteLine("You are too young too see these movies. Press X to go back.");
+                char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+                if (specificLetterInput == 'x'){
+                    if (id.StartsWith("admin-")) AdminInterface.GeneralMenu(id);
+                    else UserInterface.GeneralMenu(id);    
+                }   
+            }
         }
 
         XToGoBack(id);
@@ -66,7 +93,7 @@ public class UserController
             case '5':
                 return 18;
             case '6':
-                Console.WriteLine("Age Rating Descriptions:\n1. All Ages (G): General Audiences - All ages admitted. There is no content that would be objectionable to most parents.\n2. Parental Guidance Suggested (PG): Some material may not be suitable for children. Parents urged to give parental guidance.\n3. Parental Guidance 13+ (PG-13): Some material may be inappropriate for children under 13. Parents are urged to be cautious.\n4. Restricted (R): Restricted – Under 17 requires accompanying parent or adult guardian. Contains some adult material.\n5. No One 17 and Under (NC-17): Adults Only – No one 17 and under admitted.");
+                Console.WriteLine("Age Rating Descriptions:\n1. All Ages (G): General Audiences - All ages admitted. There is no content that would be objectionable to most parents.\n2. Parental Guidance Suggested (PG): Some material may not be suitable for children. Parents urged to give parental guidance until the age of 9.\n3. Parental Guidance 13+ (PG-13): Some material may be inappropriate for children under 13. Parents are urged to be cautious.\n4. Restricted (R): Restricted – Only Under 17 requires accompanying parent or adult guardian. Contains some adult material.\n5. No One 17 and Under (NC-17): Adults Only – No one 17 and under admitted.");
                 Console.WriteLine("Press any key to continue.");
                 Console.ReadKey();
                 Console.Clear();
@@ -112,24 +139,25 @@ public class UserController
                     currentrating = movie.AgeRating;
                     Console.WriteLine($"\n│ Suitable for an audience under {currentrating,-2} years old.");
                 }
-                Console.WriteLine($"│ Title: {movie.Title,-40} │ Age Rating: {movie.AgeRating,-3} │ Genre: {movie.Genre,-10} │ Description: {movie.Description} │");
+                Console.WriteLine($"│ Title: {movie.Title,-40} │ Age Rating: {movie.AgeRating,-3} │ Genre: {movie.Genre,-10} │ Description: {movie.Description}");
             }
         }
     }
 
-    public static void FilterMoviesGenre(string genre, List<Movie> sortedMovies){
+    public static void FilterMoviesGenre(string genre, List<Movie> sortedMovies, int age){
         int currentrating = 0;
         foreach (Movie movie in sortedMovies)
         {
-            if (genre == movie.Genre) 
-            {
-                if (currentrating < movie.AgeRating)
+                if (genre == movie.Genre) 
                 {
-                    currentrating = movie.AgeRating;
-                    Console.WriteLine($"\n│ Suitable for an audience under {currentrating,-2} years old.");
+                    if (currentrating < movie.AgeRating)
+                    {
+                        currentrating = movie.AgeRating;
+                        if(age < currentrating) break;
+                        else Console.WriteLine($"\n│ Suitable for an audience under {currentrating,-2} years old.");
+                    }
+                    Console.WriteLine($"│ Title: {movie.Title,-40} │ Age Rating: {movie.AgeRating,-3} │ Genre: {movie.Genre,-10} │ Description: {movie.Description}");
                 }
-                Console.WriteLine($"│ Title: {movie.Title,-40} │ Age Rating: {movie.AgeRating,-3} │ Genre: {movie.Genre,-10} │ Description: {movie.Description} │");
-            }
         }
     }
 
@@ -141,7 +169,7 @@ public class UserController
                 currentRating = movie.AgeRating;
                 Console.WriteLine($"\n│ Suitable for an audience under {currentRating,-2} years old.");
             }
-            Console.WriteLine($"│ Title: {movie.Title,-40} │ Age Rating: {movie.AgeRating,-3} │ Genre: {movie.Genre,-10} │ Description: {movie.Description} │");
+            Console.WriteLine($"│ Title: {movie.Title,-40} │ Age Rating: {movie.AgeRating,-3} │ Genre: {movie.Genre,-10} │ Description: {movie.Description}");
         }
     }
     }
@@ -166,7 +194,7 @@ public class UserController
         if (specificLetterInput == 'y'){
             SelectMovie(id);
         }
-        XToGoBack(id);
+        UserInterface.GeneralMenu(id);
     }
 
     private static void SelectMovie(string id)
@@ -221,7 +249,7 @@ public class UserController
 
         Screening? chosenScreening = null;
         do{
-        string screeningDate = Helper.GetValidInput("Please type screening date: ", Helper.IsValidDT);
+        string screeningDate = Helper.GetValidInput("Screenings are in the format dd-MM-yyyy HH:mm.\nPlease type screening date: ", Helper.IsValidDT);
         foreach (Screening screening in screenings)
         {
             if (screening.ScreeningDateTime == DateTime.ParseExact(screeningDate, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture))
