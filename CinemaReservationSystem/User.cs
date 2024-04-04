@@ -22,14 +22,15 @@ public class User
     public string BirthDate {get; private set;} //could use a DateTime obj
     [Name("Email")]
     public string Email {get; private set;}
-    //public List<Reservation> {get; set;}
+    
     [Name("Admin")]
     public bool Admin { get; }
     //public string Password {get => EncryptPassword(_password); private set => _password = value;}
     [Name("Password")]
     public string Password {get => _password; private set => _password = value;}
     //add custom set if allowing user to change password
-    
+    [Name("Reservations")]
+    public List<Reservation> Reservations {get; set;}
 
     public User(string name, string birthDate, string email, string password, bool admin)
     {
