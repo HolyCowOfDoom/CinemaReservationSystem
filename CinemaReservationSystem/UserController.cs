@@ -272,7 +272,52 @@ public class UserController
 
     private static void ScreeningInterface(Screening screening, string id)
     {
-        Console.WriteLine("Reserve seats and display audit plan in this menu...");
+        Console.WriteLine($"Date and Time: {screening.ScreeningDateTime, -40:dd-MM-yyyy HH:mm} | Auditorium: {screening.AssignedAuditorium.ID}");
+        string input = InputScreening(id);
+        if (input == "Return")
+        {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+            Movie movie = JsonHandler.Get<Movie>(screening.MovieID, "MovieDB.json");
+#pragma warning disable CS8604 // Possible null reference argument.
+            MovieInterface(movie, id);
+        }
+        else
+        {
+            ReserveSeats(screening, id);
+        } 
+    }
+
+    public static string InputScreening(string id)
+    {
+        while (true) {
+        char genreFilterInput = Helper.ReadInput((char c) => c == '1' || c == '2',
+            "Movie Options", "1. Reserve Seats\n2. Go Back");
+
+        switch (genreFilterInput) {
+            case '1':
+                return "Reserve";
+            case '2':
+                return "Return";
+            }
+        }
+    }
+
+    public static void ReserveSeats(Screening screening, string id)
+    {
+        int seatAmount = Convert.ToInt32(Helper.GetValidInput("Please enter the amount of seats you'd like to reserve: ", Helper.IsNotNull));
+        List<string> reservedSeatIDs = [];
+        for (int i = 0; i < seatAmount; i++)
+        {
+            string seatID = Helper.GetValidInput("Please enter valid seat number: ", Helper.IsNotNull);
+            reservedSeatIDs.Add(seatID);
+            screening.AssignedAuditorium.ReserveSeat(seatID);
+        }
+
+        //insert price calculation here>
+        
+        User user = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "ID", id);
+        user.Reservations.Add(new Reservation(reservedSeatIDs, screening.ID, 20));
+
         XToGoBack(id);
     }
 
