@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 using CsvHelper.Configuration.Attributes;
 
-public class User : ObjectHasID
+public class User : IEquatable<User>
 {
     static string UserDBFilePath = Path.GetFullPath("UserDB.csv");
     private readonly string _id;
@@ -103,6 +103,35 @@ public class User : ObjectHasID
         if(password == userPassword) return true;
         else return false;
     }
+
+
+    //https://stackoverflow.com/questions/25461585/operator-overloading-equals
+    public static bool operator== (User user1, User user2)
+    {
+        return (user1.Name == user2.Name 
+                    && user1.ID == user2.ID 
+                    && user1.BirthDate == user2.BirthDate
+                    && user1.Email == user2.Email
+                    && user1.Password == user2.Password);
+    }
+
+    public static bool operator!= (User user1, User user2)
+    {
+        return !(user1.Name == user2.Name 
+                    && user1.ID == user2.ID 
+                    && user1.BirthDate == user2.BirthDate
+                    && user1.Email == user2.Email
+                    && user1.Password == user2.Password);
+    }
+    public bool Equals(User other)
+    {
+        return (Name == other.Name 
+                    && ID == other.ID 
+                    && BirthDate == other.BirthDate
+                    && Email == other.Email
+                    && Password == other.Password);
+    }
+    public override bool Equals(object obj) => obj is User && Equals(obj as User);
 
     // private static string EncryptPassword(string password)
     // {
