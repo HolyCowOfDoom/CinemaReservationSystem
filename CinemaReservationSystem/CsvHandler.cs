@@ -69,7 +69,7 @@ public static class CsvHandler
         csvReader.ReadHeader();
         while (csvReader.Read())
         {
-            object field = csvReader.GetField<object>(header); 
+            object field = csvReader.GetField(value.GetType(), header); 
             if(value.Equals(field))
             {
                 T records = csvReader.GetRecord<T>();
