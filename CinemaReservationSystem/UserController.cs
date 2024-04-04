@@ -215,7 +215,8 @@ public class UserController
         List<Screening> screenings = movie.GetAllMovieScreenings();
         foreach (Screening screening in screenings)
         {
-            Console.WriteLine($"Date and Time: {screening.ScreeningDateTime, -40:dd-MM-yyyy HH:mm} | Auditorium: {screening.AssignedAuditorium.ID}");
+            int screeningNbr = screenings.IndexOf(screening) + 1;
+            Console.WriteLine($"{screeningNbr, -2} | Date and Time: {screening.ScreeningDateTime, -40:dd-MM-yyyy HH:mm} | Auditorium: {screening.AssignedAuditorium.ID}");
         }
         string input = InputMovie(id);
         if (input == "Select")
@@ -249,10 +250,10 @@ public class UserController
 
         Screening? chosenScreening = null;
         do{
-        string screeningDate = Helper.GetValidInput("Screenings are in the format dd-MM-yyyy HH:mm.\nPlease type screening date: ", Helper.IsValidDT);
+        string screeningIndex = Helper.GetValidInput("Please type screening number: ", Helper.IsNotNull);
         foreach (Screening screening in screenings)
         {
-            if (screening.ScreeningDateTime == DateTime.ParseExact(screeningDate, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture))
+            if (screenings.IndexOf(screening) + 1 == Convert.ToInt32(screeningIndex))
             {
                 chosenScreening = screening;
             }
