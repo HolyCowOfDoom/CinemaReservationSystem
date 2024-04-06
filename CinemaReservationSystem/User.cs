@@ -1,6 +1,7 @@
 using System.Data.Common;
 using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
+using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 
 public class User
@@ -11,28 +12,18 @@ public class User
     //private string _birthDate;
     //private string _email;
     private string _password;
-    private bool _fromCSV;
-    [Name("ID")]
     public string ID {get => _id; init => _id = value;}
-    [Name("Name")]
-    
     //Name set is set to public for testing in Program.cs. change back to private when done testing, as all changes should be done via User.cs
     public string Name {get; set;} //we don't want _name to be able to be changed outside of this class
-    [Name("BirthDate")]
     public string BirthDate {get; private set;} //could use a DateTime obj
-    [Name("Email")]
     public string Email {get; private set;}
-    
-    [Name("Admin")]
     public bool Admin { get; }
     //public string Password {get => EncryptPassword(_password); private set => _password = value;}
-    [Name("Password")]
     public string Password {get => _password; private set => _password = value;}
     //add custom set if allowing user to change password
-    [Name("Reservations")]
     public List<Reservation> Reservations {get; set;}
 
-    public User(string name, string birthDate, string email, string password, bool admin)
+    public User(string name, string birthDate, string email, string password, bool admin, List<Reservation> reservations = null)
     {
         // ID = CsvHandler.CountRecords(UserDBFilePath);
 
@@ -42,7 +33,8 @@ public class User
         Email = email;
         _password = password;
         Admin = admin;
-        Reservations = new();
+        //Reservations = new() {new Reservation(new List<string>{"1","2", "3"}, "1", 30)};
+        Reservations = reservations;
         AddUser(this);
         
     }
@@ -56,7 +48,7 @@ public class User
         Email = email;
         _password = password;
         Admin = false;
-        Reservations = new();
+        Reservations = new() {new Reservation(new List<string>{"1","2", "3"}, "1", 30)};
         AddUser(this);
     }
     //for use by CsVHandler.Read() (it instantiates User objects)
@@ -68,7 +60,8 @@ public class User
         Email = email;
         _password = password;
         Admin = admin;
-        Reservations = new();
+        Reservations = new() {new Reservation(new List<string>{"1","2", "3"}, "1", 30)};
+        AddUser(this);
         //_password = DecryptPassword(password); //passwords in csv are encrypted
     }
     //for user by CsvHandler.WriteValueToRecordExtension()
@@ -289,3 +282,4 @@ public class User
     //     return true;
     // }
 }
+

@@ -1,5 +1,6 @@
 using System.Globalization;
 using CsvHelper;
+using CsvHelper.Configuration;
 using Microsoft.VisualBasic;
 //linq
 using System;
@@ -22,6 +23,7 @@ public static class CsvHandler
         };
         using StreamReader reader = new(csvFile);
         using CsvHelper.CsvReader csvReader = new(reader, config);
+        csvReader.Context.RegisterClassMap<UserClassMap>();
         return csvReader.GetRecords<T>().ToList();
     }
 
@@ -29,6 +31,7 @@ public static class CsvHandler
     {
         using StreamWriter writer = new(csvFile);
         using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture); 
+        csvWriter.Context.RegisterClassMap<UserClassMap>();
         csvWriter.WriteRecords(objectsList);
         return true;
     }
@@ -42,9 +45,11 @@ public static class CsvHandler
             // Don't write the header again.
             HasHeaderRecord = fileEmpty ? true : false, //write header if file is empty
         };
+        
         //Console.WriteLine(csvFile);
         StreamWriter writer = new(csvFile, true);
         CsvHelper.CsvWriter csvWriter = new(writer, config); 
+        csvWriter.Context.RegisterClassMap<UserClassMap>();
         csvWriter.WriteRecords(records);
         writer.Close();
 
@@ -65,6 +70,7 @@ public static class CsvHandler
         };
         using StreamReader reader = new(csvFile);
         using CsvHelper.CsvReader csvReader = new(reader, config);
+        csvReader.Context.RegisterClassMap<UserClassMap>();
         
         csvReader.Read();
         csvReader.ReadHeader();
