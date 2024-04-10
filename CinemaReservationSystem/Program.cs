@@ -1,12 +1,12 @@
 ﻿using System.Formats.Asn1;
 using System.Security.AccessControl;
 
-User Utku = new("Utku", "08-04-2000", "ut.ozyurt@gmail.com", "moo");
+User Steve = new("Steve", "08-04-2000", "steve.harrington@gmail.com", true, "password123");
 
 
 List<string> testSeatsIDs = new() {"1", "2"};
-CsvHandler.UpdateRecordWithValue("UserDB.csv", Utku, "Reservations", new Reservation(testSeatsIDs, "1", 30));
-
+//CsvHandler.UpdateRecordWithValue<User>("UserDB.csv", Steve, "Reservations", new Reservation(testSeatsIDs, "1", 30));
+CsvHandler.UpdateRecordWithValue<User>("UserDB.csv", Steve, "Name", "Bob");
 
 
 

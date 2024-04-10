@@ -1,38 +1,71 @@
+using System.ComponentModel;
 using CsvHelper;
 using CsvHelper.Configuration;
+using CsvHelper.TypeConversion;
 
-public class UserClassMap  : ClassMap<User>
+public class UserClassMap : ClassMap<User>
 {
     public UserClassMap()
     {
-        Map(x => x.ID).Index(0);
-        Map(x => x.Name).Index(1);
-        Map(x => x.BirthDate).Index(2);
-        Map(x => x.Email).Index(3);
-        Map(x => x.Admin).Index(4);
-        Map(x => x.Password).Index(5);
-        //Map(x => x.Reservations).Index(6).TypeConverter<convert>;
-        
-        // {
-        //     var list = new List<string>();
-        //     list.Add(row.GetField( 1 ));
-        //     list.Add(row.GetField( 2 ));
-        //     list.Add(row.GetField( 3 ));
-        //     return list;
-        // }).Index(6);
-    //     .Convert(row =>
-    //     {
-    //         var columnValue = row.Row.GetField<string>("categories");
-    //         return columnValue?.Split(',').ToList() ?? new List<string>();
-
-    //     });
+        Map(x => x.ID).Index(0).Name("id");
+        Map(x => x.Name).Index(1).Name("name");
+        // Map(x => x.BirthDate).Index(2).Name("birthDate");
+        // Map(x => x.Email).Index(3).Name("email");
+        // Map(x => x.Admin).Index(4).Name("admin");
+        // Map(x => x.Password).Index(5).Name("password");
+        //Map(x => x.Reservations).Index(6).TypeConverter<ReservationConverter>();
     }
 }
 
-// public class JsonNodeConverter : DefaultTypeConverter
-// {
-//     public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
-//     {
-//         return JsonSerializer.Deserialize<JsonNode>(text);
-//     }
-// }
+//should look like:         //requires custom delimiters for each nesting, which is really dumb
+//",Password, Reservations"
+//"password123, {seatIDs:[1,2,3;4];screeningID:1;totalPrice:30}&{seatIDs..."
+//alternatively I could make the headers: Reservation:SeatIDs, Reservation:ScreeningID, Reservation:TotalPrice"
+//but I'm not sure how to map that
+public class ReservationConverter : DefaultTypeConverter
+{
+    public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+    {
+        List<string> reservationsStr = text.Split("&").ToList();
+        List<Reservation> reservations = new();
+        foreach(string reservationStr in reservationsStr)
+        {
+            text = text.Replace("{", "").Replace("}", "");
+            List<string>stringParts = text.Split(";").ToList();
+            List<string> seatIds = stringParts[0].Replace("SeatIDs: ", "").Split(",").ToList();
+            string screeningID = stringParts[1].Replace("ScreeningID: ", "");
+            int totalPrice = Convert.ToInt32(stringParts[2].Replace("TotalPrice: ", ""));
+            // List<string> seatIds = row.GetField(1).Split(",").ToList();
+            // string seatIdsStr = row.GetField(1).Replace("{", "");
+            // string screeningID = row.GetField( 2 );
+            // int totalPrice = Convert.ToInt32(row.GetField( 2 ));
+        
+            Reservation reservation = new(seatIds, screeningID, totalPrice);
+            reservations.Add(reservation);
+        }
+        return reservations;
+    }
+
+    public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+    {
+        string finalString = "";
+        if(value is null) Console.WriteLine("value was null");
+        else if(value is not List<Reservation>) Console.WriteLine("this shouldn't happen");
+        else if(value is List<Reservation>){
+            List<Reservation> reservations = value as List<Reservation>;
+            foreach(Reservation reservation in reservations)
+            {
+                string newValue = "{";
+                string seatIDs = "SeatIDs: [" + string.Join( ",", reservation.SeatIDs) + "]; ";
+                string screeningID = "ScreeningID: " + reservation.ScreeningID + "; ";
+                string totalPrice = "TotalPrice: " + reservation.TotalPrice.ToString();
+                newValue += seatIDs + screeningID + totalPrice + "}";
+                finalString += newValue + "&";
+            }
+            finalString = finalString.Remove(finalString.Length -1);
+        }
+        return base.ConvertToString(finalString, row, memberMapData);
+    }
+
+
+}

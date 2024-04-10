@@ -7,12 +7,12 @@ using CsvHelper.Configuration.Attributes;
 public class User
 {
     static string UserDBFilePath = Path.GetFullPath("UserDB.csv");
-    private readonly string _id;
+    private string _id;
     //private string _name; 
     //private string _birthDate;
     //private string _email;
     private string _password;
-    public string ID {get => _id; init => _id = value;}
+    public string ID {get => _id; set => _id = value;}
     //Name set is set to public for testing in Program.cs. change back to private when done testing, as all changes should be done via User.cs
     public string Name {get; set;} //we don't want _name to be able to be changed outside of this class
     public string BirthDate {get; private set;} //could use a DateTime obj
@@ -23,22 +23,22 @@ public class User
     //add custom set if allowing user to change password
     public List<Reservation> Reservations {get; set;}
 
-    public User(string name, string birthDate, string email, string password, bool admin, List<Reservation> reservations = null)
-    {
-        // ID = CsvHandler.CountRecords(UserDBFilePath);
+    // public User(string name, string birthDate, string email, string password, bool admin, List<Reservation> reservations = null)
+    // {
+    //     // ID = CsvHandler.CountRecords(UserDBFilePath);
 
-        ID = admin ? "admin-" + Guid.NewGuid().ToString() : Guid.NewGuid().ToString();
-        Name = name;
-        BirthDate = birthDate;
-        Email = email;
-        _password = password;
-        Admin = admin;
-        //Reservations = new() {new Reservation(new List<string>{"1","2", "3"}, "1", 30)};
-        Reservations = reservations;
-        AddUser(this);
+    //     ID = admin ? "admin-" + Guid.NewGuid().ToString() : Guid.NewGuid().ToString();
+    //     Name = name;
+    //     BirthDate = birthDate;
+    //     Email = email;
+    //     _password = password;
+    //     Admin = admin;
+    //     //Reservations = new() {new Reservation(new List<string>{"1","2", "3"}, "1", 30)};
+    //     Reservations = reservations;
+    //     AddUser(this);
         
-    }
-    public User(string name, string birthDate, string email, string password)
+    // }
+    public User(string name, string birthDate, string email, bool admin, string password)
     {
         // ID = CsvHandler.CountRecords(UserDBFilePath);
         
@@ -47,24 +47,26 @@ public class User
         BirthDate = birthDate;
         Email = email;
         _password = password;
-        Admin = false;
-        Reservations = new() {new Reservation(new List<string>{"1","2", "3"}, "1", 30)};
-        AddUser(this);
-    }
-    //for use by CsVHandler.Read() (it instantiates User objects)
-    public User(string id, string name, string birthDate, string email, string password, bool admin)
-    {
-        ID = id;
-        Name = name;
-        BirthDate = birthDate;
-        Email = email;
-        _password = password;
+        //Admin = false;
         Admin = admin;
         Reservations = new() {new Reservation(new List<string>{"1","2", "3"}, "1", 30)};
         AddUser(this);
+    }
+    //for use by CsVHandler.Read(), copies ID rather than generating a new one
+    public User(string id, string name, string birthDate, string email, bool admin, string password)//, string reservations)
+    {
+        //ID = id;
+        //Name = name;
+        //BirthDate = birthdate;
+        //Email = email;
+        //_password = password;
+        //Admin = admin;
+        //Reservations = new() {new Reservation(new List<string>{"1","2", "3"}, "1", 30)};
+        //Reservations = reservations;
+        //AddUser(this);
         //_password = DecryptPassword(password); //passwords in csv are encrypted
     }
-    //for user by CsvHandler.WriteValueToRecordExtension()
+    //for user by CsvHandler.WriteValueToRecordExtension() //is this still used?
     public User(User user){
         ID = user.ID;
         Name = user.Name;

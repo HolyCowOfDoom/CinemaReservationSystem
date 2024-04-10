@@ -18,11 +18,14 @@ public static class CsvHandler
     {
         var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
+            
+            //PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
             //https://stackoverflow.com/questions/49521193/csvhelper-ignore-case-for-header-names
         };
         using StreamReader reader = new(csvFile);
         using CsvHelper.CsvReader csvReader = new(reader, config);
+        //csvReader.Context.TypeConverterCache.AddConverter(new ReservationConverter());
+        // csvReader.Context.TypeConverterOptionsCache.
         csvReader.Context.RegisterClassMap<UserClassMap>();
         return csvReader.GetRecords<T>().ToList();
     }
@@ -30,7 +33,8 @@ public static class CsvHandler
      public static bool Write<T>(string csvFile, List<T> objectsList)
     {
         using StreamWriter writer = new(csvFile);
-        using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture); 
+        using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
+        //csvWriter.Context.TypeConverterCache.AddConverter(new ReservationConverter()); 
         csvWriter.Context.RegisterClassMap<UserClassMap>();
         csvWriter.WriteRecords(objectsList);
         return true;
@@ -48,7 +52,8 @@ public static class CsvHandler
         
         //Console.WriteLine(csvFile);
         StreamWriter writer = new(csvFile, true);
-        CsvHelper.CsvWriter csvWriter = new(writer, config); 
+        CsvHelper.CsvWriter csvWriter = new(writer, config);
+        //csvWriter.Context.TypeConverterCache.AddConverter(new ReservationConverter());  
         csvWriter.Context.RegisterClassMap<UserClassMap>();
         csvWriter.WriteRecords(records);
         writer.Close();
@@ -65,11 +70,12 @@ public static class CsvHandler
     {
          var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
+            //PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
             //https://stackoverflow.com/questions/49521193/csvhelper-ignore-case-for-header-names
         };
         using StreamReader reader = new(csvFile);
         using CsvHelper.CsvReader csvReader = new(reader, config);
+        //csvReader.Context.TypeConverterCache.AddConverter(new ReservationConverter()); 
         csvReader.Context.RegisterClassMap<UserClassMap>();
         
         csvReader.Read();
@@ -187,31 +193,31 @@ public static class CsvHandler
         }
     }
 
-    public static int CountRecords(string csvFile)
-    {
-        var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
-            //https://stackoverflow.com/questions/49521193/csvhelper-ignore-case-for-header-names
-        };
-        using StreamReader reader = new(csvFile);
-        using CsvHelper.CsvReader csvReader = new(reader, config);
-        try{
-            csvReader.Read();
-            csvReader.ReadHeader();
-        }
-        catch (CsvHelper.ReaderException e)
-        {
-            //if there is no header
-            return 0;
-        }
+    // public static int CountRecords(string csvFile)
+    // {
+    //     var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
+    //     {
+    //         //PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
+    //         //https://stackoverflow.com/questions/49521193/csvhelper-ignore-case-for-header-names
+    //     };
+    //     using StreamReader reader = new(csvFile);
+    //     using CsvHelper.CsvReader csvReader = new(reader, config);
+    //     try{
+    //         csvReader.Read();
+    //         csvReader.ReadHeader();
+    //     }
+    //     catch (CsvHelper.ReaderException e)
+    //     {
+    //         //if there is no header
+    //         return 0;
+    //     }
         
 
-        int count = 0;
-        while (csvReader.Read())
-        {
-            count++;
-        }
-        return count;
-    }
+    //     int count = 0;
+    //     while (csvReader.Read())
+    //     {
+    //         count++;
+    //     }
+    //     return count;
+    // }
 }
