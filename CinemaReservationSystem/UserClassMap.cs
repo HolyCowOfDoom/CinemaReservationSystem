@@ -1,19 +1,19 @@
-using System.ComponentModel;
+//using System.ComponentModel;
 using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
 
-public class UserClassMap : ClassMap<User>
+public sealed class UserClassMap : ClassMap<User>
 {
     public UserClassMap()
     {
-        Map(x => x.ID).Index(0).Name("id");
-        Map(x => x.Name).Index(1).Name("name");
-        // Map(x => x.BirthDate).Index(2).Name("birthDate");
-        // Map(x => x.Email).Index(3).Name("email");
-        // Map(x => x.Admin).Index(4).Name("admin");
-        // Map(x => x.Password).Index(5).Name("password");
-        //Map(x => x.Reservations).Index(6).TypeConverter<ReservationConverter>();
+        Map(x => x.ID).Name("id");
+        Map(x => x.Name).Name("name");
+        Map(x => x.BirthDate).Name("birthDate");
+        Map(x => x.Email).Name("email");
+        Map(x => x.Password).Name("password");
+        Map(x => x.Admin).Name("admin");
+        Map(x => x.Reservations).Name("reservations").TypeConverter<ReservationConverter>();
     }
 }
 
@@ -53,16 +53,19 @@ public class ReservationConverter : DefaultTypeConverter
         else if(value is not List<Reservation>) Console.WriteLine("this shouldn't happen");
         else if(value is List<Reservation>){
             List<Reservation> reservations = value as List<Reservation>;
-            foreach(Reservation reservation in reservations)
-            {
-                string newValue = "{";
-                string seatIDs = "SeatIDs: [" + string.Join( ",", reservation.SeatIDs) + "]; ";
-                string screeningID = "ScreeningID: " + reservation.ScreeningID + "; ";
-                string totalPrice = "TotalPrice: " + reservation.TotalPrice.ToString();
-                newValue += seatIDs + screeningID + totalPrice + "}";
-                finalString += newValue + "&";
+            if (reservations.Count == 0) return finalString;
+            else{
+                foreach(Reservation reservation in reservations)
+                {
+                    string newValue = "{";
+                    string seatIDs = "SeatIDs: [" + string.Join( ",", reservation.SeatIDs) + "]; ";
+                    string screeningID = "ScreeningID: " + reservation.ScreeningID + "; ";
+                    string totalPrice = "TotalPrice: " + reservation.TotalPrice.ToString();
+                    newValue += seatIDs + screeningID + totalPrice + "}";
+                    finalString += newValue + "&";
+                }
+                finalString = finalString.Remove(finalString.Length -1);
             }
-            finalString = finalString.Remove(finalString.Length -1);
         }
         return base.ConvertToString(finalString, row, memberMapData);
     }

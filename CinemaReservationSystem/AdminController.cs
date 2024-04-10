@@ -40,7 +40,7 @@ public class AdminController
         string email = Helper.GetValidInput("An email address needs to include (@) and (.).\nEnter email: ", Helper.IsValidEmail);
         string password = Helper.GetValidInput("Password needs to be atleast 6 characters long and have a digit in it.\nEnter password: ", Helper.IsValidPassword);
         Console.Clear();
-        User user = new User(username, birthDate, email, true, password);
+        User user = new User(username, birthDate, email, password, true);
         Console.WriteLine("User registration successful!");
         Console.WriteLine($"Username: {user.Name}");
         Console.WriteLine($"Birth date: {user.BirthDate}");

@@ -1,13 +1,13 @@
 using System.Globalization;
-using CsvHelper;
-using CsvHelper.Configuration;
-using Microsoft.VisualBasic;
-//linq
-using System;
-using System.Collections.Generic;
+// using CsvHelper;
+// using CsvHelper.Configuration;
+// using Microsoft.VisualBasic;
+// //linq
+// using System;
+// using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Collections.Concurrent;
+// using System.Security.Cryptography;
+// using System.Collections.Concurrent;
 using System.Reflection;
 using System.Collections;
 
@@ -19,14 +19,14 @@ public static class CsvHandler
         var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
         {
             
-            //PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
+            PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
             //https://stackoverflow.com/questions/49521193/csvhelper-ignore-case-for-header-names
         };
         using StreamReader reader = new(csvFile);
         using CsvHelper.CsvReader csvReader = new(reader, config);
-        //csvReader.Context.TypeConverterCache.AddConverter(new ReservationConverter());
+        csvReader.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter());
         // csvReader.Context.TypeConverterOptionsCache.
-        csvReader.Context.RegisterClassMap<UserClassMap>();
+        //csvReader.Context.RegisterClassMap<UserClassMap>();
         return csvReader.GetRecords<T>().ToList();
     }
 
@@ -34,8 +34,8 @@ public static class CsvHandler
     {
         using StreamWriter writer = new(csvFile);
         using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
-        //csvWriter.Context.TypeConverterCache.AddConverter(new ReservationConverter()); 
-        csvWriter.Context.RegisterClassMap<UserClassMap>();
+        csvWriter.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter()); 
+        //csvWriter.Context.RegisterClassMap<UserClassMap>();
         csvWriter.WriteRecords(objectsList);
         return true;
     }
@@ -53,8 +53,8 @@ public static class CsvHandler
         //Console.WriteLine(csvFile);
         StreamWriter writer = new(csvFile, true);
         CsvHelper.CsvWriter csvWriter = new(writer, config);
-        //csvWriter.Context.TypeConverterCache.AddConverter(new ReservationConverter());  
-        csvWriter.Context.RegisterClassMap<UserClassMap>();
+        csvWriter.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter());  
+        //csvWriter.Context.RegisterClassMap<UserClassMap>();
         csvWriter.WriteRecords(records);
         writer.Close();
 
@@ -75,8 +75,8 @@ public static class CsvHandler
         };
         using StreamReader reader = new(csvFile);
         using CsvHelper.CsvReader csvReader = new(reader, config);
-        //csvReader.Context.TypeConverterCache.AddConverter(new ReservationConverter()); 
-        csvReader.Context.RegisterClassMap<UserClassMap>();
+        csvReader.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter()); 
+        //csvReader.Context.RegisterClassMap<UserClassMap>();
         
         csvReader.Read();
         csvReader.ReadHeader();
@@ -143,11 +143,17 @@ public static class CsvHandler
                 object propertyObject = MyGetProperty<object, T>(records[i], header);
                 if(propertyObject == null) break;
                 //if(propertyObject.GetType() == typeof(List<>))
-                if(propertyObject is IEnumerable) //if object associated with header is e.g. a List
+                if(propertyObject is ICollection) //if object associated with header is e.g. a List
                 {
                     //Type myListElementType = propertyObject.GetType().GetGenericArguments().Single();
                     //https://stackoverflow.com/questions/4452590/c-sharp-get-the-item-type-for-a-generic-list
-                    ((List<object>)propertyObject).Add(value); //add to List
+                    //((List<object>)propertyObject).Add(value); //add to List
+
+                    List<object> propertyList = (propertyObject as IEnumerable<object>).Cast<object>().ToList();
+                    propertyList.Add(value);
+                    Write(csvFile, propertyList);
+                    Console.WriteLine($"{value} was added to list of Property {header} ");
+                    return true;
                 }
                 else
                 {
@@ -155,6 +161,7 @@ public static class CsvHandler
                     // var property= Convert.ChangeType(propertyObject, propertyType);
 
                     MySetProperty(records[i], header, value);
+                    Write(csvFile, records);
                     Console.WriteLine($"Property {header} of record changed succesfully");
                     return true;
                 }

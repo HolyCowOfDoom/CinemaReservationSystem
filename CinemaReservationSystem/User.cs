@@ -4,7 +4,7 @@ using System.Reflection.Metadata.Ecma335;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 
-public class User
+public class User : IEquatable<User>
 {
     static string UserDBFilePath = Path.GetFullPath("UserDB.csv");
     private string _id;
@@ -12,15 +12,22 @@ public class User
     //private string _birthDate;
     //private string _email;
     private string _password;
+    [Name("id")]
     public string ID {get => _id; set => _id = value;}
     //Name set is set to public for testing in Program.cs. change back to private when done testing, as all changes should be done via User.cs
+    [Name("name")]
     public string Name {get; set;} //we don't want _name to be able to be changed outside of this class
+    [Name("birthDate")]
     public string BirthDate {get; private set;} //could use a DateTime obj
+    [Name("email")]
     public string Email {get; private set;}
+    [Name("admin")]
     public bool Admin { get; }
     //public string Password {get => EncryptPassword(_password); private set => _password = value;}
+    [Name("password")]
     public string Password {get => _password; private set => _password = value;}
     //add custom set if allowing user to change password
+    [Name("reservations")]
     public List<Reservation> Reservations {get; set;}
 
     // public User(string name, string birthDate, string email, string password, bool admin, List<Reservation> reservations = null)
@@ -38,29 +45,30 @@ public class User
     //     AddUser(this);
         
     // }
-    public User(string name, string birthDate, string email, bool admin, string password)
+    public User(string name, string birthDate, string email, string password, bool admin = false, List<Reservation> reservations = null)
     {
-        // ID = CsvHandler.CountRecords(UserDBFilePath);
-        
         ID = Guid.NewGuid().ToString();
         Name = name;
         BirthDate = birthDate;
         Email = email;
         _password = password;
-        //Admin = false;
         Admin = admin;
-        Reservations = new() {new Reservation(new List<string>{"1","2", "3"}, "1", 30)};
+        if(reservations != null) Reservations = reservations;
+        else Reservations = new() {new Reservation(new List<string>() {"-1"}, "-1", -1)};
         AddUser(this);
     }
     //for use by CsVHandler.Read(), copies ID rather than generating a new one
-    public User(string id, string name, string birthDate, string email, bool admin, string password)//, string reservations)
+    public User(string id, string name, string birthDate, string email,string password, bool admin, List<Reservation> reservations)//, string reservations)
     {
-        //ID = id;
-        //Name = name;
-        //BirthDate = birthdate;
-        //Email = email;
-        //_password = password;
-        //Admin = admin;
+        ID = id;
+        Name = name;
+        BirthDate = birthDate;
+        Email = email;
+        _password = password;
+        Admin = admin;
+        Reservations = reservations;
+        // if(reservations != null) Reservations = reservations;
+        // else Reservations = new();
         //Reservations = new() {new Reservation(new List<string>{"1","2", "3"}, "1", 30)};
         //Reservations = reservations;
         //AddUser(this);
@@ -74,6 +82,7 @@ public class User
         Email = user.Email;
         _password = user._password;
         Admin = user.Admin;
+        Reservations = user.Reservations;
     }
     public static bool AddUser(User user)
     {
@@ -106,33 +115,33 @@ public class User
     }
 
 
-    // //https://stackoverflow.com/questions/25461585/operator-overloading-equals
-    // public static bool operator== (User user1, User user2)
-    // {
-    //     return (user1.Name == user2.Name 
-    //                 && user1.ID == user2.ID 
-    //                 && user1.BirthDate == user2.BirthDate
-    //                 && user1.Email == user2.Email
-    //                 && user1.Password == user2.Password);
-    // }
+    //https://stackoverflow.com/questions/25461585/operator-overloading-equals
+    public static bool operator== (User user1, User user2)
+    {
+        return (user1.Name == user2.Name 
+                    && user1.ID == user2.ID 
+                    && user1.BirthDate == user2.BirthDate
+                    && user1.Email == user2.Email
+                    && user1.Password == user2.Password);
+    }
 
-    // public static bool operator!= (User user1, User user2)
-    // {
-    //     return !(user1.Name == user2.Name 
-    //                 && user1.ID == user2.ID 
-    //                 && user1.BirthDate == user2.BirthDate
-    //                 && user1.Email == user2.Email
-    //                 && user1.Password == user2.Password);
-    // }
-    // public bool Equals(User other)
-    // {
-    //     return (Name == other.Name 
-    //                 && ID == other.ID 
-    //                 && BirthDate == other.BirthDate
-    //                 && Email == other.Email
-    //                 && Password == other.Password);
-    // }
-    // public override bool Equals(object obj) => obj is User && Equals(obj as User);
+    public static bool operator!= (User user1, User user2)
+    {
+        return !(user1.Name == user2.Name 
+                    && user1.ID == user2.ID 
+                    && user1.BirthDate == user2.BirthDate
+                    && user1.Email == user2.Email
+                    && user1.Password == user2.Password);
+    }
+    public bool Equals(User other)
+    {
+        return (Name == other.Name 
+                    && ID == other.ID 
+                    && BirthDate == other.BirthDate
+                    && Email == other.Email
+                    && Password == other.Password);
+    }
+    public override bool Equals(object obj) => obj is User && Equals(obj as User);
 
     // private static string EncryptPassword(string password)
     // {
