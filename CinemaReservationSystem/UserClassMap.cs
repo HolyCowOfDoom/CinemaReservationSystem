@@ -31,7 +31,7 @@ public class ReservationConverter : DefaultTypeConverter
         foreach(string reservationStr in reservationsStr)
         {
             string reservationsData = reservationStr.Replace("{", "").Replace("}", "");
-            List<string>stringParts = reservationsData.Split(";").ToList();
+            List<string>stringParts = reservationsData.Split("; ").ToList();
             List<string> seatIds = stringParts[0].Replace("SeatIDs: ", "").Replace("[", "").Replace("]", "").Split(",").ToList();
             string screeningID = stringParts[1].Replace("ScreeningID: ", "");
             int totalPrice = Convert.ToInt32(stringParts[2].Replace("TotalPrice: ", ""));

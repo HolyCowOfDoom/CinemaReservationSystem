@@ -9,7 +9,7 @@ List<string> testSeatsIDs = new() {"1", "2"};
 //CsvHandler.UpdateRecordWithValue<User>("UserDB.csv", Steve, "Name", "Bob");
 CsvHandler.UpdateRecordWithValue<User, Reservation>("UserDB.csv", Steve, "Reservations",  new Reservation(testSeatsIDs, "1", 30));
 User record = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "Reservations", new Reservation(testSeatsIDs, "1", 30));
-Console.WriteLine(record.Reservations[0]);
+Console.WriteLine(record.Reservations[1].ScreeningID);
 
 
 

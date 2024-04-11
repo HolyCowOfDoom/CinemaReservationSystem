@@ -77,6 +77,7 @@ public static class CsvHandler
         using StreamReader reader = new(csvFile);
         using CsvHelper.CsvReader csvReader = new(reader, config);
         csvReader.Context.TypeConverterCache.AddConverter<Reservation>(new ReservationConverter()); 
+        csvReader.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter()); 
         //csvReader.Context.RegisterClassMap<UserClassMap>();
         
         csvReader.Read();
@@ -105,6 +106,8 @@ public static class CsvHandler
                 return record;
             }
         }
+        throw new Exception($"Couldn't get record with {header} matching {value}, ");
+        //Console.WriteLine($"Couldn't get record with {header} matching {value}, ");
         return default;
     }
 

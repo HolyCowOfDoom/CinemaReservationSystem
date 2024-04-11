@@ -32,10 +32,11 @@ public class Reservation : IEquatable<Reservation>
                     && rsv1.TotalPrice == rsv2.TotalPrice);
     }
     public bool Equals(Reservation other)
-    {
-        return (SeatIDs == other.SeatIDs 
+    {   
+        bool returnvalue = (SeatIDs.SequenceEqual(other.SeatIDs)
                     && ScreeningID == other.ScreeningID 
                     && TotalPrice == other.TotalPrice);
+        return returnvalue;
     }
     //this last like is because the one above can't override Equals due to a signature mismatch due to "User other"
     public override bool Equals(object obj) => obj is Reservation && Equals(obj as Reservation);
