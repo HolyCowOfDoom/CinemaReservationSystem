@@ -30,9 +30,9 @@ public class ReservationConverter : DefaultTypeConverter
         List<Reservation> reservations = new();
         foreach(string reservationStr in reservationsStr)
         {
-            text = text.Replace("{", "").Replace("}", "");
-            List<string>stringParts = text.Split(";").ToList();
-            List<string> seatIds = stringParts[0].Replace("SeatIDs: ", "").Split(",").ToList();
+            string reservationsData = reservationStr.Replace("{", "").Replace("}", "");
+            List<string>stringParts = reservationsData.Split(";").ToList();
+            List<string> seatIds = stringParts[0].Replace("SeatIDs: ", "").Replace("[", "").Replace("]", "").Split(",").ToList();
             string screeningID = stringParts[1].Replace("ScreeningID: ", "");
             int totalPrice = Convert.ToInt32(stringParts[2].Replace("TotalPrice: ", ""));
             // List<string> seatIds = row.GetField(1).Split(",").ToList();

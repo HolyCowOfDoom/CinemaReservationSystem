@@ -12,22 +12,22 @@ public class User : IEquatable<User>
     //private string _birthDate;
     //private string _email;
     private string _password;
-    [Name("id")]
+    [Name("ID")]
     public string ID {get => _id; set => _id = value;}
     //Name set is set to public for testing in Program.cs. change back to private when done testing, as all changes should be done via User.cs
-    [Name("name")]
+    [Name("Name")]
     public string Name {get; set;} //we don't want _name to be able to be changed outside of this class
-    [Name("birthDate")]
+    [Name("BirthDate")]
     public string BirthDate {get; private set;} //could use a DateTime obj
-    [Name("email")]
+    [Name("Email")]
     public string Email {get; private set;}
-    [Name("admin")]
+    [Name("Admin")]
     public bool Admin { get; }
     //public string Password {get => EncryptPassword(_password); private set => _password = value;}
-    [Name("password")]
+    [Name("Password")]
     public string Password {get => _password; private set => _password = value;}
     //add custom set if allowing user to change password
-    [Name("reservations")]
+    [Name("Reservations")]
     public List<Reservation> Reservations {get; set;}
 
     // public User(string name, string birthDate, string email, string password, bool admin, List<Reservation> reservations = null)

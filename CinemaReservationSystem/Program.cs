@@ -7,9 +7,9 @@ User Steve = new("Steve", "08-04-2000", "steve.harrington@gmail.com", "password1
 List<string> testSeatsIDs = new() {"1", "2"};
 //CsvHandler.UpdateRecordWithValue<User>("UserDB.csv", Steve, "Reservations", new Reservation(testSeatsIDs, "1", 30));
 //CsvHandler.UpdateRecordWithValue<User>("UserDB.csv", Steve, "Name", "Bob");
-CsvHandler.UpdateRecordWithValue<User>("UserDB.csv", Steve, "Reservations",  new Reservation(testSeatsIDs, "1", 30));
-
-
+CsvHandler.UpdateRecordWithValue<User, Reservation>("UserDB.csv", Steve, "Reservations",  new Reservation(testSeatsIDs, "1", 30));
+User record = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "Reservations", new Reservation(testSeatsIDs, "1", 30));
+Console.WriteLine(record.Reservations[0]);
 
 
 

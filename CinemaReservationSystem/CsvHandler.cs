@@ -65,28 +65,43 @@ public static class CsvHandler
     }
 
     //example (UserDBFilePath, "ID", 1) -> returns User obj with ID 1
-    //example (UserDBFilePath, "Name", "Utku") -> returns User obj with Name Utku
+    //example (UserDBFilePath, "Name", "Utku") -> returns User obj with Name Utku`
+    //T specifiec return type!
     public static T? GetRecordWithValue<T>(string csvFile, string header, object value) 
     {
          var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            //PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
+            PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
             //https://stackoverflow.com/questions/49521193/csvhelper-ignore-case-for-header-names
         };
         using StreamReader reader = new(csvFile);
         using CsvHelper.CsvReader csvReader = new(reader, config);
-        csvReader.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter()); 
+        csvReader.Context.TypeConverterCache.AddConverter<Reservation>(new ReservationConverter()); 
         //csvReader.Context.RegisterClassMap<UserClassMap>();
         
         csvReader.Read();
         csvReader.ReadHeader();
         while (csvReader.Read())
         {
-            object field = csvReader.GetField(value.GetType(), header); 
-            if(value.Equals(field))
+            object csvField = csvReader.GetField(value.GetType(), header); 
+            if(csvField is ICollection)
             {
-                T records = csvReader.GetRecord<T>();
-                return records;
+                //reverse of //https://stackoverflow.com/questions/2837063/cast-object-to-generic-list
+                //casts generic (Reservation) list to object list
+                List<object> propertyList = (csvField as IEnumerable<object>).Cast<object>().ToList();
+                for(int i = 0; i < propertyList.Count; i++)
+                {
+                    if (propertyList[i].Equals(value))
+                    {
+                        T record = csvReader.GetRecord<T>();
+                        return record;
+                    }
+                }
+            }
+            else if(csvField.Equals(value))
+            {
+                T record = csvReader.GetRecord<T>();
+                return record;
             }
         }
         return default;
@@ -121,7 +136,7 @@ public static class CsvHandler
     }
 
 
-    public static bool UpdateRecordWithValue<T>(string csvFile, T record, string header, object value)// where T : IEquatable<T>
+    public static bool UpdateRecordWithValue<T, J>(string csvFile, T record, string header, J value)// where T : IEquatable<T>
     {
         // var method = typeof(CsvHandler).GetMethod("UpdateRecordWithValueExtension");
         // var CsvHandlerRef = method.MakeGenericMethod(typeof(T), typeof(object));
@@ -136,11 +151,11 @@ public static class CsvHandler
         // //the SetField method sets newRecord.header = value
 
         List<T> records = Read<T>(csvFile);
-        for(int i = 0; i < records.Count; i++)
+        for(int i = 0; i < records.Count; i++) //for each record in DB
         {
-            if(records[i].Equals(record))
+            if(records[i].Equals(record)) //if record in DB matches given record
             {
-                object propertyObject = MyGetProperty<object, T>(records[i], header);
+                object propertyObject = MyGetProperty<object, T>(records[i], header); //get property of record in DB using header
                 if(propertyObject == null) break;
                 //if(propertyObject.GetType() == typeof(List<>))
                 if(propertyObject is ICollection) //if object associated with header is e.g. a List
@@ -148,14 +163,15 @@ public static class CsvHandler
                     //Type myListElementType = propertyObject.GetType().GetGenericArguments().Single();
                     //https://stackoverflow.com/questions/4452590/c-sharp-get-the-item-type-for-a-generic-list
                     //((List<object>)propertyObject).Add(value); //add to List
-                    List<object> propertyList = (propertyObject as IEnumerable<object>).Cast<object>().ToList();
+                    //https://stackoverflow.com/questions/2837063/cast-object-to-generic-list
+                    List<J> propertyList = (propertyObject as IEnumerable<J>).Cast<J>().ToList();
                     propertyList.Add(value);
-                    //propertyObject
+                    MySetProperty(records[i], header, propertyList);
 
-                    MethodInfo SetListMethod = typeof(CsvHandler).GetMethod("MySetListProperty",
-                    BindingFlags.NonPublic | BindingFlags.Static);
-                    MethodInfo generic = SetListMethod.MakeGenericMethod(new[] {records.GetType(), propertyList[0].GetType()});
-                    generic.Invoke(null, new object[] {records[i], header, propertyList});
+                    // MethodInfo SetListMethod = typeof(CsvHandler).GetMethod("MySetListProperty",
+                    // BindingFlags.NonPublic | BindingFlags.Static);
+                    // MethodInfo generic = SetListMethod.MakeGenericMethod(new[] {records[i].GetType(), propertyList[0].GetType()});
+                    // generic.Invoke(null, new object[] {records[i], header, propertyList});
 
                     //MySetListProperty<T, object>(records[i], header, propertyList);
                     Write(csvFile, records);
