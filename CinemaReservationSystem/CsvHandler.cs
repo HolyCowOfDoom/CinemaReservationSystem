@@ -30,7 +30,7 @@ public static class CsvHandler
         return csvReader.GetRecords<T>().ToList();
     }
 
-     public static bool Write<T>(string csvFile, List<T> objectsList)
+    public static bool Write<T>(string csvFile, List<T> objectsList)
     {
         using StreamWriter writer = new(csvFile);
         using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
@@ -148,10 +148,17 @@ public static class CsvHandler
                     //Type myListElementType = propertyObject.GetType().GetGenericArguments().Single();
                     //https://stackoverflow.com/questions/4452590/c-sharp-get-the-item-type-for-a-generic-list
                     //((List<object>)propertyObject).Add(value); //add to List
-
                     List<object> propertyList = (propertyObject as IEnumerable<object>).Cast<object>().ToList();
                     propertyList.Add(value);
-                    Write(csvFile, propertyList);
+                    //propertyObject
+
+                    MethodInfo SetListMethod = typeof(CsvHandler).GetMethod("MySetListProperty",
+                    BindingFlags.NonPublic | BindingFlags.Static);
+                    MethodInfo generic = SetListMethod.MakeGenericMethod(new[] {records.GetType(), propertyList[0].GetType()});
+                    generic.Invoke(null, new object[] {records[i], header, propertyList});
+
+                    //MySetListProperty<T, object>(records[i], header, propertyList);
+                    Write(csvFile, records);
                     Console.WriteLine($"{value} was added to list of Property {header} ");
                     return true;
                 }
@@ -173,10 +180,27 @@ public static class CsvHandler
     }
 
 
-    public static void MySetProperty<T, J>(T obj, string propertyToChange, J value)
+    public static void MySetProperty<T>(T obj, string propertyToChange, object value)
     {
         PropertyInfo? property = typeof(T).GetProperty(propertyToChange);
         if(property != null) property.SetValue(obj, value);
+        else Console.WriteLine($"property {propertyToChange} remains unchanged");
+    } 
+
+    private static void MySetListProperty<T, J>(T obj, string propertyToChange, List<J> value)
+    {
+        PropertyInfo? property = typeof(T).GetProperty(propertyToChange);
+        
+        //var castValue = value.Cast() ;
+        if(property != null) 
+        {
+            //Array castValue = Array.CreateInstance(value[0].GetType(), value.Count); //empty array
+            //Array.Copy(value.ToArray(), castValue, value.Count); //copy to empty array
+            //var newList = value.Cast<J>().ToList();
+            //List<J> newlist = new(castValue)
+            //var newList = castValue;  
+            property.SetValue(obj, value);
+        }
         else Console.WriteLine($"property {propertyToChange} remains unchanged");
     } 
 
