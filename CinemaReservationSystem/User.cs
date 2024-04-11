@@ -114,7 +114,7 @@ public class User : IEquatable<User>
         else return false;
     }
 
-
+    //makes object1.Equals(object2) return true if their fields match. default returns false as they ae different obects.
     //https://stackoverflow.com/questions/25461585/operator-overloading-equals
     public static bool operator== (User user1, User user2)
     {
@@ -141,6 +141,7 @@ public class User : IEquatable<User>
                     && Email == other.Email
                     && Password == other.Password);
     }
+    //this last like is because the one above can't override Equals due to a signature mismatch due to "User other"
     public override bool Equals(object obj) => obj is User && Equals(obj as User);
 
     // private static string EncryptPassword(string password)

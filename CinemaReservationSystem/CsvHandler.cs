@@ -91,7 +91,8 @@ public static class CsvHandler
                 List<object> propertyList = (csvField as IEnumerable<object>).Cast<object>().ToList();
                 for(int i = 0; i < propertyList.Count; i++)
                 {
-                    if (propertyList[i].Equals(value))
+                    if(value.Equals(propertyList[i]))
+                    //if (propertyList[i].Equals((object)value))
                     {
                         T record = csvReader.GetRecord<T>();
                         return record;
