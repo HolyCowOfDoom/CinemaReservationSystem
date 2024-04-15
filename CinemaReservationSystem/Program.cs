@@ -1,4 +1,6 @@
-﻿using System.Formats.Asn1;
+﻿using System.Diagnostics;
+using System.Formats.Asn1;
+using System.Reflection;
 using System.Security.AccessControl;
 
 User Steve = new("Steve", "08-04-2000", "steve.harrington@gmail.com", "password123", true);
@@ -10,6 +12,7 @@ List<string> testSeatsIDs = new() {"1", "2"};
 CsvHandler.UpdateRecordWithValue<User, Reservation>("UserDB.csv", Steve, "Reservations",  new Reservation(testSeatsIDs, "1", 30));
 User record = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "Reservations", new Reservation(testSeatsIDs, "1", 30));
 Console.WriteLine(record.Reservations[1].ScreeningID);
+Debug.Assert(User.ValidatePassword(Steve, "password123"));
 
 
 

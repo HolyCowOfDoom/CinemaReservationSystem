@@ -91,25 +91,23 @@ public class User : IEquatable<User>
         //CsvHandler.Write(UserDBFilePath);
         return true;
     }
-    // public User(string name, string birthDate, string email, string password)
-    // {
-    //     //ID = CsvHandler.GetAmountOfUsers();
-    //     _password = password;
-    //     Name = name;
-    //     BirthDate = birthDate;
-    //     Email = email;
-    //     CsvHandler.AddUser(this);
-    // }
-    // public User(int id, string name, string birthDate, string email, string password) : this(name, birthDate, email, password)
-    // {
-    //     ID = id;
-    // }
 
-    public static bool ValidatePassword(int id, string name, string password)
+    public static User GetUserWithValue(string header, object value)
     {
-        //int id = GetIDFromName(name);
-        //string userPassword = DecryptPassword(GetPasswordFromID(id)); //gets directly from DB rather than Users List
-        string userPassword = GetPasswordFromID(id);
+        return CsvHandler.GetRecordWithValue<User>(UserDBFilePath, header, value);
+    }
+
+    //"J" can't be replaced with "object", as MySetProperty in UpdateRecordWithValue needs List<J> rather than List<object>
+    public static bool UpdateUserWithValue<J>(string csvFile, User user, string header, J value)
+    {
+        return CsvHandler.UpdateRecordWithValue<User, J>(UserDBFilePath, user, header, value);
+    }
+
+
+    public static bool ValidatePassword(User user, string password)
+    {
+        User userInDB = GetUserWithValue("ID", user.ID);
+        string userPassword = userInDB.Password;
         if(password == userPassword) return true;
         else return false;
     }
@@ -122,7 +120,8 @@ public class User : IEquatable<User>
                     && user1.ID == user2.ID 
                     && user1.BirthDate == user2.BirthDate
                     && user1.Email == user2.Email
-                    && user1.Password == user2.Password);
+                    && user1.Password == user2.Password)
+                    && user1.Reservations.SequenceEqual(user2.Reservations);
     }
 
     public static bool operator!= (User user1, User user2)
@@ -131,7 +130,8 @@ public class User : IEquatable<User>
                     && user1.ID == user2.ID 
                     && user1.BirthDate == user2.BirthDate
                     && user1.Email == user2.Email
-                    && user1.Password == user2.Password);
+                    && user1.Password == user2.Password)
+                    && user1.Reservations.SequenceEqual(user2.Reservations);
     }
     public bool Equals(User other)
     {
@@ -139,9 +139,10 @@ public class User : IEquatable<User>
                     && ID == other.ID 
                     && BirthDate == other.BirthDate
                     && Email == other.Email
-                    && Password == other.Password);
+                    && Password == other.Password)
+                    && Reservations.SequenceEqual(other.Reservations);
     }
-    //this last like is because the one above can't override Equals due to a signature mismatch due to "User other"
+    //this last line is because the one above can't override Equals due to a signature mismatch due to "User other"
     public override bool Equals(object obj) => obj is User && Equals(obj as User);
 
     // private static string EncryptPassword(string password)
@@ -165,105 +166,105 @@ public class User : IEquatable<User>
     //     }
     //     return decrypted;
     // }
-    public static bool ChangeName(int id, string newName){
-        string currentName = GetNameFromID(id);
-        if(newName == currentName){
-            Console.WriteLine($"User's name and entered name({newName}) are identical");
-            return false;
-        }
-        else if(string.IsNullOrWhiteSpace(newName))
-        {
-            Console.WriteLine("Entered name was null or whitespace");
-            return false;
-        }
-        else{
-            //CsvHandler.Write(UserDBFilePath);
-            //SetNameOfID(id, newName);
-            return true;
-        }
-    }
+    // public static bool ChangeName(int id, string newName){
+    //     string currentName = GetNameFromID(id);
+    //     if(newName == currentName){
+    //         Console.WriteLine($"User's name and entered name({newName}) are identical");
+    //         return false;
+    //     }
+    //     else if(string.IsNullOrWhiteSpace(newName))
+    //     {
+    //         Console.WriteLine("Entered name was null or whitespace");
+    //         return false;
+    //     }
+    //     else{
+    //         //CsvHandler.Write(UserDBFilePath);
+    //         //SetNameOfID(id, newName);
+    //         return true;
+    //     }
+    // }
 
-    public static bool ChangeBirthDate(int id, string birthDate){
-        string currentBirthDate = GetBirthDateFromID(id);
-        if(birthDate == currentBirthDate){
-            Console.WriteLine($"User's birth date and entered birth date({birthDate}) are identical");
-            return false;
-        }
-        else if(string.IsNullOrWhiteSpace(birthDate))
-        {
-            Console.WriteLine("Entered birth date was null or whitespace");
-            return false;
-        }
-        else{
-            //CsvHandler.Write(UserDBFilePath);
-            //SetBirthDateOfID(id, birthDate);
-            return true;
-        }
-    }
+    // public static bool ChangeBirthDate(int id, string birthDate){
+    //     string currentBirthDate = GetBirthDateFromID(id);
+    //     if(birthDate == currentBirthDate){
+    //         Console.WriteLine($"User's birth date and entered birth date({birthDate}) are identical");
+    //         return false;
+    //     }
+    //     else if(string.IsNullOrWhiteSpace(birthDate))
+    //     {
+    //         Console.WriteLine("Entered birth date was null or whitespace");
+    //         return false;
+    //     }
+    //     else{
+    //         //CsvHandler.Write(UserDBFilePath);
+    //         //SetBirthDateOfID(id, birthDate);
+    //         return true;
+    //     }
+    // }
 
-    public static bool ChangeEmail(int id, string email){
-        string currentEmail = GetEmailFromID(id);
-        if(email == currentEmail){
-            Console.WriteLine($"User's email and entered email({email}) are identical");
-            return false;
-        }
-        else if(string.IsNullOrWhiteSpace(email))
-        {
-            Console.WriteLine("Entered email was null or whitespace");
-            return false;
-        }
-        else{
-            //CsvHandler.Write(UserDBFilePath);
-            //SetEmailOfID(id, email);
-            return true;
-        }
-    }
+    // public static bool ChangeEmail(int id, string email){
+    //     string currentEmail = GetEmailFromID(id);
+    //     if(email == currentEmail){
+    //         Console.WriteLine($"User's email and entered email({email}) are identical");
+    //         return false;
+    //     }
+    //     else if(string.IsNullOrWhiteSpace(email))
+    //     {
+    //         Console.WriteLine("Entered email was null or whitespace");
+    //         return false;
+    //     }
+    //     else{
+    //         //CsvHandler.Write(UserDBFilePath);
+    //         //SetEmailOfID(id, email);
+    //         return true;
+    //     }
+    // }
 
-    public static int GetIDFromName(string name)
-    {
-        try{
-            int id = 0;
-            //load from csv/Users
-            //CsvHandler.Read(UserDBFilePath);
-            return id;
-        } catch(Exception e){ //catch specific csv exceptions
-            Console.WriteLine(e);
-        }
-        return -1;
-    }
-    //add try-catch to functions below (or is try-catch not even necessary at all?)
+    // public static int GetIDFromName(string name)
+    // {
+    //     try{
+    //         int id = 0;
+    //         //load from csv/Users
+    //         //CsvHandler.Read(UserDBFilePath);
+    //         return id;
+    //     } catch(Exception e){ //catch specific csv exceptions
+    //         Console.WriteLine(e);
+    //     }
+    //     return -1;
+    // }
+    // //add try-catch to functions below (or is try-catch not even necessary at all?)
 
-    public static string GetNameFromID(int id)
-    {
-        string name = "";
-        //load from csv/Users
-        //CsvHandler.Read(UserDBFilePath);
-        return name;
-    }
+    // public static string GetNameFromID(int id)
+    // {
+    //     string name = "";
+    //     //load from csv/Users
+    //     //CsvHandler.Read(UserDBFilePath);
+    //     return name;
+    // }
 
-    public static string GetBirthDateFromID(int id)
-    {
-        string birthDate = "";
-        //load from csv/Users
-        //CsvHandler.Read(UserDBFilePath);
-        return birthDate;
-    }
+    // public static string GetBirthDateFromID(int id)
+    // {
+    //     string birthDate = "";
+    //     //load from csv/Users
+    //     //CsvHandler.Read(UserDBFilePath);
+    //     return birthDate;
+    // }
 
-    public static string GetEmailFromID(int id)
-    {
-        string email = "";
-        //load from csv/Users
-        //CsvHandler.Read(UserDBFilePath);
-        return email;
-    }
+    // public static string GetEmailFromID(int id)
+    // {
+    //     string email = "";
+    //     //load from csv/Users
+    //     //CsvHandler.Read(UserDBFilePath);
+    //     return email;
+    // }
 
-    public static string GetPasswordFromID(int id) //is this secure? rn callers must handle security/validation
-    {
-        string password = "";
-        //load from csv/Users
-        //CsvHandler.Read(UserDBFilePath);
-        return password;
-    }
+    // public static string GetPasswordFromID(int id) //is this secure? rn callers must handle security/validation
+    // {
+    //     string password = "";
+    //     //load from csv/Users
+    //     //CsvHandler.Read(UserDBFilePath);
+    //     return password;
+    // }
 
     // sets maybe not necessary anymore
     // public static bool SetNameOfID(int id, string name)

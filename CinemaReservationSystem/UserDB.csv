@@ -1,2 +1,2 @@
 ID,Name,BirthDate,Email,Admin,Password,Reservations
-3f4bb9d3-5d12-4e9e-bba0-1c56a71d2ab1,Steve,08-04-2000,steve.harrington@gmail.com,True,password123,{SeatIDs: [-1]; ScreeningID: -1; TotalPrice: -1}
+ad1acea7-976d-4b16-8937-0879fd40b930,Steve,08-04-2000,steve.harrington@gmail.com,True,password123,"{SeatIDs: [-1]; ScreeningID: -1; TotalPrice: -1}&{SeatIDs: [1,2]; ScreeningID: 1; TotalPrice: 30}"
