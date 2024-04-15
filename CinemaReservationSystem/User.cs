@@ -114,9 +114,15 @@ public class User : IEquatable<User>
 
     //makes object1.Equals(object2) return true if their fields match. default returns false as they ae different obects.
     //https://stackoverflow.com/questions/25461585/operator-overloading-equals
-    public static bool operator== (User user1, User user2)
+    public static bool operator== (User? user1, User? user2)
     {
-        return (user1.Name == user2.Name 
+        if(user1 == null && user2 == null) return true;
+        // else if(user1 == null || user2 == null)
+        // {
+        //     return user1 == user2;
+        // }
+        else return (!(user2 == null)
+                    && user1.Name == user2.Name 
                     && user1.ID == user2.ID 
                     && user1.BirthDate == user2.BirthDate
                     && user1.Email == user2.Email
@@ -124,9 +130,14 @@ public class User : IEquatable<User>
                     && user1.Reservations.SequenceEqual(user2.Reservations);
     }
 
-    public static bool operator!= (User user1, User user2)
+    public static bool operator!= (User? user1, User? user2)
     {
-        return !(user1.Name == user2.Name 
+        if(user1 == null && user2 == null)
+        {
+            return false;
+        }
+        return (user2 == null || user1 == null)
+            && !(user1.Name == user2.Name 
                     && user1.ID == user2.ID 
                     && user1.BirthDate == user2.BirthDate
                     && user1.Email == user2.Email
