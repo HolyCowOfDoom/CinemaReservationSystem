@@ -1,12 +1,2 @@
-ID,Name,BirthDate,Email,Admin,Password
-f2812e55-086c-4b4f-8d79-b63ea15a071a,Test,20-02-2002,test@testmaiul.nl,false,testtest1
-118a4898-de31-4522-8e5c-18ed48a18649,test2,20-02-2002,test2@mail.nl,false,123456789
-admin-746ffe10-3a70-4edb-ace7-774e575cdf30,admin1,15-06-2006,admin@cinema.com,true,cinema2006
-admin-b5a4b0ba-924a-4c77-a119-00c935f89f6e,admin2,15-07-2006,admin@cinema.com,true,cinema2006
-admin-ee6253e4-454e-48b0-90b3-5e9fcdc6361e,adminmain,15-06-2006,admin@cinema.com,True,cinema1007
-0d9832ef-9898-4619-80f1-dd52effd2bc8,auser1,20-02-2002,cimena@user.nl,False,cinema2005
-fde553a9-d2f0-4765-8ae4-87373846e03d,underaged,04-04-2016,under@age.com,False,8yearold
-d838f84f-fe7c-48a7-8723-a53e5106d44d,Utku,08-04-2000,ut.ozyurt@gmail.com,False,moo,
-935e19dc-a26c-4a24-93a1-2c6d1ae4e60a,Utku,08-04-2000,ut.ozyurt@gmail.com,False,moo,
-138fcce4-c6ed-46c1-9d52-4a55080f41f6,Utku,08-04-2000,ut.ozyurt@gmail.com,False,moo,
-98ff74a7-04ab-4d69-8f57-ccffb5e15a27,Utku,08-04-2000,ut.ozyurt@gmail.com,False,moo,
+ID,Name,BirthDate,Email,Admin,Password,Reservations
+3f4bb9d3-5d12-4e9e-bba0-1c56a71d2ab1,Steve,08-04-2000,steve.harrington@gmail.com,True,password123,{SeatIDs: [-1]; ScreeningID: -1; TotalPrice: -1}
