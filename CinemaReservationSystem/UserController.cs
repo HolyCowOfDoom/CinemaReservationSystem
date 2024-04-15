@@ -26,7 +26,7 @@ public class UserController
     {
         char genreFilterInput;
         List<Movie> Movies = JsonHandler.Read<Movie>("MovieDB.json");
-        User user = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "ID", id);
+        User user = User.GetUserWithValue("ID", id);
         int age = Helper.GetUserAge(user);
         List<Movie> sortedMovies = Movies.OrderBy(movie => movie.AgeRating).ToList(); // kan ook in de JsonHandler.cs
         int rating = 0;
@@ -176,7 +176,7 @@ public class UserController
 
 
     public static void ViewUser(string id){
-        User user = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "ID", id);
+        User user = User.GetUserWithValue( "ID", id);
         Console.WriteLine("┌────────────────────────────────┬───────────────────────────────────────┬────────────────────────┐");
         Console.WriteLine($"│ Username: {user.Name,-20} │ Email: {user.Email,-30} │ Birth date: {user.BirthDate} │");
         Console.WriteLine("└────────────────────────────────┴───────────────────────────────────────┴────────────────────────┘");
@@ -309,7 +309,7 @@ public class UserController
 
         //insert price calculation here>
         
-        User user = CsvHandler.GetRecordWithValue<User>("UserDB.csv", "ID", id);
+        User user = User.GetUserWithValue("ID", id);
         user.Reservations.Add(new Reservation(reservedSeatIDs, screening.ID, 20));
 
         XToGoBack(id);
