@@ -116,36 +116,34 @@ public class User : IEquatable<User>
     //https://stackoverflow.com/questions/25461585/operator-overloading-equals
     public static bool operator== (User? user1, User? user2)
     {
-        if(user1 == null && user2 == null) return true;
-        // else if(user1 == null || user2 == null)
-        // {
-        //     return user1 == user2;
-        // }
-        else return (!(user2 == null)
-                    && user1.Name == user2.Name 
-                    && user1.ID == user2.ID 
-                    && user1.BirthDate == user2.BirthDate
-                    && user1.Email == user2.Email
-                    && user1.Password == user2.Password)
-                    && user1.Reservations.SequenceEqual(user2.Reservations);
+        if(user1 is null)
+        {
+            if(user2 is null) return true;
+            else return false;
+        }
+        // Equals handles case of null on right side.
+        return user1.Equals(user2);
     }
 
     public static bool operator!= (User? user1, User? user2)
     {
-        if(user1 == null && user2 == null)
-        {
-            return false;
-        }
-        return (user2 == null || user1 == null)
-            && !(user1.Name == user2.Name 
-                    && user1.ID == user2.ID 
-                    && user1.BirthDate == user2.BirthDate
-                    && user1.Email == user2.Email
-                    && user1.Password == user2.Password)
-                    && user1.Reservations.SequenceEqual(user2.Reservations);
+        return !(user1 == user2);
+        // if(user1 == null && user2 == null)
+        // {
+        //     return false;
+        // }
+        // return (user2 == null || user1 == null)
+        //     && !(user1.Name == user2.Name 
+        //             && user1.ID == user2.ID 
+        //             && user1.BirthDate == user2.BirthDate
+        //             && user1.Email == user2.Email
+        //             && user1.Password == user2.Password)
+        //             && user1.Reservations.SequenceEqual(user2.Reservations);
     }
     public bool Equals(User other)
     {
+        if(other is null) return false;
+
         return (Name == other.Name 
                     && ID == other.ID 
                     && BirthDate == other.BirthDate

@@ -20,30 +20,30 @@ public class InterfaceController
         string username = Console.ReadLine();
         if(username.ToLower() == "q") quit = true;
         User? user = User.GetUserWithValue("Name", username);
-        // if (user != null)
-        // {
-        //     // hier CSV handler die username krijgt en ID + Password returned om in te loggen.
-        //     int attempts = 3;
-        //     while (attempts > 0)
-        //     {
-        //         Console.WriteLine($"Enter the password associated with the username: {username}");
-        //         string passin = Console.ReadLine();
-        //         // called hier een method van user.cs en krijgt een user ID gereturned
+        if (user != null)
+        {
+            // hier CSV handler die username krijgt en ID + Password returned om in te loggen.
+            int attempts = 3;
+            while (attempts > 0)
+            {
+                Console.WriteLine($"Enter the password associated with the username: {username}");
+                string passin = Console.ReadLine();
+                // called hier een method van user.cs en krijgt een user ID gereturned
 
-        //         if (passin == user.Password)
-        //         {
-        //             string id = user.ID;
-        //             Console.WriteLine($"Succesfully logged into {user.Name}");
-        //             XToGoBack(id);
-        //             break;
-        //         }
-        //         else
-        //         {
-        //             attempts--;
-        //             Console.WriteLine($"{attempts} attempts remaining.");
-        //         }
-        //     }
-        // }
+                if (passin == user.Password)
+                {
+                    string id = user.ID;
+                    Console.WriteLine($"Succesfully logged into {user.Name}");
+                    XToGoBack(id);
+                    break;
+                }
+                else
+                {
+                    attempts--;
+                    Console.WriteLine($"{attempts} attempts remaining.");
+                }
+            }
+        }
         Console.WriteLine("Attempt limit reached on trying passwords.");
         XToGoBack();
         break;
