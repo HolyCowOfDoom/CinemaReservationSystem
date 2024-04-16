@@ -91,10 +91,19 @@ public class Screening : ObjectHasID
         UpdateScreening();
     }
 
-    public void ReserveSeat(string seatID)
+    public bool ReserveSeat(string seatID)
     {
-        AssignedAuditorium.ReserveSeat(seatID);
-        UpdateScreening();
+        bool succesfullReserve = AssignedAuditorium.ReserveSeat(seatID);
+        if (succesfullReserve) {
+            UpdateScreening();
+            Console.WriteLine($"Screening.cs: Seat {seatID} reserved successfully and ScreeningDB updated.");
+            return true;
+        }
+        else{
+            Console.WriteLine($"Screening.cs: Seat {seatID} is either already reserved or does not exist.");
+            return false;
+        }
+
     }
 
     // updates this.screening to the database

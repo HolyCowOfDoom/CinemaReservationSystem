@@ -48,17 +48,19 @@ public class Auditorium : ObjectHasID
         }
     }
 
-    public void ReserveSeat(string seatID)
+    public bool ReserveSeat(string seatID)
     {
         Seat? seat = Seats.Find(s => s.ID == seatID);
         if (seat != null && !seat.IsReserved)
         {
             seat.ReserveSeat();
-            Console.WriteLine($"Seat {seatID} reserved successfully.");
+            Console.WriteLine($"Auditorium.cs: Seat {seatID} reserved successfully.");
+            return true;
         }
         else
         {
-            Console.WriteLine($"Seat {seatID} is either already reserved or does not exist.");
+            Console.WriteLine($"Auditorium.cs: Seat {seatID} is either already reserved or does not exist.");
+            return false;
         }
     }
 

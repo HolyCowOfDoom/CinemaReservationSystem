@@ -10,22 +10,22 @@
         {
           "Color": "Yellow",
           "ID": "2",
-          "IsReserved": false
+          "IsReserved": true
         },
         {
           "Color": "Red",
           "ID": "3",
-          "IsReserved": false
+          "IsReserved": true
         },
         {
           "Color": "Yellow",
           "ID": "4",
-          "IsReserved": true
+          "IsReserved": false
         },
         {
           "Color": "Blue",
           "ID": "5",
-          "IsReserved": true
+          "IsReserved": false
         },
         {
           "Color": "Yellow",

@@ -98,7 +98,7 @@ public class User : IEquatable<User>
     }
 
     //"J" can't be replaced with "object", as MySetProperty in UpdateRecordWithValue needs List<J> rather than List<object>
-    public static bool UpdateUserWithValue<J>(string csvFile, User user, string header, J value)
+    public static bool UpdateUserWithValue<J>(User user, string header, J value)
     {
         return CsvHandler.UpdateRecordWithValue<User, J>(UserDBFilePath, user, header, value);
     }

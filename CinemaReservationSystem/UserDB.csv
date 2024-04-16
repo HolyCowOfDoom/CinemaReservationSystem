@@ -1,2 +1,2 @@
 ID,Name,BirthDate,Email,Admin,Password,Reservations
-c0c761c4-79cf-4438-9257-a461f5e09bbe,Utku,08-04-2000,ut.ozyurt@gmail.com,False,password12345,{SeatIDs: [-1]; ScreeningID: -1; TotalPrice: -1}
+c0c761c4-79cf-4438-9257-a461f5e09bbe,Utku,08-04-2000,ut.ozyurt@gmail.com,False,password12345,"{SeatIDs: [-1]; ScreeningID: -1; TotalPrice: -1}&{SeatIDs: [3,2]; ScreeningID: c95e6637-05cb-48ab-b39b-711dc3aabcd9; TotalPrice: 20}"

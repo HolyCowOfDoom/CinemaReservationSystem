@@ -302,15 +302,28 @@ public class UserController
         List<string> reservedSeatIDs = [];
         for (int i = 0; i < seatAmount; i++)
         {
-            string seatID = Helper.GetValidInput("Please enter valid seat number: ", Helper.IsNotNull);
-            reservedSeatIDs.Add(seatID);
-            screening.ReserveSeat(seatID);
+            while(true)
+            {
+                string seatID = Helper.GetValidInput("Please enter valid seat number: ", Helper.IsNotNull);
+                bool succesfullReserve = screening.ReserveSeat(seatID);
+                if (succesfullReserve) {
+                    Console.WriteLine("UserController.cs: Seat was not reserved, but is now");
+                    reservedSeatIDs.Add(seatID);
+                    break;
+                }
+                //else if (check if there's even any seats available) break;
+                else
+                {
+                    Console.WriteLine("UserController.cs: Seat was already reserved!");
+                }
+            }
         }
 
         //insert price calculation here>
         
         User user = User.GetUserWithValue("ID", id);
-        user.Reservations.Add(new Reservation(reservedSeatIDs, screening.ID, 20));
+        Reservation newReservation = new Reservation(reservedSeatIDs, screening.ID, 20);
+        User.UpdateUserWithValue(user, "Reservations", newReservation);
 
         XToGoBack(id);
     }
