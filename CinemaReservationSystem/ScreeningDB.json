@@ -3,22 +3,22 @@
     "AssignedAuditorium": {
       "Seats": [
         {
-          "Color": "Yellow",
+          "Color": "Blue",
           "ID": "1",
-          "IsReserved": false
+          "IsReserved": true
         },
         {
-          "Color": "Yellow",
+          "Color": "Blue",
           "ID": "2",
           "IsReserved": true
         },
         {
-          "Color": "Red",
+          "Color": "Blue",
           "ID": "3",
           "IsReserved": true
         },
         {
-          "Color": "Yellow",
+          "Color": "Blue",
           "ID": "4",
           "IsReserved": false
         },
@@ -28,27 +28,27 @@
           "IsReserved": false
         },
         {
-          "Color": "Yellow",
+          "Color": "Blue",
           "ID": "6",
           "IsReserved": false
         },
         {
-          "Color": "Red",
+          "Color": "Blue",
           "ID": "7",
           "IsReserved": false
         },
         {
-          "Color": "Yellow",
+          "Color": "Blue",
           "ID": "8",
           "IsReserved": false
         },
         {
-          "Color": "Yellow",
+          "Color": "Blue",
           "ID": "9",
           "IsReserved": false
         },
         {
-          "Color": "Yellow",
+          "Color": "Blue",
           "ID": "10",
           "IsReserved": false
         },
@@ -63,198 +63,701 @@
           "IsReserved": false
         },
         {
-          "Color": "Red",
+          "Color": "Blue",
           "ID": "13",
           "IsReserved": false
         },
         {
-          "Color": "Yellow",
+          "Color": "Blue",
           "ID": "14",
           "IsReserved": false
         },
         {
-          "Color": "Yellow",
+          "Color": "Blue",
           "ID": "15",
           "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "16",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "17",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "18",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "19",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "20",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "21",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "22",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "23",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "24",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "25",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "26",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "27",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "28",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "29",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "30",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "31",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "32",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "33",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "34",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "35",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "36",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "37",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "38",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "39",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "40",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "41",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "42",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "43",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "44",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "45",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "46",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "47",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "48",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "49",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "50",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "51",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "52",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "53",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "54",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "55",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "56",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "57",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "58",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "59",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "60",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "61",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "62",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "63",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "64",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "65",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "66",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "67",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "68",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "69",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "70",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "71",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "72",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "73",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "74",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "75",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "76",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "77",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "78",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "79",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "80",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "81",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "82",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "83",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "84",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "85",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "86",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "87",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "88",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "89",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "90",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "91",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "92",
+          "IsReserved": false
+        },
+        {
+          "Color": "Red",
+          "ID": "93",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "94",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "95",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "96",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "97",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "98",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "99",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "100",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "101",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "102",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "103",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "104",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "105",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "106",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "107",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "108",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "109",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "110",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "111",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "112",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "113",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "114",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "115",
+          "IsReserved": false
+        },
+        {
+          "Color": "Yellow",
+          "ID": "116",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "117",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "118",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "119",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "120",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "121",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "122",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "123",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "124",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "125",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "126",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "127",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "128",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "129",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "130",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "131",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "132",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "133",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "134",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "135",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "136",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "137",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "138",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "139",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "140",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "141",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "142",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "143",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "144",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "145",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "146",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "147",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "148",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "149",
+          "IsReserved": false
+        },
+        {
+          "Color": "Blue",
+          "ID": "150",
+          "IsReserved": false
         }
       ],
-      "ID": "A1"
+      "ID": "1"
     },
-    "ScreeningDateTime": "2024-03-20T12:30:00",
-    "Bundles": [],
-    "MovieID": "1",
-    "ID": "c95e6637-05cb-48ab-b39b-711dc3aabcd9"
-  },
-  {
-    "AssignedAuditorium": {
-      "Seats": [
-        {
-          "Color": "Red",
-          "ID": "196",
-          "IsReserved": false
-        },
-        {
-          "Color": "Red",
-          "ID": "197",
-          "IsReserved": false
-        },
-        {
-          "Color": "Yellow",
-          "ID": "198",
-          "IsReserved": false
-        },
-        {
-          "Color": "Blue",
-          "ID": "199",
-          "IsReserved": false
-        },
-        {
-          "Color": "Red",
-          "ID": "200",
-          "IsReserved": false
-        },
-        {
-          "Color": "Yellow",
-          "ID": "201",
-          "IsReserved": false
-        },
-        {
-          "Color": "Yellow",
-          "ID": "202",
-          "IsReserved": false
-        },
-        {
-          "Color": "Yellow",
-          "ID": "203",
-          "IsReserved": false
-        },
-        {
-          "Color": "Blue",
-          "ID": "204",
-          "IsReserved": false
-        },
-        {
-          "Color": "Yellow",
-          "ID": "205",
-          "IsReserved": false
-        },
-        {
-          "Color": "Yellow",
-          "ID": "206",
-          "IsReserved": false
-        },
-        {
-          "Color": "Yellow",
-          "ID": "207",
-          "IsReserved": false
-        },
-        {
-          "Color": "Blue",
-          "ID": "208",
-          "IsReserved": false
-        },
-        {
-          "Color": "Blue",
-          "ID": "209",
-          "IsReserved": false
-        },
-        {
-          "Color": "Red",
-          "ID": "210",
-          "IsReserved": false
-        }
-      ],
-      "ID": "A1"
-    },
-    "ScreeningDateTime": "2024-02-20T15:00:00",
+    "ScreeningDateTime": "2025-03-20T16:00:00",
     "Bundles": [],
     "MovieID": "3e9f6830-1af4-4dc7-99a4-36166f216b43",
-    "ID": "87f78340-91f7-4f79-8240-e9986c534ca6"
-  },
-  {
-    "AssignedAuditorium": {
-      "Seats": [
-        {
-          "Color": "Red",
-          "ID": "211",
-          "IsReserved": false
-        },
-        {
-          "Color": "Red",
-          "ID": "212",
-          "IsReserved": false
-        },
-        {
-          "Color": "Yellow",
-          "ID": "213",
-          "IsReserved": false
-        },
-        {
-          "Color": "Blue",
-          "ID": "214",
-          "IsReserved": false
-        },
-        {
-          "Color": "Red",
-          "ID": "215",
-          "IsReserved": false
-        },
-        {
-          "Color": "Yellow",
-          "ID": "216",
-          "IsReserved": false
-        },
-        {
-          "Color": "Yellow",
-          "ID": "217",
-          "IsReserved": false
-        },
-        {
-          "Color": "Yellow",
-          "ID": "218",
-          "IsReserved": false
-        },
-        {
-          "Color": "Blue",
-          "ID": "219",
-          "IsReserved": false
-        },
-        {
-          "Color": "Yellow",
-          "ID": "220",
-          "IsReserved": false
-        },
-        {
-          "Color": "Yellow",
-          "ID": "221",
-          "IsReserved": false
-        },
-        {
-          "Color": "Yellow",
-          "ID": "222",
-          "IsReserved": false
-        },
-        {
-          "Color": "Blue",
-          "ID": "223",
-          "IsReserved": false
-        },
-        {
-          "Color": "Blue",
-          "ID": "224",
-          "IsReserved": false
-        },
-        {
-          "Color": "Red",
-          "ID": "225",
-          "IsReserved": false
-        }
-      ],
-      "ID": "A1"
-    },
-    "ScreeningDateTime": "2024-12-20T14:00:00",
-    "Bundles": [],
-    "MovieID": "3e9f6830-1af4-4dc7-99a4-36166f216b43",
-    "ID": "7bdba5aa-72d4-4bb0-b244-c22604409dcc"
+    "ID": "26f506f7-47e9-48f7-9159-b152d2f89487"
   }
 ]

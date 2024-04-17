@@ -35,5 +35,9 @@ using System.Security.AccessControl;
 
 
 // Console.Clear();
+// Auditorium A = new Auditorium("1", 150);
+// Auditorium B = new Auditorium("2", 300);
+// A.UpdateAuditoriumJson();
+// B.UpdateAuditoriumJson();
 Interface.GeneralMenu();
 // Console.ReadLine(); //keeps external terminal open

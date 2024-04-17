@@ -6,10 +6,10 @@ public class Seat : ObjectHasID
 
     private static int lastID = 0;
 
-    public Seat(string color)
+    public Seat(string color, string? id = null)
     {
         Color = color;
-        ID = Convert.ToString(++lastID);
+        ID = id != null ? id : Convert.ToString(++lastID);
         IsReserved = false;
     }
 

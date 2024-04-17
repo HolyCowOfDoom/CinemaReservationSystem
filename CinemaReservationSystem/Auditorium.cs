@@ -3,41 +3,28 @@ public class Auditorium : ObjectHasID
     public List<Seat> Seats { get; }
     public string ID { get; }
 
-    public Auditorium(string id, int numberOfSeats)
+    public Auditorium(string id, int numberOfSeats, List<Seat>? seats = null)
     {
         ID = id;
-        Seats = new List<Seat>();
-        InitializeSeats(numberOfSeats);
+        Seats = seats != null ? seats : new List<Seat>();
+        if (seats == null) InitializeSeats(numberOfSeats);
     }
 
     private void InitializeSeats(int numberOfSeats)
     {
-        // ill give the seats specific colors later, for now its random
-        string[] colors = { "Blue", "Yellow", "Red" };
-        Random rand = new Random();
-
-        for (int i = 0; i < numberOfSeats; i++)
+        switch (this.ID)
         {
-            string color = colors[rand.Next(0, colors.Length)];
-            Seats.Add(new Seat(color));
-        }
-    }
-
-    private void InitializeSeats(int numberOfSeats)
-    {
-        switch (ID)
-        {
-            case 1:
+            case "1":
                 InitializeSeatsForAuditorium1(numberOfSeats);
                 break;
-            case 2:
+            case "2":
                 InitializeSeatsForAuditorium2(numberOfSeats);
                 break;
-            case 3:
-                InitializeSeatsForAuditorium3(numberOfSeats);
-                break;
+            // case 3:
+            //     InitializeSeatsForAuditorium3(numberOfSeats);
+            //     break;
             default:
-                throw new ArgumentException("Invalid auditorium ID.");
+                throw new ArgumentException($"Invalid auditorium ID. Current ID: {ID}");
         }
     }
 

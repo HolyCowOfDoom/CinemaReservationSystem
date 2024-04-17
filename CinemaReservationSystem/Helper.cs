@@ -309,10 +309,6 @@ public class Helper
         Console.Write(new string(' ', 100));
     }
 
-}
-
-
-
 // everything about getting the valid input.
     public static string GetValidInput(string prompt, Func<string, bool> validation)
     {
