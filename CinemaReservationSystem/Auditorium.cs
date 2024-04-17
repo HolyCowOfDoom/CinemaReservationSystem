@@ -3,22 +3,22 @@ public class Auditorium : ObjectHasID
     public List<Seat> Seats { get; }
     public string ID { get; }
 
-    public Auditorium(string id, int numberOfSeats, List<Seat>? seats = null)
+    public Auditorium(string id, List<Seat>? seats = null)
     {
         ID = id;
         Seats = seats != null ? seats : new List<Seat>();
-        if (seats == null) InitializeSeats(numberOfSeats);
+        if (seats == null) InitializeSeats();
     }
 
-    private void InitializeSeats(int numberOfSeats)
+    private void InitializeSeats()
     {
         switch (this.ID)
         {
             case "1":
-                InitializeSeatsForAuditorium1(numberOfSeats);
+                InitializeSeatsForAuditorium1(150);
                 break;
             case "2":
-                InitializeSeatsForAuditorium2(numberOfSeats);
+                InitializeSeatsForAuditorium2(300);
                 break;
             // case 3:
             //     InitializeSeatsForAuditorium3(numberOfSeats);
@@ -94,11 +94,11 @@ public class Auditorium : ObjectHasID
         switch (auditoriumNumber)
         {
             case 1:
-                return new Auditorium("1", 150);
+                return new Auditorium("1");
             case 2:
-                return new Auditorium("2", 300);
+                return new Auditorium("2");
             case 3:
-                return new Auditorium("3", 500);
+                return new Auditorium("3");
             default:
                 throw new ArgumentOutOfRangeException("Invalid auditorium number.");
         }

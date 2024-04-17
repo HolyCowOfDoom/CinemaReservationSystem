@@ -20,7 +20,7 @@
         {
           "Color": "Blue",
           "ID": "4",
-          "IsReserved": false
+          "IsReserved": true
         },
         {
           "Color": "Blue",
