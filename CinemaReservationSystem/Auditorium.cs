@@ -20,9 +20,9 @@ public class Auditorium : ObjectHasID
             case "2":
                 InitializeSeatsForAuditorium2(300);
                 break;
-            // case 3:
-            //     InitializeSeatsForAuditorium3(numberOfSeats);
-            //     break;
+            case 3:
+                InitializeSeatsForAuditorium3(500);
+                break;
             default:
                 throw new ArgumentException($"Invalid auditorium ID. Current ID: {ID}");
         }
@@ -73,6 +73,37 @@ public class Auditorium : ObjectHasID
             }
             else if ((i >= 88 && i <= 89) || (i >= 104 && i <= 107) || (i >= 121 && i <= 126) || (i >= 139 && i <= 144) ||
                     (i >= 157 && i <= 162) || (i >= 175 && i <= 180) || (i >= 193 && i <= 196) || (i >= 210 && i <= 211))
+            {
+                Seats.Add(new Seat("Red"));
+            }
+        }
+    }
+
+    private void InitializeSeatsForAuditorium3(int numberOfSeats)
+    {
+        for (int i = 1; i <= numberOfSeats; i++)
+        {
+            if ((i >= 1 && i <= 28) || (i >= 41 && i <= 51) || (i >= 66 && i <= 75) || (i >= 90 && i <= 98) ||
+                (i >= 116 && i <= 124) || (i >= 141 && i <= 150) || (i >= 169 && i <= 179) || (i >= 198 && i <= 209) ||
+                (i >= 231 && i <= 240) || (i >= 261 && i <= 271) || (i >= 290 && i <= 302) || (i >= 319 && i <= 332) ||
+                (i >= 347 && i <= 359) || (i >= 374 && i <= 386) || (i >= 399 && i <= 412) || (i >= 423 && i <= 438) ||
+                (i >= 446 && i <= 500))
+            {
+                Seats.Add(new Seat("Blue"));
+            }
+            else if ((i >= 29 && i <= 40) || (i >= 52 && i <= 65) || (i >= 76 && i <= 89) || (i >= 99 && i <= 105) ||
+                    (i >= 110 && i <= 115) || (i >= 125 && i <= 129) || (i >= 136 && i <= 140) || (i >= 151 && i <= 155) ||
+                    (i >= 164 && i <= 168) || (i >= 180 && i <= 184) || (i >= 193 && i <= 197) || (i >= 210 && i <= 215) ||
+                    (i >= 225 && i <= 230) || (i >= 241 && i <= 246) || (i >= 255 && i <= 260) || (i >= 272 && i <= 276) ||
+                    (i >= 285 && i <= 289) || (i >= 303 && i <= 306) || (i >= 315 && i <= 318) || (i >= 333 && i <= 337) ||
+                    (i >= 342 && i <= 346) || (i >= 360 && i <= 373) || (i >= 387 && i <= 398) || (i >= 413 && i <= 422) ||
+                    (i >= 439 && i <= 445))
+            {
+                Seats.Add(new Seat("Yellow"));
+            }
+            else if ((i >= 106 && i <= 109) || (i >= 130 && i <= 135) || (i >= 156 && i <= 163) || (i >= 185 && i <= 192) ||
+                    (i >= 216 && i <= 224) || (i >= 247 && i <= 254) || (i >= 277 && i <= 284) || (i >= 307 && i <= 314) ||
+                    (i >= 338 && i <= 341))
             {
                 Seats.Add(new Seat("Red"));
             }
