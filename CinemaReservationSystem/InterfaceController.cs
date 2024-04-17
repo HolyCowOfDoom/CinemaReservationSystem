@@ -51,6 +51,20 @@ public class InterfaceController
         XToGoBack();
     }
 
+    public static void Login()
+    {
+        Console.CursorVisible = false;
+        Console.Clear();
+
+        string username = Helper.CaptureInput(30, 1);
+        string password = Helper.CaptureInputPassword(30, 1, username);
+
+        //test
+        Helper.DrawLogin(username, password);
+
+        Console.ReadKey();
+    }
+
     public static void RegisterUser()
     {
         Console.WriteLine("USER REGISTRATION\n-------------------------------------");

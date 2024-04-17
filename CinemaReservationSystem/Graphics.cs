@@ -7,12 +7,12 @@ public class Graphics
         string upperText = text.ToUpper();
 
         if (string.IsNullOrEmpty(upperText)) return;
-            
+                
         string[] lines = upperText.Split('\n');
 
         int maxLineLength = lines.Max(line => line.Length);
         int totalWidth = Math.Max(maxLineLength, upperHeader.Length) + 4;
-        int leftPadding = (totalWidth - maxLineLength) / 2;
+        int RightPadding = (totalWidth - maxLineLength) / 2;
         int headerLeftPadding = (totalWidth - upperHeader.Length) / 2;
 
         string topBorder = !string.IsNullOrEmpty(upperHeader) ? "╔" + new string('═', totalWidth) + "╗" : "";
@@ -40,8 +40,8 @@ public class Graphics
 
         foreach (string line in lines)
         {
-            leftPadding = (totalWidth - line.Length - 2) / 2;
-            Helper.WriteInCenter($"║ {new string(' ', leftPadding)}{line}{new string(' ', totalWidth - line.Length - leftPadding - 2)} ║");
+            RightPadding = (totalWidth - line.Length - 2);
+            Helper.WriteInCenter($"║ {line}{new string(' ', totalWidth - line.Length - RightPadding - 2)}{new string(' ', RightPadding)} ║");
         }
 
         Helper.WriteInCenter(bottomBorder);
@@ -54,5 +54,71 @@ public class Graphics
         var newmap = Helper.ReplaceAt(Auditorium, indexPos + 4, Convert.ToChar("X"));
 
         Helper.WriteColoredLetter(newmap);
+    }
+
+    public static void AudiVisual()
+    {
+        string Auditorium1 = @"
+  U U U U U U U U
+  U U U U U U U U U U
+  U U U U U U U U U U
+  U U U U U U U U U U U U
+  U U U U U U U U U U U U
+  U U U U U U U U U U U U
+  U U U U U U U U U U U U
+  U U U U U U U U U U U U
+  U U U U U U U U U U U U
+  U U U U U U U U U U U U
+  U U U U U U U U U U U U
+  U U U U U U U U U U
+  U U U U U U U U
+  U U U U U U U U
+";
+
+        string Auditorium2 = @"
+  U U U U U  U U U U U U  U U U U U
+  U U U U U  U U U U U U  U U U U U
+  U U U U U  U U U U U U  U U U U U
+  U U U U U  U U U U U U  U U U U U
+  U U U U U  U U U U U U  U U U U U
+  U U U U U  U U U U U U  U U U U U
+  U U U U U U  U U U U U U  U U U U U U
+  U U U U U U  U U U U U U  U U U U U U
+  U U U U U U  U U U U U U  U U U U U U
+  U U U U U U  U U U U U U  U U U U U U
+  U U U U U U  U U U U U U  U U U U U U
+  U U U U U  U U U U U U  U U U U U
+  U U U U U  U U U U U U  U U U U U
+  U U U U U  U U U U U U  U U U U U
+  U U U U  U U U U U U  U U U U
+  U U U U  U U U U U U  U U U U
+  U U U U  U U U U U U  U U U U
+  U U U  U U U U U U  U U U
+  U U U  U U U U U U  U U U
+";
+
+    string Auditorium3 = @"
+  U U U U U U U  U U U U U U U U  U U U U U U U
+  U U U U U U U U  U U U U U U U U  U U U U U U U U
+  U U U U U U U U  U U U U U U U U  U U U U U U U U
+  U U U U U U U U  U U U U U U U U  U U U U U U U U
+  U U U U U U U U U  U U U U U U U U  U U U U U U U U U
+
+  U U U U U U U U U U  U U U U U U U U  U U U U U U U U U U
+  U U U U U U U U U U U  U U U U U U U U  U U U U U U U U U U U
+  U U U U U U U U U U U  U U U U U U U U  U U U U U U U U U U U
+  U U U U U U U U U U U  U U U U U U U U  U U U U U U U U U U U
+  U U U U U U U U U U U  U U U U U U U U  U U U U U U U U U U U
+
+  U U U U U U U U U U U  U U U U U U U U  U U U U U U U U U U U
+  U U U U U U U U U U  U U U U U U U U  U U U U U U U U U U
+  U U U U U U U U U  U U U U U U U U  U U U U U U U U U
+  U U U U U U U U U  U U U U U U U U  U U U U U U U U U
+  U U U U U U U U  U U U U U U U U  U U U U U U U U
+  U U U U U U U U  U U U U U U U U  U U U U U U U U
+  U U U U U U  U U U U U U U U  U U U U U U
+  U U U U  U U U U U U U U  U U U U
+  U U U  U U U U U U U U  U U U
+";
     }
 }

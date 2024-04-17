@@ -128,13 +128,25 @@ public class Helper
 
     }
 
-    public static void WriteInCenter(string data)
+    public static void WriteInCenter(string data, int length=0, bool offset=false)
     {
-        foreach (var model in data.Split('\n'))
+        if (offset is true)
         {
-            Console.SetCursorPosition((Console.WindowWidth - model.Length) / 2, Console.CursorTop);
-            Console.WriteLine(model);
+            foreach (var model in data.Split('\n'))
+            {
+                Console.SetCursorPosition((Console.WindowWidth - length) / 2, Console.CursorTop);
+                Console.WriteLine(model);
+            }
         }
+        else if (offset is false)
+        {
+            foreach (var model in data.Split('\n'))
+            {
+                Console.SetCursorPosition((Console.WindowWidth - model.Length - length) / 2, Console.CursorTop);
+                Console.WriteLine(model);
+            }
+        }
+
     }
 
     public static void WriteColoredLetter(string letters)
@@ -169,6 +181,135 @@ public class Helper
         chars[index] = newChar;
         return new string(chars);
     }
+
+        public static void DrawLogin(string username = "", string password = "")
+    {
+        Console.SetCursorPosition(0, 0);
+        WriteInCenter("╔═════════════════════════╗");
+        WriteInCenter("║           LOGIN         ║");
+        WriteInCenter("╠═════════════════════════╣");
+        WriteInCenter("║USERNAME: " + username.PadRight(15) + "║");
+        WriteInCenter("╠═════════════════════════╣");
+        WriteInCenter("║PASSWORD: " + password.PadRight(15) + "║");
+        WriteInCenter("╚═════════════════════════╝");
+    }
+
+    public static string CaptureInput(int left, int top)
+    {
+        DrawLogin();
+        Console.SetCursorPosition(left, top);
+        string input = string.Empty;
+        int maxLength = 15;
+        while (true)
+        {
+            ConsoleKeyInfo key = Console.ReadKey(true);
+
+            if (key.Key == ConsoleKey.Escape)
+            {
+                // Return to previous menu
+                return string.Empty;
+            }
+            else if (key.Key == ConsoleKey.Enter)
+            {
+                // Validate input against database
+                Console.Clear();
+                return input;
+            }
+            else if (key.Key == ConsoleKey.Tab)
+            {
+                if (!string.IsNullOrEmpty(input))
+                {
+                    Console.Clear();
+                    input = CaptureInputPassword(left, top, input);
+                    return input;
+                }
+            }
+            else if (key.Key == ConsoleKey.Backspace && input.Length > 0)
+            {
+                input = input.Remove(input.Length - 1);
+                Console.Write("\b \b");
+                ClearLineDo();
+            }
+            else if (input.Length == maxLength)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                WriteInCenter("Max input length exceeded");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            else if (char.IsLetterOrDigit(key.KeyChar) || char.IsSymbol(key.KeyChar) || char.IsPunctuation(key.KeyChar))
+            {
+                input += key.KeyChar;
+                Console.Write(key.KeyChar);
+            }
+
+            // Clear the input area
+            ClearInputArea();
+            // Update and display the login form with current input
+            DrawLogin(input);
+        }
+    }
+    public static string CaptureInputPassword(int left, int top, string username)
+    {
+        DrawLogin(username);
+        Console.SetCursorPosition(left, top);
+        string input = string.Empty;
+        int maxLength = 15;
+        bool spacebar = false;
+        while (true)
+        {
+            ConsoleKeyInfo key = Console.ReadKey(true);
+
+            if (key.Key == ConsoleKey.Escape)
+            {
+                return string.Empty;
+            }
+            else if (key.Key == ConsoleKey.Spacebar)
+            {
+                spacebar = !spacebar;
+            }
+            else if (key.Key == ConsoleKey.Enter)
+            {
+                // Validate input against database
+                Console.Clear();
+                return input;
+            }
+            else if (key.Key == ConsoleKey.Backspace && input.Length > 0)
+            {
+                input = input.Remove(input.Length - 1);
+                Console.Write("\b \b");
+                Console.Clear();
+            }
+            else if (input.Length == maxLength)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                WriteInCenter("Max input length exceeded");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            else if (char.IsLetterOrDigit(key.KeyChar) || char.IsSymbol(key.KeyChar) || char.IsPunctuation(key.KeyChar))
+            {
+                input += key.KeyChar;
+            }
+
+            ClearInputArea();
+            if (spacebar)
+            {
+                DrawLogin(username, input);
+            }
+            else
+            {
+                DrawLogin(username, new string('*', input.Length));
+            }
+        }
+    }
+
+
+    public static void ClearInputArea()
+    {
+        Console.SetCursorPosition(0, 1);
+        Console.Write(new string(' ', 100));
+    }
+
+}
 
 
 
