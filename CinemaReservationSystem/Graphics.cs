@@ -13,7 +13,7 @@ public class Graphics
         int maxLineLength = lines.Max(line => line.Length);
         int totalWidth = Math.Max(maxLineLength, upperHeader.Length) + 4;
         int RightPadding = (totalWidth - maxLineLength) / 2;
-        int headerLeftPadding = (totalWidth - upperHeader.Length) / 2;
+        int headerLeftPadding = (totalWidth - upperHeader.Length) / 2 - 1;
 
         string topBorder = !string.IsNullOrEmpty(upperHeader) ? "╔" + new string('═', totalWidth) + "╗" : "";
 
