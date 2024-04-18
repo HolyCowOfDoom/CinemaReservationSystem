@@ -196,5 +196,13 @@
       "26f506f7-47e9-48f7-9159-b152d2f89487"
     ],
     "ID": "3e9f6830-1af4-4dc7-99a4-36166f216b43"
+  },
+  {
+    "Title": "Demo Title",
+    "AgeRating": 8,
+    "Description": "a movie for demo purposes",
+    "Genre": "Action",
+    "ScreeningIDs": [],
+    "ID": "22433604-0831-418a-82ca-0eb9f64f5689"
   }
 ]

@@ -180,6 +180,10 @@ public class UserController
         Console.WriteLine("┌────────────────────────────────┬───────────────────────────────────────┬────────────────────────┐");
         Console.WriteLine($"│ Username: {user.Name,-20} │ Email: {user.Email,-30} │ Birth date: {user.BirthDate} │");
         Console.WriteLine("└────────────────────────────────┴───────────────────────────────────────┴────────────────────────┘");
+        foreach (Reservation reservation in user.Reservations)
+        {
+            Console.WriteLine($"Reservation Price: {reservation.TotalPrice}; Seats: {string.Join(" ", reservation.SeatIDs)}");
+        }
         XToGoBack(id);
     }
 

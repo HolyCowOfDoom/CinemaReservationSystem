@@ -20,7 +20,7 @@ public class Auditorium : ObjectHasID
             case "2":
                 InitializeSeatsForAuditorium2(300);
                 break;
-            case 3:
+            case "3":
                 InitializeSeatsForAuditorium3(500);
                 break;
             default:
