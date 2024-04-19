@@ -6,7 +6,7 @@ using CsvHelper.Configuration.Attributes;
 
 public class User : IEquatable<User>
 {
-    static string UserDBFilePath = Path.GetFullPath("UserDB.csv");
+    static string DBFilePath = Path.GetFullPath("UserDB.csv");
     private string _id;
     //private string _name; 
     //private string _birthDate;
@@ -47,6 +47,7 @@ public class User : IEquatable<User>
     // }
     public User(string name, string birthDate, string email, string password, bool admin = false, List<Reservation> reservations = null)
     {
+        
         ID = Guid.NewGuid().ToString();
         Name = name;
         BirthDate = birthDate;
@@ -87,20 +88,20 @@ public class User : IEquatable<User>
     public static bool AddUser(User user)
     {
         //List<object> records = new()
-        CsvHandler.Append(UserDBFilePath, new List<object>{user});
+        CsvHandler.Append(DBFilePath, new List<object>{user});
         //CsvHandler.Write(UserDBFilePath);
         return true;
     }
 
     public static User GetUserWithValue(string header, object value)
     {
-        return CsvHandler.GetRecordWithValue<User>(UserDBFilePath, header, value);
+        return CsvHandler.GetRecordWithValue<User>(DBFilePath, header, value);
     }
 
     //"J" can't be replaced with "object", as MySetProperty in UpdateRecordWithValue needs List<J> rather than List<object>
     public static bool UpdateUserWithValue<J>(User user, string header, J value)
     {
-        return CsvHandler.UpdateRecordWithValue<User, J>(UserDBFilePath, user, header, value);
+        return CsvHandler.UpdateRecordWithValue<User, J>(DBFilePath, user, header, value);
     }
 
 

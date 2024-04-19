@@ -13,7 +13,6 @@ using System.Collections;
 
 public static class CsvHandler
 {
-
     public static List<T> Read<T>(string csvFile)
     {
         var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
@@ -41,7 +40,8 @@ public static class CsvHandler
         return true;
     }
  
-    public static bool Append(string csvFile, List<object> records){
+    public static bool Append<T>(string csvFile, List<T> records)
+    {
 
         bool fileEmpty = false;
         if(new FileInfo(csvFile).Length == 0) fileEmpty = true; //checks is file is empty
