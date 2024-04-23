@@ -26,7 +26,7 @@ public class UserController
     }
     public static void FilterMovies(string id, string option)
     {
-        char genreFilterInput;
+        // char genreFilterInput;
         List<Movie> Movies = JsonHandler.Read<Movie>("Model/MovieDB.json");
         User user = User.GetUserWithValue("ID", id);
         int age = Helper.GetUserAge(user);
@@ -196,7 +196,7 @@ public class UserController
         XToGoBack(id);
     }
 
-    public static string GetMovieByID(string screeningID)
+    public static string? GetMovieByID(string screeningID)
     {
         List<Movie> MovieList = JsonHandler.Read<Movie>("Model/MovieDB.json");
         foreach(Movie movie in MovieList)
@@ -206,7 +206,7 @@ public class UserController
         return null;
     }
 
-    public static Screening GetScreeningByID(string screeningID)
+    public static Screening? GetScreeningByID(string screeningID)
     {
         List<Screening> ScreeningList = JsonHandler.Read<Screening>("Model/ScreeningDB.json");
         foreach(Screening screening in ScreeningList)
