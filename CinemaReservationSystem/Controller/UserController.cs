@@ -17,7 +17,7 @@ public class UserController
         Console.WriteLine($"{"Title:",-40} | {"Age Rating:",-11} | {"Genre:",-11} | {"Description:"}");
         foreach (Movie movie in Movies)
         {
-            Console.WriteLine($"{movie.Title,-40} | {movie.AgeRating,-11} | {movie.Genre, -11} | {movie.Description}");
+            Console.WriteLine($"{Movies.IndexOf(movie) + 1} {movie.Title,-40} | {movie.AgeRating,-11} | {movie.Genre, -11} | {movie.Description}");
         }
         WouldYouLikeToSearch(id);
         Console.Clear();
@@ -199,10 +199,18 @@ public class UserController
 
     private static void SelectMovie(string id)
     {
+        List<Movie> movies = JsonHandler.Read<Movie>("Model/MovieDB.json");
         Movie? movie;
         do{
-        string movieName = Helper.GetValidInput("Please type movie title: ", Helper.IsNotNull);
-        movie = JsonHandler.GetByMovieName(movieName);
+        int movieNbr = Convert.ToInt32(Helper.GetValidInput("Please type movie number: ", Helper.IsValidInt));
+        try
+        {
+            movie = movies[movieNbr - 1];
+        }
+        catch (IndexOutOfRangeException)
+        {
+            movie = null;
+        }
         } while (movie == null);
         if (id.StartsWith("admin-")) AdminController.AdminMovieInterface(movie, id);
         else MovieInterface(movie, id);
