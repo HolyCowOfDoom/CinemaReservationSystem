@@ -12,7 +12,7 @@ public class AdminInterface
                 // seats te reserveren en op te slaan in de id van een employee. 
             case '2':
                 char FilterOption = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4',
-                "Filter options",  "1. Filter movies by the Age Rating\n 2. Filter Movies by Genre\n 3. Filter Movies by both\n 4. Exit Menu");
+                "Filter options",  "1. Filter movies by the Age Rating\n2. Filter Movies by Genre\n3. Filter Movies by both\n4. Exit Menu");
                 if(FilterOption == '1')
                 {
                     string option = "Age"; 
