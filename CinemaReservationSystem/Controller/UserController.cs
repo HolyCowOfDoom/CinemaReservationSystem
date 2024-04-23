@@ -182,13 +182,15 @@ public class UserController
         Console.WriteLine("└────────────────────────────────┴───────────────────────────────────────┴────────────────────────┴─────────┘");
         Console.WriteLine("ALL RESERVATIONS");
         int index = 0;
+        Console.WriteLine("┌───┬──────────────────────────────────────────────────────┬────────────────────────────────────┬───────────────┬───────────────────────┬───────────────────┐");
         foreach (Reservation reservation in user.Reservations)
         {
             index++;
             string movietitle = GetMovieByID(reservation.ScreeningID);
             Screening screening = GetScreeningByID(reservation.ScreeningID);
-            Console.WriteLine($"{index}. Movie name: {movietitle}; Screening Date: {screening.ScreeningDateTime} Reservation Price: {reservation.TotalPrice}; Seats: {string.Join(" ", reservation.SeatIDs)}");
+            Console.WriteLine($"│ {index} │ Movie name: {movietitle,-40} │ Screening Date: {screening.ScreeningDateTime, -16} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
         }
+        Console.WriteLine("└───┴──────────────────────────────────────────────────────┴────────────────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
         XToGoBack(id);
     }
 
@@ -205,7 +207,8 @@ public class UserController
     public static Screening GetScreeningByID(string screeningID)
     {
         List<Screening> ScreeningList = JsonHandler.Read<Screening>("Model/ScreeningDB.json");
-        foreach(Screening screening in ScreeningList){
+        foreach(Screening screening in ScreeningList)
+        {
             if (screening.ID == screeningID) return screening;
         }
         return null;
