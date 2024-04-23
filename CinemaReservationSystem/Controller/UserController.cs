@@ -177,14 +177,38 @@ public class UserController
 
     public static void ViewUser(string id){
         User user = User.GetUserWithValue( "ID", id);
-        Console.WriteLine("┌────────────────────────────────┬───────────────────────────────────────┬────────────────────────┐");
-        Console.WriteLine($"│ Username: {user.Name,-20} │ Email: {user.Email,-30} │ Birth date: {user.BirthDate} │");
-        Console.WriteLine("└────────────────────────────────┴───────────────────────────────────────┴────────────────────────┘");
+        Console.WriteLine("┌────────────────────────────────┬───────────────────────────────────────┬────────────────────────┬─────────┐");
+        Console.WriteLine($"│ Username: {user.Name,-20} │ Email: {user.Email,-30} │ Birth date: {user.BirthDate} │ Age: {Helper.GetUserAge(user),-2} │");
+        Console.WriteLine("└────────────────────────────────┴───────────────────────────────────────┴────────────────────────┴─────────┘");
+        Console.WriteLine("ALL RESERVATIONS");
+        int index = 0;
         foreach (Reservation reservation in user.Reservations)
         {
-            Console.WriteLine($"Reservation ID: {reservation.ScreeningID}; Reservation Price: {reservation.TotalPrice}; Seats: {string.Join(" ", reservation.SeatIDs)}");
+            index++;
+            string movietitle = GetMovieByID(reservation.ScreeningID);
+            Screening screening = GetScreeningByID(reservation.ScreeningID);
+            Console.WriteLine($"{index}. Movie name: {movietitle}; Screening Date: {screening.ScreeningDateTime} Reservation Price: {reservation.TotalPrice}; Seats: {string.Join(" ", reservation.SeatIDs)}");
         }
         XToGoBack(id);
+    }
+
+    public static string GetMovieByID(string screeningID)
+    {
+        List<Movie> MovieList = JsonHandler.Read<Movie>("Model/MovieDB.json");
+        foreach(Movie movie in MovieList)
+        {
+            if (movie.ScreeningIDs.Contains(screeningID)) return movie.Title;
+        }
+        return null;
+    }
+
+    public static Screening GetScreeningByID(string screeningID)
+    {
+        List<Screening> ScreeningList = JsonHandler.Read<Screening>("Model/ScreeningDB.json");
+        foreach(Screening screening in ScreeningList){
+            if (screening.ID == screeningID) return screening;
+        }
+        return null;
     }
 
     private static void WouldYouLikeToSearch(string id)

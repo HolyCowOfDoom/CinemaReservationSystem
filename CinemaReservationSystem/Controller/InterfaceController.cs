@@ -98,5 +98,4 @@ public class InterfaceController
             else UserInterface.GeneralMenu(id);
         }
     }
-
 }
