@@ -2,7 +2,7 @@ public class AdminInterface
 {
     public static void GeneralMenu(string id){
         char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7',
-        "General Menu",  "1. View all movies / Reserve seats\n 2. Filter Movies\n 3. See profile\n 4. Log out\n 5. Create Movie (ADMIN))\n 6. Add Admin (ADMIN)\n 7. Exit Admin Menu");
+        "General Menu",  "1. View all movies / Reserve seats\n2. Filter Movies\n3. See profile\n4. Create Movie (ADMIN))\n5. Add Admin (ADMIN)\n6. Exit Admin Menu");
         switch(DigitInput) 
         {
             case '1':
@@ -43,16 +43,12 @@ public class AdminInterface
                 UserController.ViewUser(id);
                 break;
             case '4':
-                UserController.LogOut();
-                break;
-                // Heeft geen id nodig, want called GeneralMenu zonder id.
-            case '5':
                 AdminController.CreateMovie(id);
                 break;
-            case '6':
+            case '5':
                 AdminController.RegisterAdmin(id);
                 break;
-            case '7':
+            case '6':
                 AdminController.LogOut();
                 break;
             default:

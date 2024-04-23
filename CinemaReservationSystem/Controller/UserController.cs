@@ -182,14 +182,10 @@ public class UserController
         Console.WriteLine("└────────────────────────────────┴───────────────────────────────────────┴────────────────────────┘");
         foreach (Reservation reservation in user.Reservations)
         {
-            Console.WriteLine($"Reservation Price: {reservation.TotalPrice}; Seats: {string.Join(" ", reservation.SeatIDs)}");
+            Console.WriteLine($"Reservation ID: {reservation.ScreeningID}; Reservation Price: {reservation.TotalPrice}; Seats: {string.Join(" ", reservation.SeatIDs)}");
         }
         XToGoBack(id);
     }
-
-        // Console.WriteLine("┌───────────────────────────────┬───────────────────────────────────────┬────────────────────────┬");
-        // Console.WriteLine($"│ Username: {user.Name,-20} │ Email: {user.Email,-30} │ Birth date: {user.BirthDate} │ User type: {user.uType} "); uType print welk user een customer of admin is.
-        // Console.WriteLine("└───────────────────────────────┴───────────────────────────────────────┴────────────────────────┴");
 
     private static void WouldYouLikeToSearch(string id)
     {
