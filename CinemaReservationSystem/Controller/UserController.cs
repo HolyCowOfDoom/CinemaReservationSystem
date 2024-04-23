@@ -14,11 +14,13 @@ public class UserController
 
     public static void ViewMovies(string id){
         List<Movie> Movies = JsonHandler.Read<Movie>("Model/MovieDB.json");
-        Console.WriteLine($"{"Title:",-40} | {"Age Rating:",-11} | {"Genre:",-11} | {"Description:"}");
+        Console.WriteLine("┌────┬──────────────────────────────────────────┬─────────────┬─────────────┬──────────────────────────────────────────────────────────────┐");
+        Console.WriteLine($"│ ID │ {"Title",-40} │ {"Age Rating",-11} │ {"Genre",-11} │ {"Description",-60} │");
         foreach (Movie movie in Movies)
         {
-            Console.WriteLine($"{Movies.IndexOf(movie) + 1} {movie.Title,-40} | {movie.AgeRating,-11} | {movie.Genre, -11} | {movie.Description}");
+            Console.WriteLine($"│ {Movies.IndexOf(movie) + 1, -2} │ {movie.Title,-40} │ {movie.AgeRating,-11} │ {movie.Genre, -11} │ {movie.Description,-60} │");
         }
+        Console.WriteLine("└────┴──────────────────────────────────────────┴─────────────┴─────────────┴──────────────────────────────────────────────────────────────┘");
         WouldYouLikeToSearch(id);
         Console.Clear();
     }
