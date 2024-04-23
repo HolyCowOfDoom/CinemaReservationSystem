@@ -21,7 +21,7 @@ public class AdminController
         do
         {
         string auditID = Helper.GetValidInput("Please input valid auditorium ID related to the screening:", Helper.IsNotNull);
-        screeningAud = JsonHandler.Get<Auditorium>(auditID, "AuditoriumDB.json");
+        screeningAud = JsonHandler.Get<Auditorium>(auditID, "Model/AuditoriumDB.json");
         } while (screeningAud == null);
 
         string dateTimeString = Helper.GetValidInput("Please input screening date: <DD-MM-YYYY HH:MM>", Helper.IsValidDT);

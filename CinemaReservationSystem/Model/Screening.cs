@@ -107,5 +107,5 @@ public class Screening : ObjectHasID
     }
 
     // updates this.screening to the database
-    public void UpdateScreening() => JsonHandler.Update<Screening>(this, "ScreeningDB.json");
+    public void UpdateScreening() => JsonHandler.Update<Screening>(this, "Model/ScreeningDB.json");
 }

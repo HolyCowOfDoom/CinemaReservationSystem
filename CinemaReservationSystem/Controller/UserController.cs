@@ -13,7 +13,7 @@ public class UserController
     }
 
     public static void ViewMovies(string id){
-        List<Movie> Movies = JsonHandler.Read<Movie>("MovieDB.json");
+        List<Movie> Movies = JsonHandler.Read<Movie>("Model/MovieDB.json");
         Console.WriteLine($"{"Title:",-40} | {"Age Rating:",-11} | {"Genre:",-11} | {"Description:"}");
         foreach (Movie movie in Movies)
         {
@@ -25,7 +25,7 @@ public class UserController
     public static void FilterMovies(string id, string option)
     {
         char genreFilterInput;
-        List<Movie> Movies = JsonHandler.Read<Movie>("MovieDB.json");
+        List<Movie> Movies = JsonHandler.Read<Movie>("Model/MovieDB.json");
         User user = User.GetUserWithValue("ID", id);
         int age = Helper.GetUserAge(user);
         List<Movie> sortedMovies = Movies.OrderBy(movie => movie.AgeRating).ToList(); // kan ook in de JsonHandler.cs
@@ -275,7 +275,7 @@ public class UserController
         if (input == "Return")
         {
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-            Movie movie = JsonHandler.Get<Movie>(screening.MovieID, "MovieDB.json");
+            Movie movie = JsonHandler.Get<Movie>(screening.MovieID, "Model/MovieDB.json");
 #pragma warning disable CS8604 // Possible null reference argument.
             MovieInterface(movie, id);
         }

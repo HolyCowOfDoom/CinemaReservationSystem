@@ -4,7 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 public class InterfaceController
 {
     public static void ViewMovies(){
-        List<Movie> Movies = JsonHandler.Read<Movie>("MovieDB.json");
+        List<Movie> Movies = JsonHandler.Read<Movie>("Model/MovieDB.json");
         foreach (Movie movie in Movies)
         {
             Console.WriteLine($"Title: {movie.Title,-40} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");

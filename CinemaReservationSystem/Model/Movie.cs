@@ -36,13 +36,13 @@ public class Movie : ObjectHasID
     public void RemoveScreening(string screeningID)
     {
         ScreeningIDs.Remove(screeningID);
-        JsonHandler.Remove<Screening>(screeningID, "ScreeningDB.json");
+        JsonHandler.Remove<Screening>(screeningID, "Model/ScreeningDB.json");
         UpdateMovie();
     }
 
     public List<Screening> GetAllMovieScreenings()
     {
-        List<Screening>? allScreenings = JsonHandler.Read<Screening>("ScreeningDB.json");
+        List<Screening>? allScreenings = JsonHandler.Read<Screening>("Model/ScreeningDB.json");
         List<Screening> movieScreenings = new List<Screening>();
         if (allScreenings != null)
         {
@@ -57,5 +57,5 @@ public class Movie : ObjectHasID
         return movieScreenings;
     }
     
-    public void UpdateMovie() => JsonHandler.Update<Movie>(this, "MovieDB.json");
+    public void UpdateMovie() => JsonHandler.Update<Movie>(this, "Model/MovieDB.json");
 }

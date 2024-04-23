@@ -81,7 +81,7 @@ public static class JsonHandler
 
     public static Movie? GetByMovieName(string name)
     {
-        List<Movie> listOfObjects = Read<Movie>("MovieDB.json");
+        List<Movie> listOfObjects = Read<Movie>("Model/MovieDB.json");
         foreach (Movie item in listOfObjects)
         {
             if (item.Title == name)

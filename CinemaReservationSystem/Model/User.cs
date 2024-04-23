@@ -6,7 +6,7 @@ using CsvHelper.Configuration.Attributes;
 
 public class User : IEquatable<User>
 {
-    static string DBFilePath = Path.GetFullPath("UserDB.csv");
+    static string DBFilePath = Path.GetFullPath("Model/UserDB.csv");
     private string _id;
     //private string _name; 
     //private string _birthDate;

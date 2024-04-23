@@ -153,7 +153,7 @@ public class Auditorium : ObjectHasID
 
     public void UpdateAuditoriumJson()
     {
-        JsonHandler.Update<Auditorium>(this, "AuditoriumDB.json");
+        JsonHandler.Update<Auditorium>(this, "Model/AuditoriumDB.json");
     }
 
     public override string ToString()
