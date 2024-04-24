@@ -182,7 +182,7 @@ public class Helper
         return new string(chars);
     }
 
-    public static string CaptureInput(int left, int top, string username = "")
+    public static (string, string) CaptureInput(int left, int top, string username = "")
     {
         Console.SetCursorPosition(left, top);
         string input;
@@ -196,15 +196,19 @@ public class Helper
 
             if (key.Key == ConsoleKey.Escape)
             {
-                // Return to previous menu
-                return "ESC";
+                return (input, "ESC");
             }
             else if (key.Key == ConsoleKey.Enter)
             {
-                // Validate input against database
                 Console.Write("\b \b");
                 Console.Clear();
-                return input;
+                return (input, "");
+            }
+            else if (key.Key == ConsoleKey.Tab)
+            {
+                Console.Write("\b \b");
+                Console.Clear();
+                return (input, "TAB");
             }
             else if (key.Key == ConsoleKey.Backspace && input.Length > 0)
             {
@@ -228,7 +232,7 @@ public class Helper
             Graphics.DrawLogin(input);
         }
     }
-    public static string CaptureInputPassword(int left, int top, string username)
+    public static (string, string) CaptureInputPassword(int left, int top, string username)
     {
         Console.SetCursorPosition(left, top);
         string input = string.Empty;
@@ -241,7 +245,13 @@ public class Helper
 
             if (key.Key == ConsoleKey.Escape)
             {
-                return "ESC";
+                return (input, "ESC");
+            }
+            else if (key.Key == ConsoleKey.Tab)
+            {
+                Console.Write("\b \b");
+                Console.Clear();
+                return (input, "TAB");
             }
             else if (key.Key == ConsoleKey.Spacebar)
             {
@@ -252,7 +262,7 @@ public class Helper
                 // Validate input against database
                 Console.Write("\b \b");
                 Console.Clear();
-                return input;
+                return (input, "");
             }
             else if (key.Key == ConsoleKey.Backspace && input.Length > 0)
             {

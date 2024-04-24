@@ -19,6 +19,7 @@ public class InterfaceController
     {
         string username;
         string password;
+        string EscorTab;
         User? user = null;
 
         username = string.Empty;
@@ -27,30 +28,47 @@ public class InterfaceController
         Console.Write("\b \b");
         Console.Clear();
 
+        string currentField = "username";
+
         while (true)
         {
-            username = Helper.CaptureInput(30, 1, username);
-            if (username == "ESC")
+            switch (currentField)
             {
-                username = string.Empty;
-                Interface.GeneralMenu();
-            }
-            else if (!string.IsNullOrEmpty(username))
-            {
-                user = User.GetUserWithValue("Name", username);
-                if (user is null) Helper.WriteInCenter("Username could not be found. Register account?");
-                password = Helper.CaptureInputPassword(30, 1, username);
-            }
-            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password) && password != "ESC")
-            {
-                if (password == user.Password)
-                {
-                    if (user.ID.StartsWith("admin-")) AdminInterface.GeneralMenu(user.ID);
-                    else UserInterface.GeneralMenu(user.ID);
+                case "username":
+                    (username, EscorTab) = Helper.CaptureInput(30, 1, username);
+                    if (EscorTab == "ESC")
+                    {
+                        Console.WriteLine("\b\b");
+                        Console.Clear();
+                        Interface.GeneralMenu();
+                        return;
+                    }
+                    else if (EscorTab == "TAB") RegisterUser();
+                    else if (!string.IsNullOrEmpty(username))
+                    {
+                        user = User.GetUserWithValue("Name", username);
+                        if (user is null) Helper.WriteInCenter("Username could not be found. Register account?");
+                        currentField = "password";
+                    }
                     break;
-                }
-            }
-                
+                case "password":
+                    (password, EscorTab) = Helper.CaptureInputPassword(30, 1, username);
+                    if (EscorTab == "ESC")
+                    {
+                        currentField = "username";
+                    }
+                    else if (EscorTab == "TAB") RegisterUser();
+                    else if (!string.IsNullOrEmpty(password))
+                    {
+                        if (password == user.Password)
+                        {
+                            if (user.ID.StartsWith("admin-")) AdminInterface.GeneralMenu(user.ID);
+                            else UserInterface.GeneralMenu(user.ID);
+                            break;
+                        }
+                    }
+                    break;
+            }  
         }
     }
 
