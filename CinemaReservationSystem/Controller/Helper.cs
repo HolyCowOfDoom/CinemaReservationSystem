@@ -182,24 +182,14 @@ public class Helper
         return new string(chars);
     }
 
-        public static void DrawLogin(string username = "", string password = "")
+    public static string CaptureInput(int left, int top, string username = "")
     {
-        Console.SetCursorPosition(0, 0);
-        WriteInCenter("╔═════════════════════════╗");
-        WriteInCenter("║           LOGIN         ║");
-        WriteInCenter("╠═════════════════════════╣");
-        WriteInCenter("║USERNAME: " + username.PadRight(15) + "║");
-        WriteInCenter("╠═════════════════════════╣");
-        WriteInCenter("║PASSWORD: " + password.PadRight(15) + "║");
-        WriteInCenter("╚═════════════════════════╝");
-    }
-
-    public static string CaptureInput(int left, int top)
-    {
-        DrawLogin();
         Console.SetCursorPosition(left, top);
-        string input = string.Empty;
-        int maxLength = 15;
+        string input;
+        if (!string.IsNullOrEmpty(username)) input = username;
+        else input = string.Empty;
+        int maxLength = 27;
+        Graphics.DrawLogin(username);
         while (true)
         {
             ConsoleKeyInfo key = Console.ReadKey(true);
@@ -207,61 +197,51 @@ public class Helper
             if (key.Key == ConsoleKey.Escape)
             {
                 // Return to previous menu
-                return string.Empty;
+                return "ESC";
             }
             else if (key.Key == ConsoleKey.Enter)
             {
                 // Validate input against database
+                Console.Write("\b \b");
                 Console.Clear();
                 return input;
-            }
-            else if (key.Key == ConsoleKey.Tab)
-            {
-                if (!string.IsNullOrEmpty(input))
-                {
-                    Console.Clear();
-                    input = CaptureInputPassword(left, top, input);
-                    return input;
-                }
             }
             else if (key.Key == ConsoleKey.Backspace && input.Length > 0)
             {
                 input = input.Remove(input.Length - 1);
                 Console.Write("\b \b");
-                ClearLineDo();
+                Console.Clear();
             }
             else if (input.Length == maxLength)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                WriteInCenter("Max input length exceeded");
+                WriteInCenter("Max input length reached");
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
             else if (char.IsLetterOrDigit(key.KeyChar) || char.IsSymbol(key.KeyChar) || char.IsPunctuation(key.KeyChar))
             {
                 input += key.KeyChar;
-                Console.Write(key.KeyChar);
             }
 
             // Clear the input area
-            ClearInputArea();
             // Update and display the login form with current input
-            DrawLogin(input);
+            Graphics.DrawLogin(input);
         }
     }
     public static string CaptureInputPassword(int left, int top, string username)
     {
-        DrawLogin(username);
         Console.SetCursorPosition(left, top);
         string input = string.Empty;
-        int maxLength = 15;
+        int maxLength = 27;
         bool spacebar = false;
+        Graphics.DrawLogin(username);
         while (true)
         {
             ConsoleKeyInfo key = Console.ReadKey(true);
 
             if (key.Key == ConsoleKey.Escape)
             {
-                return string.Empty;
+                return "ESC";
             }
             else if (key.Key == ConsoleKey.Spacebar)
             {
@@ -270,6 +250,7 @@ public class Helper
             else if (key.Key == ConsoleKey.Enter)
             {
                 // Validate input against database
+                Console.Write("\b \b");
                 Console.Clear();
                 return input;
             }
@@ -282,34 +263,137 @@ public class Helper
             else if (input.Length == maxLength)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                WriteInCenter("Max input length exceeded");
+                WriteInCenter("Max input length reached");
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
             else if (char.IsLetterOrDigit(key.KeyChar) || char.IsSymbol(key.KeyChar) || char.IsPunctuation(key.KeyChar))
             {
                 input += key.KeyChar;
             }
-
-            ClearInputArea();
             if (spacebar)
             {
-                DrawLogin(username, input);
+                Graphics.DrawLogin(username, input);
             }
             else
             {
-                DrawLogin(username, new string('*', input.Length));
+                Graphics.DrawLogin(username, new string('*', input.Length));
             }
         }
     }
-
-
-    public static void ClearInputArea()
+    public static (string, bool) CaptureInputRegister(int left, int top, int maxLength, string type, string username = "", string birthdate = "", string email = "", string password = "")
     {
-        Console.SetCursorPosition(0, 1);
-        Console.Write(new string(' ', 100));
+        Console.SetCursorPosition(left, top);
+        string input = string.Empty;
+        bool validated = false;
+        bool escapepressed = false;
+        switch (type)
+        {
+            case "username":
+                if (!string.IsNullOrEmpty(username)) input = username;
+                break;
+            case "birthdate":
+                if (!string.IsNullOrEmpty(birthdate)) input = birthdate;
+                break;
+            case "email":
+                if (!string.IsNullOrEmpty(email)) input = email;
+                break;
+            case "password":
+                if (!string.IsNullOrEmpty(password)) input = password;
+                break;
+        }
+
+        Graphics.DrawRegister(username, birthdate, email, password);
+        while (true)
+        {
+            ConsoleKeyInfo key = Console.ReadKey(true);
+
+            if (key.Key == ConsoleKey.Escape)
+            {
+                escapepressed = true;
+                return (input, escapepressed);
+            }
+            else if (key.Key == ConsoleKey.Enter)
+            {
+                switch (type)
+                {
+                    case "username":
+                        if (!IsValidUsername(input))
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            WriteInCenter("Invalid username. Must be atleast 3 chars long.");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                        }
+                        else validated = true;
+                        break;
+                    case "birthdate":
+                        if (!IsValidBD(input))
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            WriteInCenter("Invalid birthdate. Use format: dd-MM-yyyy.");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                        }
+                        else validated = true;
+                        break;
+                    case "email":
+                        if (!IsValidEmail(input))
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            WriteInCenter("""Invalid email. Must contain "@" and ".".""");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                        }
+                        else validated = true;
+                        break;
+                    case "password":
+                        if (!IsValidPassword(input))
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            WriteInCenter("Invalid password. Must be atleast 6 chars long and contain a digit.");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                        }
+                        else validated = true;
+                        break;
+                }
+                if (validated is true) return (input, escapepressed);
+            }
+            else if (key.Key == ConsoleKey.Backspace && input.Length > 0)
+            {
+                input = input.Remove(input.Length - 1);
+                Console.Write("\b \b");
+                Console.Clear();
+            }
+            else if (input.Length == maxLength)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                WriteInCenter("Max input length reached");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            else if (char.IsLetterOrDigit(key.KeyChar) || char.IsSymbol(key.KeyChar) || char.IsPunctuation(key.KeyChar))
+            {
+                Console.Write("\b \b");
+                Console.Clear();
+                input += key.KeyChar;
+            }
+
+            switch (type)
+            {
+                case "username":
+                    Graphics.DrawRegister(input, birthdate, email, password);
+                    break;
+                case "birthdate":
+                    Graphics.DrawRegister(username, input, email, password);
+                    break;
+                case "email":
+                    Graphics.DrawRegister(username, birthdate, input, password);
+                    break;
+                case "password":
+                    Graphics.DrawRegister(username, birthdate, email, input);
+                    break;
+            }
+
+        }
     }
 
-// everything about getting the valid input.
+    // everything about getting the valid input.
     public static string GetValidInput(string prompt, Func<string, bool> validation)
     {
         string input;
@@ -323,7 +407,7 @@ public class Helper
     }
     public static bool IsNotNull(string input) => !string.IsNullOrWhiteSpace(input);
     public static bool IsValidInt(string input) => input.All(char.IsDigit);
-    public static bool IsValidUsername(string input) => !string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 21;
+    public static bool IsValidUsername(string input) => !string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 28;
     public static bool IsValidEmail(string input) => !string.IsNullOrWhiteSpace(input) && input.Contains('@') && input.Contains('.') && input.Length < 31;
 
     public static bool IsValidPassword(string input)

@@ -47,6 +47,40 @@ public class Graphics
         Helper.WriteInCenter(bottomBorder);
     }
 
+    public static void DrawLogin(string username = "", string password = "")
+    {
+        Console.SetCursorPosition(0, 0);
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Helper.WriteInCenter("Login or press ESC to go back, press TAB to register an account.");
+        Console.ForegroundColor = ConsoleColor.Gray;
+        Helper.WriteInCenter("╔═════════════════════════════════════╗");
+        Helper.WriteInCenter("║                LOGIN                ║");
+        Helper.WriteInCenter("╠═════════════════════════════════════╣");
+        Helper.WriteInCenter("║USERNAME: " + username.PadRight(27) + "║");
+        Helper.WriteInCenter("╠═════════════════════════════════════╣");
+        Helper.WriteInCenter("║PASSWORD: " + password.PadRight(27) + "║");
+        Helper.WriteInCenter("╚═════════════════════════════════════╝");
+    }
+
+    public static void DrawRegister(string username = "", string birthdate = "", string email = "", string password = "")
+    {
+        Console.SetCursorPosition(0, 0);
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Helper.WriteInCenter("Register or press ESC to go back");
+        Console.ForegroundColor = ConsoleColor.Gray;
+        Helper.WriteInCenter("╔═════════════════════════════════════╗");
+        Helper.WriteInCenter("║               REGISTER              ║");
+        Helper.WriteInCenter("╠═════════════════════════════════════╣");
+        Helper.WriteInCenter("║USERNAME: " + username.PadRight(27) + "║");
+        Helper.WriteInCenter("╠═════════════════════════════════════╣");
+        Helper.WriteInCenter("║BIRTHDATE: " + birthdate.PadRight(26) + "║");
+        Helper.WriteInCenter("╠═════════════════════════════════════╣");
+        Helper.WriteInCenter("║EMAIL: " + email.PadRight(30) + "║");
+        Helper.WriteInCenter("╠═════════════════════════════════════╣");
+        Helper.WriteInCenter("║PASSWORD: " + password.PadRight(27) + "║");
+        Helper.WriteInCenter("╚═════════════════════════════════════╝");
+    }
+
     public void AuditoriumView(string Auditorium)
     {
         Console.Clear();
