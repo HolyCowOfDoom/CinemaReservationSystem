@@ -26,6 +26,7 @@ public class ReservationConverter : DefaultTypeConverter
 {
     public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
     {
+        if(text == "" || text is null) return new List<Reservation>();
         List<string> reservationsStr = text.Split("&").ToList();
         List<Reservation> reservations = new();
         foreach(string reservationStr in reservationsStr)

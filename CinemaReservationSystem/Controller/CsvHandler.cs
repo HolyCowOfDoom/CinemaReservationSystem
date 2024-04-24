@@ -1,13 +1,4 @@
 using System.Globalization;
-// using CsvHelper;
-// using CsvHelper.Configuration;
-// using Microsoft.VisualBasic;
-// //linq
-// using System;
-// using System.Collections.Generic;
-using System.Linq;
-// using System.Security.Cryptography;
-// using System.Collections.Concurrent;
 using System.Reflection;
 using System.Collections;
 
@@ -30,19 +21,18 @@ public static class CsvHandler
         return csvReader.GetRecords<T>().ToList();
     }
 
-    public static bool Write<T>(string csvFile, List<T> objectsList)
+    public static bool Write<T>(string csvFile, List<T> recordsList)
     {
         using StreamWriter writer = new(csvFile);
         using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
         csvWriter.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter()); 
         //csvWriter.Context.RegisterClassMap<UserClassMap>();
-        csvWriter.WriteRecords(objectsList);
+        csvWriter.WriteRecords(recordsList);
         return true;
     }
  
     public static bool Append<T>(string csvFile, List<T> records)
     {
-
         bool fileEmpty = false;
         if(new FileInfo(csvFile).Length == 0) fileEmpty = true; //checks is file is empty
         var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
@@ -50,8 +40,6 @@ public static class CsvHandler
             // Don't write the header again.
             HasHeaderRecord = fileEmpty ? true : false, //write header if file is empty
         };
-        
-        //Console.WriteLine(csvFile);
         StreamWriter writer = new(csvFile, true);
         CsvHelper.CsvWriter csvWriter = new(writer, config);
         csvWriter.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter());  
@@ -67,8 +55,8 @@ public static class CsvHandler
 
     //example (UserDBFilePath, "ID", 1) -> returns User obj with ID 1
     //example (UserDBFilePath, "Name", "Utku") -> returns User obj with Name Utku`
-    //T specifiec return type!
-    public static T GetRecordWithValue<T>(string csvFile, string header, object value) 
+    //T specifies return type!
+    public static T GetRecordWithValue<T>(string csvFile, string header, object hasValue) 
     {
          var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
         {
@@ -85,15 +73,15 @@ public static class CsvHandler
         csvReader.ReadHeader();
         while (csvReader.Read())
         {
-            object csvField = csvReader.GetField(value.GetType(), header); 
+            object csvField = csvReader.GetField(hasValue.GetType(), header); 
             if(csvField is ICollection)
             {
                 //reverse of //https://stackoverflow.com/questions/2837063/cast-object-to-generic-list
-                //casts generic (Reservation) list to object list
+                //casts generic (Reservation) list to object list, value is object
                 List<object> propertyList = (csvField as IEnumerable<object>).Cast<object>().ToList();
                 for(int i = 0; i < propertyList.Count; i++)
                 {
-                    if(value.Equals(propertyList[i])) 
+                    if(hasValue.Equals(propertyList[i])) 
                     //if (propertyList[i].Equals((object)value))
                     {
                         T record = csvReader.GetRecord<T>();
@@ -101,69 +89,28 @@ public static class CsvHandler
                     }
                 }
             }
-            else if(csvField.Equals(value))
+            else if(csvField.Equals(hasValue))
             {
                 T record = csvReader.GetRecord<T>();
                 return record; //will never be null due to if statement
             }
         }
-        //we'd rather not continue with this error, as returned record will be null and wll throw an exception elsewhere
+        //we'd rather not continue with this error, as returned record will be null and will throw an exception elsewhere
         //and we won't know why
-        throw new Exception($"Couldn't get record with {header} matching {value}, ");
+        throw new Exception($"Couldn't get record with {header} matching {hasValue}, ");
         //Console.WriteLine($"Couldn't get record with {header} matching {value}, ");
         //return default;
     }
 
-    // I never changed this method to work with Reservations so it's disabled for now
-    // public static bool UpdateRecordOfID<T>(string csvFile, string id, T newRecord)  //the newRecord MUST be instantiated using old ID in constructor!
-    // //OR use the copy constructor and change the field you want to change
-
-    // {
-    //     List<T> records = Read<T>(csvFile);
-    //     for(int i = 0; i < records.Count; i++)
-    //     {
-    //         object property = MyGetProperty<string, T>(records[i], "ID");
-    //         if(property != null){
-    //             string record_ID = (string)property;
-    //             if(record_ID == id){
-    //                 records[i] = newRecord;
-    //                 if (Write(csvFile, records)){
-    //                     Console.WriteLine("record changed succesfully");
-    //                     return true;
-    //                 }
-    //                 else Console.WriteLine("writing to file failed, somewhow");
-    //             }
-    //         }
-    //         else
-    //         {
-    //             Console.WriteLine("No property ID was found in record"); 
-    //             //break ?
-    //         }
-    //     }
-    //     return false;
-    // }
-
-
     //"J" can't be replaced with "object" as MySetProperty needs List<J> rather than List<object>
-    public static bool UpdateRecordWithValue<T, J>(string csvFile, T record, string header, J value)// where T : IEquatable<T>
+    public static bool UpdateRecordWithValue<T, J>(string csvFile, T record, string header, J newValue)// where T : IEquatable<T>
     {
-        // var method = typeof(CsvHandler).GetMethod("UpdateRecordWithValueExtension");
-        // var CsvHandlerRef = method.MakeGenericMethod(typeof(T), typeof(object));
-        // return (bool)CsvHandlerRef.Invoke(null, new object[] {csvFile, record, header, value});
-
-        // //change field of newRecord. using reflection because it's type T
-        // var constructor = typeof(T).GetConstructor(new[] {typeof(T)}); //gets copy constructor of record
-        // T newRecord = (T)constructor.Invoke(new object[] {record}); //creates T object using said constructor
-        // MethodInfo method = typeof(CsvHandler).GetMethod("MySetProperty"); //gets SetField method
-        // var genericmethod = method.MakeGenericMethod(typeof(T), typeof(J)); //makes it a generic method(glues <T, J> to it)
-        // genericmethod.Invoke(null, new object[] {newRecord, header, value}); //calls method with parameters
-        // //the SetField method sets newRecord.header = value
-
         List<T> records = Read<T>(csvFile);
         for(int i = 0; i < records.Count; i++)
         {
             //object propertyObject = MyGetProperty<object, T>(records[i], header);
             List<Reservation> reservations = (List<Reservation>)MyGetProperty<object, T>(records[i], header);
+            if(reservations is null) reservations = new();
             string ID = (string)MyGetProperty<string, T>(records[i], "ID");
             Console.WriteLine("ID: " + ID);
             foreach(Reservation reservation in reservations)
@@ -173,27 +120,21 @@ public static class CsvHandler
         }
         for(int i = 0; i < records.Count; i++) //for each record in DB
         {
+            Console.WriteLine(records[i]);
+            Console.WriteLine(record);
             if(records[i].Equals(record)) //if record in DB matches given record
             {
                 object propertyObject = MyGetProperty<object, T>(records[i], header); //get property of record in DB using header
                 if(propertyObject == null) break;
-                //if(propertyObject.GetType() == typeof(List<>))
                 Console.WriteLine("propertyObject: ", propertyObject);
                 if(propertyObject is ICollection) //if object associated with header is e.g. a List
                 {
                     //https://stackoverflow.com/questions/2837063/cast-object-to-generic-list
                     List<J> propertyList = (propertyObject as IEnumerable<J>).Cast<J>().ToList();
-                    propertyList.Add(value);
+                    propertyList.Add(newValue);
                     MySetProperty(records[i], header, propertyList);
-
-                    // MethodInfo SetListMethod = typeof(CsvHandler).GetMethod("MySetListProperty",
-                    // BindingFlags.NonPublic | BindingFlags.Static);
-                    // MethodInfo generic = SetListMethod.MakeGenericMethod(new[] {records[i].GetType(), propertyList[0].GetType()});
-                    // generic.Invoke(null, new object[] {records[i], header, propertyList});
-
-                    //MySetListProperty<T, object>(records[i], header, propertyList);
                     Write(csvFile, records);
-                    Console.WriteLine($"{value} was added to list of Property {header} ");
+                    Console.WriteLine($"{newValue} was added to list of Property {header} ");
                     return true;
                 }
                 else
@@ -201,42 +142,24 @@ public static class CsvHandler
                     // Type propertyType = propertyObject.GetType();
                     // var property= Convert.ChangeType(propertyObject, propertyType);
 
-                    MySetProperty(records[i], header, value);
+                    MySetProperty(records[i], header, newValue);
                     Write(csvFile, records);
                     Console.WriteLine($"Property {header} of record changed succesfully");
                     return true;
                 }
             }
-            
         }
-        Console.WriteLine($"in UpdateRecordWithValue(): No record found with property {header} matching value {value}");
+        Console.WriteLine($"in UpdateRecordWithValue(): No record found with property {header} matching value {newValue}");
         return false;
     }
 
 
-    private static void MySetProperty<T>(T objToChange, string propertyToChange, object value)
+    private static void MySetProperty<T>(T objToChange, string propertyToChange, object newValue)
     {
         PropertyInfo? property = typeof(T).GetProperty(propertyToChange);
-        if(property != null) property.SetValue(objToChange, value);
+        if(property != null) property.SetValue(objToChange, newValue);
         else Console.WriteLine($"property {propertyToChange} remains unchanged");
     } 
-
-    // private static void MySetListProperty<T, J>(T obj, string propertyToChange, List<J> value)
-    // {
-    //     PropertyInfo? property = typeof(T).GetProperty(propertyToChange);
-        
-    //     //var castValue = value.Cast() ;
-    //     if(property != null) 
-    //     {
-    //         //Array castValue = Array.CreateInstance(value[0].GetType(), value.Count); //empty array
-    //         //Array.Copy(value.ToArray(), castValue, value.Count); //copy to empty array
-    //         //var newList = value.Cast<J>().ToList();
-    //         //List<J> newlist = new(castValue)
-    //         //var newList = castValue;  
-    //         property.SetValue(obj, value);
-    //     }
-    //     else Console.WriteLine($"property {propertyToChange} remains unchanged");
-    // } 
 
     //must specify return type J in call because compiler can't figure out return type
     public static J MyGetProperty<J, T>(T record, string propertyToGet)
@@ -244,7 +167,7 @@ public static class CsvHandler
         PropertyInfo? propertyInfo = typeof(T).GetProperty(propertyToGet);
         if(propertyInfo != null)
             {
-            J property = (J)propertyInfo.GetValue(record);
+            J property = (J)propertyInfo.GetValue(record); //even with no reservations. this should not be returning null, but it is!!1
             Console.WriteLine($"property {propertyToGet} was found! it is {property}");
             if(property != null) return property;
             else

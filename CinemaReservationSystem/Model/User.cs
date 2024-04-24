@@ -27,24 +27,9 @@ public class User : IEquatable<User>
     [Name("Password")]
     public string Password {get => _password; private set => _password = value;}
     //add custom set if allowing user to change password
-    [Name("Reservations")]
-    public List<Reservation> Reservations {get; set;}
+    [Name("Reservations"), Optional]
+    public List<Reservation> Reservations {get; set;}// = new();
 
-    // public User(string name, string birthDate, string email, string password, bool admin, List<Reservation> reservations = null)
-    // {
-    //     // ID = CsvHandler.CountRecords(UserDBFilePath);
-
-    //     ID = admin ? "admin-" + Guid.NewGuid().ToString() : Guid.NewGuid().ToString();
-    //     Name = name;
-    //     BirthDate = birthDate;
-    //     Email = email;
-    //     _password = password;
-    //     Admin = admin;
-    //     //Reservations = new() {new Reservation(new List<string>{"1","2", "3"}, "1", 30)};
-    //     Reservations = reservations;
-    //     AddUser(this);
-        
-    // }
     public User(string name, string birthDate, string email, string password, bool admin = false, List<Reservation> reservations = null)
     {
         
@@ -55,7 +40,7 @@ public class User : IEquatable<User>
         _password = password;
         Admin = admin;
         if(reservations != null) Reservations = reservations;
-        else Reservations = new() {new Reservation(new List<string>() {"-1"}, "-1", -1)};
+        else Reservations = new(); //
         AddUser(this);
     }
     //for use by CsVHandler.Read(), copies ID rather than generating a new one
@@ -75,7 +60,7 @@ public class User : IEquatable<User>
         //AddUser(this);
         //_password = DecryptPassword(password); //passwords in csv are encrypted
     }
-    //for user by CsvHandler.WriteValueToRecordExtension() //is this still used?
+    //for use by CsvHandler.WriteValueToRecordExtension() //is this still used?
     public User(User user){
         ID = user.ID;
         Name = user.Name;
@@ -93,15 +78,15 @@ public class User : IEquatable<User>
         return true;
     }
 
-    public static User GetUserWithValue(string header, object value)
+    public static User GetUserWithValue(string header, object hasValue)
     {
-        return CsvHandler.GetRecordWithValue<User>(DBFilePath, header, value);
+        return CsvHandler.GetRecordWithValue<User>(DBFilePath, header, hasValue);
     }
 
     //"J" can't be replaced with "object", as MySetProperty in UpdateRecordWithValue needs List<J> rather than List<object>
-    public static bool UpdateUserWithValue<J>(User user, string header, J value)
+    public static bool UpdateUserWithValue<J>(User user, string header, J newValue)
     {
-        return CsvHandler.UpdateRecordWithValue<User, J>(DBFilePath, user, header, value);
+        return CsvHandler.UpdateRecordWithValue<User, J>(DBFilePath, user, header, newValue);
     }
 
 
@@ -129,28 +114,35 @@ public class User : IEquatable<User>
     public static bool operator!= (User? user1, User? user2)
     {
         return !(user1 == user2);
-        // if(user1 == null && user2 == null)
-        // {
-        //     return false;
-        // }
-        // return (user2 == null || user1 == null)
-        //     && !(user1.Name == user2.Name 
-        //             && user1.ID == user2.ID 
-        //             && user1.BirthDate == user2.BirthDate
-        //             && user1.Email == user2.Email
-        //             && user1.Password == user2.Password)
-        //             && user1.Reservations.SequenceEqual(user2.Reservations);
     }
     public bool Equals(User other)
     {
+        bool compareList = true;
         if(other is null) return false;
 
-        return (Name == other.Name 
+        // Reservations can not be null anymore, they're just empty, which these checks don't cover
+        // still leaving this here for a little bit untill I'm sure we won't need these checks
+        // if(Reservations == null && other.Reservations == null){
+        //     compareList = false;
+        // }
+        // else if (Reservations == null || other.Reservations == null)
+        // {
+        //     return false; //if one of them is null and the other isn't
+        // }
+        // else if (Reservations.Contains(null) || other.Reservations.Contains(null))
+        // {
+        //     return false; //if any of them contains a null reference
+        // }
+
+        //if neither is/has null then compare as usual
+        bool returnValue = Name == other.Name 
                     && ID == other.ID 
                     && BirthDate == other.BirthDate
                     && Email == other.Email
-                    && Password == other.Password)
-                    && Reservations.SequenceEqual(other.Reservations);
+                    && Password == other.Password
+                    && (compareList ? Reservations.SequenceEqual(other.Reservations) : true);
+        return returnValue;
+                    
     }
     //this last line is because the one above can't override Equals due to a signature mismatch due to "User other"
     public override bool Equals(object obj) => obj is User && Equals(obj as User);
@@ -176,133 +168,6 @@ public class User : IEquatable<User>
     //     }
     //     return decrypted;
     // }
-    // public static bool ChangeName(int id, string newName){
-    //     string currentName = GetNameFromID(id);
-    //     if(newName == currentName){
-    //         Console.WriteLine($"User's name and entered name({newName}) are identical");
-    //         return false;
-    //     }
-    //     else if(string.IsNullOrWhiteSpace(newName))
-    //     {
-    //         Console.WriteLine("Entered name was null or whitespace");
-    //         return false;
-    //     }
-    //     else{
-    //         //CsvHandler.Write(UserDBFilePath);
-    //         //SetNameOfID(id, newName);
-    //         return true;
-    //     }
-    // }
-
-    // public static bool ChangeBirthDate(int id, string birthDate){
-    //     string currentBirthDate = GetBirthDateFromID(id);
-    //     if(birthDate == currentBirthDate){
-    //         Console.WriteLine($"User's birth date and entered birth date({birthDate}) are identical");
-    //         return false;
-    //     }
-    //     else if(string.IsNullOrWhiteSpace(birthDate))
-    //     {
-    //         Console.WriteLine("Entered birth date was null or whitespace");
-    //         return false;
-    //     }
-    //     else{
-    //         //CsvHandler.Write(UserDBFilePath);
-    //         //SetBirthDateOfID(id, birthDate);
-    //         return true;
-    //     }
-    // }
-
-    // public static bool ChangeEmail(int id, string email){
-    //     string currentEmail = GetEmailFromID(id);
-    //     if(email == currentEmail){
-    //         Console.WriteLine($"User's email and entered email({email}) are identical");
-    //         return false;
-    //     }
-    //     else if(string.IsNullOrWhiteSpace(email))
-    //     {
-    //         Console.WriteLine("Entered email was null or whitespace");
-    //         return false;
-    //     }
-    //     else{
-    //         //CsvHandler.Write(UserDBFilePath);
-    //         //SetEmailOfID(id, email);
-    //         return true;
-    //     }
-    // }
-
-    // public static int GetIDFromName(string name)
-    // {
-    //     try{
-    //         int id = 0;
-    //         //load from csv/Users
-    //         //CsvHandler.Read(UserDBFilePath);
-    //         return id;
-    //     } catch(Exception e){ //catch specific csv exceptions
-    //         Console.WriteLine(e);
-    //     }
-    //     return -1;
-    // }
-    // //add try-catch to functions below (or is try-catch not even necessary at all?)
-
-    // public static string GetNameFromID(int id)
-    // {
-    //     string name = "";
-    //     //load from csv/Users
-    //     //CsvHandler.Read(UserDBFilePath);
-    //     return name;
-    // }
-
-    // public static string GetBirthDateFromID(int id)
-    // {
-    //     string birthDate = "";
-    //     //load from csv/Users
-    //     //CsvHandler.Read(UserDBFilePath);
-    //     return birthDate;
-    // }
-
-    // public static string GetEmailFromID(int id)
-    // {
-    //     string email = "";
-    //     //load from csv/Users
-    //     //CsvHandler.Read(UserDBFilePath);
-    //     return email;
-    // }
-
-    // public static string GetPasswordFromID(int id) //is this secure? rn callers must handle security/validation
-    // {
-    //     string password = "";
-    //     //load from csv/Users
-    //     //CsvHandler.Read(UserDBFilePath);
-    //     return password;
-    // }
-
-    // sets maybe not necessary anymore
-    // public static bool SetNameOfID(int id, string name)
-    // {
-    //     //update Users(?)
-    //     //write to csv
-    //     return true;
-    // }
-
-    // public static bool SetBirthDateOfID(int id, string birthDate)
-    // {
-    //     //update Users(?)
-    //     //write to csv
-    //     return true;
-    // }
-
-    // public static bool SetEmailOfID(int id, string email)
-    // {
-    //     //update Users(?)
-    //     //write to csv
-    //     return true;
-    // }
-
-    // public static bool SetPasswordOfID(int id, string password)
-    // {
-    //     //update Users(?)
-    //     //write to csv
-    //     return true;
-    // }
+   
 }
 
