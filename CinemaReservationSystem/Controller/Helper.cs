@@ -244,13 +244,19 @@ public class Helper
                 switch (type)
                 {
                     case "username":
-                        if (!IsValidUsernameLog(input))
+                        if (!IsValidUsernameLog(input) && Case != "register")
                         {
                             Console.ForegroundColor = ConsoleColor.DarkRed;
                             WriteInCenter("Invalid username. Must be atleast 3 chars long.");
                             Console.ForegroundColor = ConsoleColor.Gray;
                         }
-                        else validated = true;
+                        else if (!IsValidUsername(input) && Case == "register")
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            WriteInCenter("Username already registered");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                        }
+                        else if (!IsValidUsernameLog(input)) validated = true;
                         break;
                     case "birthdate":
                         if (!IsValidBD(input))
