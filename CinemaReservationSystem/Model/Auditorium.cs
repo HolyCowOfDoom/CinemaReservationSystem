@@ -1,3 +1,4 @@
+
 public class Auditorium : ObjectHasID
 {
     public List<Seat> Seats { get; }
