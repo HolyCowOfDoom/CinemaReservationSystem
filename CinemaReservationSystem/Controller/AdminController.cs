@@ -37,6 +37,7 @@ public class AdminController
         string birthDate = string.Empty;
         string email = string.Empty;
         string password = string.Empty;
+        string escapetab = string.Empty;
 
         Console.CursorVisible = false;
         Console.WriteLine("\b\b");
@@ -50,13 +51,17 @@ public class AdminController
             switch (currentField)
             {
                 case "username":
-                    (username, bool escapeUsername) = Helper.CaptureInputRegister(30, 1, 27, "username", username, birthDate, email, password);
-                    if (escapeUsername)
+                    (username, escapetab) = Helper.Catchinput(30, 1, 27, "username", "register", username, birthDate, email, password);
+                    if (escapetab == "ESC")
                     {
                         Console.WriteLine("\b\b");
                         Console.Clear();
                         Interface.GeneralMenu();
                         return;
+                    }
+                    else if (escapetab == "TAB")
+                    {
+                        break;
                     }
                     else if (!string.IsNullOrEmpty(username))
                     {
@@ -65,8 +70,15 @@ public class AdminController
                     break;
 
                 case "birthdate":
-                    (birthDate, bool escapeBirthDate) = Helper.CaptureInputRegister(30, 1, 10, "birthdate", username, birthDate, email, password);
-                    if (escapeBirthDate)
+                    (birthDate, escapetab) = Helper.Catchinput(30, 1, 10, "birthdate", "register", username, birthDate, email, password);
+                    if (escapetab == "ESC")
+                    {
+                        Console.WriteLine("\b\b");
+                        Console.Clear();
+                        Interface.GeneralMenu();
+                        return;
+                    }
+                    else if (escapetab == "TAB")
                     {
                         currentField = "username";
                     }
@@ -77,8 +89,15 @@ public class AdminController
                     break;
 
                 case "email":
-                    (email, bool escapeEmail) = Helper.CaptureInputRegister(30, 1, 30, "email", username, birthDate, email, password);
-                    if (escapeEmail)
+                    (email, escapetab) = Helper.Catchinput(30, 1, 30, "email", "register", username, birthDate, email, password);
+                    if (escapetab == "ESC")
+                    {
+                        Console.WriteLine("\b\b");
+                        Console.Clear();
+                        Interface.GeneralMenu();
+                        return;
+                    }
+                    else if (escapetab == "TAB")
                     {
                         currentField = "birthdate";
                     }
@@ -89,8 +108,15 @@ public class AdminController
                     break;
 
                 case "password":
-                    (password, bool escapePassword) = Helper.CaptureInputRegister(30, 1, 27, "password", username, birthDate, email, password);
-                    if (escapePassword)
+                    (password, escapetab) = Helper.Catchinput(30, 1, 27, "password", "register", username, birthDate, email, password);
+                    if (escapetab == "ESC")
+                    {
+                        Console.WriteLine("\b\b");
+                        Console.Clear();
+                        Interface.GeneralMenu();
+                        return;
+                    }
+                    else if (escapetab == "TAB")
                     {
                         currentField = "email";
                     }
