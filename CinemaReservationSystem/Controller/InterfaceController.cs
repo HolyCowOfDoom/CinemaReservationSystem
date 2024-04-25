@@ -47,8 +47,11 @@ public class InterfaceController
                     else if (!string.IsNullOrEmpty(username))
                     {
                         user = User.GetUserWithValue("Name", username);
-                        if (user is null) Helper.WriteInCenter("Username could not be found. Register account?");
-                        currentField = "password";
+                        if (user is null){
+                            Helper.WriteInCenter("Username could not be found. Register account?");
+                            currentField = "username";
+                        }
+                        else currentField = "password";
                     }
                     break;
                 case "password":
