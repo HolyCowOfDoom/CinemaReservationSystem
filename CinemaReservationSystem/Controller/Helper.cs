@@ -417,7 +417,12 @@ public class Helper
     }
     public static bool IsNotNull(string input) => !string.IsNullOrWhiteSpace(input);
     public static bool IsValidInt(string input) => input.All(char.IsDigit);
-    public static bool IsValidUsername(string input) => !string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 28;
+    public static bool IsValidUsername(string input)
+    { 
+        if(!string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 28)
+            return true;
+        return false;
+    }
     public static bool IsValidEmail(string input) => !string.IsNullOrWhiteSpace(input) && input.Contains('@') && input.Contains('.') && input.Length < 31;
 
     public static bool IsValidPassword(string input)
@@ -441,13 +446,21 @@ public class Helper
         string dateFormat = "dd-MM-yyyy";
         if (DateTime.TryParseExact(input, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result))
         {
-            return true;
+            if (result.Date <= DateTime.Today)
+            {
+                return true; // Goede verjaardag
+            }
+            else
+            {
+                return false; // Datum is not niet geweest, dus kan niet geboren zijn
+            }
         }
         else
         {
-            return false;
+            return false; // Verkeerde format
         }
     }
+
 
     public static bool IsValidDT(string input)
     {
