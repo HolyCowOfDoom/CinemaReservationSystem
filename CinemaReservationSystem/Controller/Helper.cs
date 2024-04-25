@@ -152,7 +152,7 @@ public class Helper
     public static void WriteColoredLetter(string letters)
     {
         Char[] array = letters.ToCharArray();
-        char[] yellow = { 'S', 'B', 'G', 'P', 'A', 'V', 'F', 'T', 'H', '1', '2', '3', '4', '5' };
+        char[] yellow = { 'S', 'B', 'G', 'P', 'U', 'V', 'F', 'T', 'H', '1', '2', '3', '4', '5' };
 
         foreach (Char c in array)
         {
@@ -168,11 +168,12 @@ public class Helper
             }
             else
             {
-                Console.ForegroundColor = System.ConsoleColor.White;
+                Console.ForegroundColor = System.ConsoleColor.Gray;
                 Console.Write(c);
             }
         }
         Console.WriteLine();
+        Console.ForegroundColor = System.ConsoleColor.Gray;
     }
 
     public static string ReplaceAt(string input, int index, char newChar)
@@ -182,120 +183,14 @@ public class Helper
         return new string(chars);
     }
 
-    public static (string, string) CaptureInput(int left, int top, string username = "")
-    {
-        Console.SetCursorPosition(left, top);
-        string input;
-        if (!string.IsNullOrEmpty(username)) input = username;
-        else input = string.Empty;
-        int maxLength = 27;
-        Graphics.DrawLogin(username);
-        while (true)
-        {
-            ConsoleKeyInfo key = Console.ReadKey(true);
-
-            if (key.Key == ConsoleKey.Escape)
-            {
-                return (input, "ESC");
-            }
-            else if (key.Key == ConsoleKey.Enter)
-            {
-                Console.Write("\b \b");
-                Console.Clear();
-                return (input, "");
-            }
-            else if (key.Key == ConsoleKey.Tab)
-            {
-                Console.Write("\b \b");
-                Console.Clear();
-                return (input, "TAB");
-            }
-            else if (key.Key == ConsoleKey.Backspace && input.Length > 0)
-            {
-                input = input.Remove(input.Length - 1);
-                Console.Write("\b \b");
-                Console.Clear();
-            }
-            else if (input.Length == maxLength)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                WriteInCenter("Max input length reached");
-                Console.ForegroundColor = ConsoleColor.Gray;
-            }
-            else if (char.IsLetterOrDigit(key.KeyChar) || char.IsSymbol(key.KeyChar) || char.IsPunctuation(key.KeyChar))
-            {
-                input += key.KeyChar;
-            }
-
-            // Clear the input area
-            // Update and display the login form with current input
-            Graphics.DrawLogin(input);
-        }
-    }
-    public static (string, string) CaptureInputPassword(int left, int top, string username)
+    public static (string, string) Catchinput(int left, int top, int maxLength, string type, string Case, string username = "", string birthdate = "", string email = "", string password = "")
     {
         Console.SetCursorPosition(left, top);
         string input = string.Empty;
-        int maxLength = 27;
-        bool spacebar = false;
-        Graphics.DrawLogin(username);
-        while (true)
-        {
-            ConsoleKeyInfo key = Console.ReadKey(true);
-
-            if (key.Key == ConsoleKey.Escape)
-            {
-                return (input, "ESC");
-            }
-            else if (key.Key == ConsoleKey.Tab)
-            {
-                Console.Write("\b \b");
-                Console.Clear();
-                return (input, "TAB");
-            }
-            else if (key.Key == ConsoleKey.Spacebar)
-            {
-                spacebar = !spacebar;
-            }
-            else if (key.Key == ConsoleKey.Enter)
-            {
-                // Validate input against database
-                Console.Write("\b \b");
-                Console.Clear();
-                return (input, "");
-            }
-            else if (key.Key == ConsoleKey.Backspace && input.Length > 0)
-            {
-                input = input.Remove(input.Length - 1);
-                Console.Write("\b \b");
-                Console.Clear();
-            }
-            else if (input.Length == maxLength)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                WriteInCenter("Max input length reached");
-                Console.ForegroundColor = ConsoleColor.Gray;
-            }
-            else if (char.IsLetterOrDigit(key.KeyChar) || char.IsSymbol(key.KeyChar) || char.IsPunctuation(key.KeyChar))
-            {
-                input += key.KeyChar;
-            }
-            if (spacebar)
-            {
-                Graphics.DrawLogin(username, input);
-            }
-            else
-            {
-                Graphics.DrawLogin(username, new string('*', input.Length));
-            }
-        }
-    }
-    public static (string, bool) CaptureInputRegister(int left, int top, int maxLength, string type, string username = "", string birthdate = "", string email = "", string password = "")
-    {
-        Console.SetCursorPosition(left, top);
-        string input = string.Empty;
+        string taboresc = string.Empty;
         bool validated = false;
-        bool escapepressed = false;
+        bool spacebar = false;
+        
         switch (type)
         {
             case "username":
@@ -312,15 +207,37 @@ public class Helper
                 break;
         }
 
-        Graphics.DrawRegister(username, birthdate, email, password);
+        if (Case == "register") Graphics.DrawRegister(username, birthdate, email, password);
+        else if (Case == "login") Graphics.DrawLogin(input);
+        else if (Case == "loginpassword")
+        {
+            if (spacebar)
+            {
+                Graphics.DrawLogin(username, input);
+            }
+            else
+            {
+                Graphics.DrawLogin(username, new string('*', input.Length));
+            }
+        }
+
         while (true)
         {
             ConsoleKeyInfo key = Console.ReadKey(true);
 
             if (key.Key == ConsoleKey.Escape)
             {
-                escapepressed = true;
-                return (input, escapepressed);
+                taboresc = "ESC";
+                return (input, taboresc);
+            }
+            else if (key.Key == ConsoleKey.Tab)
+            {
+                taboresc = "TAB";
+                return (input, taboresc);
+            }
+            else if (key.Key == ConsoleKey.Spacebar && Case == "loginpassword")
+            {
+                spacebar = !spacebar;
             }
             else if (key.Key == ConsoleKey.Enter)
             {
@@ -363,7 +280,7 @@ public class Helper
                         else validated = true;
                         break;
                 }
-                if (validated is true) return (input, escapepressed);
+                if (validated is true) return (input, taboresc);
             }
             else if (key.Key == ConsoleKey.Backspace && input.Length > 0)
             {
@@ -384,22 +301,38 @@ public class Helper
                 input += key.KeyChar;
             }
 
-            switch (type)
-            {
-                case "username":
-                    Graphics.DrawRegister(input, birthdate, email, password);
-                    break;
-                case "birthdate":
-                    Graphics.DrawRegister(username, input, email, password);
-                    break;
-                case "email":
-                    Graphics.DrawRegister(username, birthdate, input, password);
-                    break;
-                case "password":
-                    Graphics.DrawRegister(username, birthdate, email, input);
-                    break;
-            }
 
+            
+            if (Case == "login") Graphics.DrawLogin(input);
+            else if (Case == "loginpassword")
+            {
+                if (spacebar)
+                {
+                    Graphics.DrawLogin(username, input);
+                }
+                else
+                {
+                    Graphics.DrawLogin(username, new string('*', input.Length));
+                }
+            }
+            else if (Case == "register")
+            {
+                switch (type)
+                {
+                    case "username":
+                        Graphics.DrawRegister(input, birthdate, email, password);
+                        break;
+                    case "birthdate":
+                        Graphics.DrawRegister(username, input, email, password);
+                        break;
+                    case "email":
+                        Graphics.DrawRegister(username, birthdate, input, password);
+                        break;
+                    case "password":
+                        Graphics.DrawRegister(username, birthdate, email, input);
+                        break;
+                }
+            }
         }
     }
 

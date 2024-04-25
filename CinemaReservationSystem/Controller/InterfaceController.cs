@@ -19,7 +19,7 @@ public class InterfaceController
     {
         string username;
         string password;
-        string EscorTab;
+        string EscorTaborshift;
         User? user = null;
 
         username = string.Empty;
@@ -35,32 +35,45 @@ public class InterfaceController
             switch (currentField)
             {
                 case "username":
-                    (username, EscorTab) = Helper.CaptureInput(30, 1, username);
-                    if (EscorTab == "ESC")
+                    (username, EscorTaborshift) = Helper.Catchinput(30, 1, 27, "username", "login", username);
+                    if (EscorTaborshift == "ESC")
                     {
                         Console.WriteLine("\b\b");
                         Console.Clear();
                         Interface.GeneralMenu();
                         return;
                     }
-                    else if (EscorTab == "TAB") RegisterUser();
+                    else if (EscorTaborshift == "TAB") break;
+                    else if (EscorTaborshift == "SHIFT") RegisterUser();
                     else if (!string.IsNullOrEmpty(username))
                     {
                         user = User.GetUserWithValue("Name", username);
-                        if (user is null){
-                            Helper.WriteInCenter("Username could not be found. Register account?");
-                            currentField = "username";
+
+                        if (user is null)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            char yorn = Helper.ReadInput((char c) => c == 'y' || c == 'n', "username not found", "Username could not be found. Register account? Y/N");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            if (yorn == 'y') RegisterUser();
+                            else LogIn();
                         }
-                        else currentField = "password";
+                        currentField = "password";
                     }
                     break;
                 case "password":
-                    (password, EscorTab) = Helper.CaptureInputPassword(30, 1, username);
-                    if (EscorTab == "ESC")
+                    (password, EscorTaborshift) = Helper.Catchinput(30, 1, 27, "password", "loginpassword", username, "", "", password);
+                    if (EscorTaborshift == "ESC")
+                    {
+                        Console.WriteLine("\b\b");
+                        Console.Clear();
+                        Interface.GeneralMenu();
+                        return;
+                    }
+                    else if (EscorTaborshift == "TAB")
                     {
                         currentField = "username";
                     }
-                    else if (EscorTab == "TAB") RegisterUser();
+                    else if (EscorTaborshift == "SHIFT") RegisterUser();
                     else if (!string.IsNullOrEmpty(password))
                     {
                         if (password == user.Password)
@@ -82,6 +95,7 @@ public class InterfaceController
         string birthDate = string.Empty;
         string email = string.Empty;
         string password = string.Empty;
+        string escapetab = string.Empty;
 
         Console.CursorVisible = false;
         Console.WriteLine("\b\b");
@@ -95,13 +109,17 @@ public class InterfaceController
             switch (currentField)
             {
                 case "username":
-                    (username, bool escapeUsername) = Helper.CaptureInputRegister(30, 1, 27, "username", username, birthDate, email, password);
-                    if (escapeUsername)
+                    (username, escapetab) = Helper.Catchinput(30, 1, 27, "username", "register", username, birthDate, email, password);
+                    if (escapetab == "ESC")
                     {
                         Console.WriteLine("\b\b");
                         Console.Clear();
                         Interface.GeneralMenu();
                         return;
+                    }
+                    else if (escapetab == "TAB")
+                    {
+                        break;
                     }
                     else if (!string.IsNullOrEmpty(username))
                     {
@@ -110,8 +128,15 @@ public class InterfaceController
                     break;
 
                 case "birthdate":
-                    (birthDate, bool escapeBirthDate) = Helper.CaptureInputRegister(30, 1, 10, "birthdate", username, birthDate, email, password);
-                    if (escapeBirthDate)
+                    (birthDate, escapetab) = Helper.Catchinput(30, 1, 10, "birthdate", "register", username, birthDate, email, password);
+                    if (escapetab == "ESC")
+                    {
+                        Console.WriteLine("\b\b");
+                        Console.Clear();
+                        Interface.GeneralMenu();
+                        return;
+                    }
+                    else if (escapetab == "TAB")
                     {
                         currentField = "username";
                     }
@@ -122,8 +147,15 @@ public class InterfaceController
                     break;
 
                 case "email":
-                    (email, bool escapeEmail) = Helper.CaptureInputRegister(30, 1, 30, "email", username, birthDate, email, password);
-                    if (escapeEmail)
+                    (email, escapetab) = Helper.Catchinput(30, 1, 30, "email", "register", username, birthDate, email, password);
+                    if (escapetab == "ESC")
+                    {
+                        Console.WriteLine("\b\b");
+                        Console.Clear();
+                        Interface.GeneralMenu();
+                        return;
+                    }
+                    else if (escapetab == "TAB")
                     {
                         currentField = "birthdate";
                     }
@@ -134,8 +166,15 @@ public class InterfaceController
                     break;
 
                 case "password":
-                    (password, bool escapePassword) = Helper.CaptureInputRegister(30, 1, 27, "password", username, birthDate, email, password);
-                    if (escapePassword)
+                    (password, escapetab) = Helper.Catchinput(30, 1, 27, "password", "register", username, birthDate, email, password);
+                    if (escapetab == "ESC")
+                    {
+                        Console.WriteLine("\b\b");
+                        Console.Clear();
+                        Interface.GeneralMenu();
+                        return;
+                    }
+                    else if (escapetab == "TAB")
                     {
                         currentField = "email";
                     }

@@ -51,7 +51,7 @@ public class Graphics
     {
         Console.SetCursorPosition(0, 0);
         Console.ForegroundColor = ConsoleColor.Blue;
-        Helper.WriteInCenter("Login or press ESC to go back, press TAB to register an account.");
+        Helper.WriteInCenter("Login or press ESC to go back to menu, press TAB to register an account.");
         Console.ForegroundColor = ConsoleColor.Gray;
         Helper.WriteInCenter("╔═════════════════════════════════════╗");
         Helper.WriteInCenter("║                LOGIN                ║");
@@ -66,7 +66,7 @@ public class Graphics
     {
         Console.SetCursorPosition(0, 0);
         Console.ForegroundColor = ConsoleColor.Blue;
-        Helper.WriteInCenter("Register or press ESC to go back");
+        Helper.WriteInCenter("Register, press TAB to go back a field or press ESC to go to back to menu.");
         Console.ForegroundColor = ConsoleColor.Gray;
         Helper.WriteInCenter("╔═════════════════════════════════════╗");
         Helper.WriteInCenter("║               REGISTER              ║");
@@ -81,13 +81,62 @@ public class Graphics
         Helper.WriteInCenter("╚═════════════════════════════════════╝");
     }
 
-    public void AuditoriumView(string Auditorium)
+    public static void AuditoriumView(string auditorium, int width, int maxindex, int mintopindex)
     {
-        Console.Clear();
-        int indexPos = 0;
-        var newmap = Helper.ReplaceAt(Auditorium, indexPos + 4, Convert.ToChar("X"));
+        Console.CursorVisible = false;
 
+        int indexPos = 0;
+        var newmap = Helper.ReplaceAt(auditorium, indexPos, 'X');
+
+        Console.WriteLine(indexPos);
         Helper.WriteColoredLetter(newmap);
+
+        while (true)
+        {
+            ConsoleKeyInfo key = Console.ReadKey(true);
+            Console.Write("\b \b");
+            Console.Clear();
+
+            if (key.Key == ConsoleKey.LeftArrow)
+            {
+                if (indexPos - 2 == - 2) indexPos = maxindex;
+                else if (indexPos - 2 >= 0 && indexPos - 2 <= maxindex)
+                {
+                    indexPos -= 2;
+                }
+                Console.WriteLine(indexPos);
+
+            }
+            else if (key.Key == ConsoleKey.RightArrow)
+            {
+                if (indexPos + 2 == maxindex + 2) indexPos = 0;
+                else if (indexPos + 2 >= 0 && indexPos + 2 <= maxindex)
+                {
+                    indexPos += 2;
+                }
+                Console.WriteLine(indexPos);
+            }
+            else if (key.Key == ConsoleKey.DownArrow)
+            {
+                if (indexPos + width >= maxindex && indexPos + width <= maxindex + width + 2) indexPos -= mintopindex;
+                else if (indexPos + width >= 0 && indexPos + width <= maxindex)
+                {
+                    indexPos += width + 2;
+                }
+                Console.WriteLine(indexPos);
+            }
+            else if (key.Key == ConsoleKey.UpArrow)
+            {
+                if (indexPos - width >= - width && indexPos - width <= 0) indexPos += mintopindex;
+                else if (indexPos - width >= 0 && indexPos - width <= maxindex)
+                {
+                    indexPos -= width + 2;
+                }
+                Console.WriteLine(indexPos);
+            }
+            newmap = Helper.ReplaceAt(auditorium, indexPos, 'X');
+            Helper.WriteColoredLetter(newmap);
+        }
     }
 
     public static void AudiVisual()
