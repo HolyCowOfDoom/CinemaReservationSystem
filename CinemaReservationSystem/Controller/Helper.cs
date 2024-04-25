@@ -425,16 +425,26 @@ public class Helper
         {
             foreach(User user in users)  
             {
-                if (user.Name.Equals(input))
-                {
-                    return false;
-                }
+                if (user.Name.Equals(input)) return false;
             }  
             return true;
         }
         return false;
     }
-    public static bool IsValidEmail(string input) => !string.IsNullOrWhiteSpace(input) && input.Contains('@') && input.Contains('.') && input.Length < 31;
+    public static bool IsValidEmail(string input)
+    {
+        List<User> users = CsvHandler.Read<User>("Model/UserDB.csv");
+
+        if(!string.IsNullOrWhiteSpace(input) && input.Contains('@') && input.Contains('.') && input.Length < 31)
+        {
+            foreach(User user in users)
+            {
+                if (user.Email.Equals(input)) return false;
+            }
+            return true;
+        }
+        return false;
+    }
 
     public static bool IsValidPassword(string input)
     {

@@ -31,24 +31,84 @@ public class AdminController
         XToGoBack(id);
     }
 
-    public static void RegisterAdmin(string id)
+    public static void RegisterAdmin(string fid)
     {
-        Console.WriteLine("ADMIN REGISTRATION\n─────────────────────────────────");
-        // passed naar een validator, kan ook nog in ander file als we willen dat dit alleen view is.
-        string username = Helper.GetValidInput("Username needs to be atleast 3 characters and not more than 20 characters.\nEnter username: ", Helper.IsValidUsername);
-        string birthDate = Helper.GetValidInput("Birthdate needs to be dd-MM-yyyy.\nEnter birthdate: ", Helper.IsValidBD);
-        string email = Helper.GetValidInput("An email address needs to include (@) and (.).\nEnter email: ", Helper.IsValidEmail);
-        string password = Helper.GetValidInput("Password needs to be atleast 6 characters long and have a digit in it.\nEnter password: ", Helper.IsValidPassword);
-        Console.Clear();
-        User user = new User(username, birthDate, email, password, true);
-        Console.WriteLine("User registration successful!");
-        Console.WriteLine($"Username: {user.Name}");
-        Console.WriteLine($"Birth date: {user.BirthDate}");
-        Console.WriteLine($"Email: {user.Email}");
-        
-        XToGoBack(id);
-    }
+        string username = string.Empty;
+        string birthDate = string.Empty;
+        string email = string.Empty;
+        string password = string.Empty;
 
+        Console.CursorVisible = false;
+        Console.WriteLine("\b\b");
+        Console.Clear();
+
+        // Start with the username input
+        string currentField = "username";
+
+        while (true)
+        {
+            switch (currentField)
+            {
+                case "username":
+                    (username, bool escapeUsername) = Helper.CaptureInputRegister(30, 1, 27, "username", username, birthDate, email, password);
+                    if (escapeUsername)
+                    {
+                        Console.WriteLine("\b\b");
+                        Console.Clear();
+                        Interface.GeneralMenu();
+                        return;
+                    }
+                    else if (!string.IsNullOrEmpty(username))
+                    {
+                        currentField = "birthdate";
+                    }
+                    break;
+
+                case "birthdate":
+                    (birthDate, bool escapeBirthDate) = Helper.CaptureInputRegister(30, 1, 10, "birthdate", username, birthDate, email, password);
+                    if (escapeBirthDate)
+                    {
+                        currentField = "username";
+                    }
+                    else if (!string.IsNullOrEmpty(birthDate))
+                    {
+                        currentField = "email";
+                    }
+                    break;
+
+                case "email":
+                    (email, bool escapeEmail) = Helper.CaptureInputRegister(30, 1, 30, "email", username, birthDate, email, password);
+                    if (escapeEmail)
+                    {
+                        currentField = "birthdate";
+                    }
+                    else if (!string.IsNullOrEmpty(email))
+                    {
+                        currentField = "password";
+                    }
+                    break;
+
+                case "password":
+                    (password, bool escapePassword) = Helper.CaptureInputRegister(30, 1, 27, "password", username, birthDate, email, password);
+                    if (escapePassword)
+                    {
+                        currentField = "email";
+                    }
+                    else if (!string.IsNullOrEmpty(password))
+                    {
+                        // Successfully completed registration
+                        Graphics.DrawRegister(username, birthDate, email, password);
+                        char yorn = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Complete registration", "Are you happy to register with current details? Y/N");
+                        if (yorn == 'y')
+                        {
+                            User user = new User(username, birthDate, email, password, true);
+                            AdminInterface.GeneralMenu(fid);
+                        }
+                    }
+                    break;
+            }
+        }
+    }
     public static void LogOut(){
         Console.WriteLine("You have been succesfully logged out");
         XToGoBack();
