@@ -6,8 +6,15 @@ public class Auditorium : ObjectHasID
     public Auditorium(string id, List<Seat>? seats = null)
     {
         ID = id;
-        Seats = seats != null ? seats : new List<Seat>();
-        if (seats == null) InitializeSeats();
+        if (seats != null)
+        {
+            Seats = seats;
+        }
+        else
+        {
+            Seats = new List<Seat>();
+            InitializeSeats();
+        }
     }
 
     private void InitializeSeats()
