@@ -78,6 +78,8 @@ public class InterfaceController
                     {
                         if (password == user.Password)
                         {
+                            Console.WriteLine("\b\b");
+                            Console.Clear();
                             if (user.ID.StartsWith("admin-")) AdminInterface.GeneralMenu(user.ID);
                             else UserInterface.GeneralMenu(user.ID);
                             break;
@@ -186,6 +188,8 @@ public class InterfaceController
                         if (yorn == 'y')
                         {
                             User user = new User(username, birthDate, email, password);
+                            Console.WriteLine("\b\b");
+                            Console.Clear();
                             if (user.ID.StartsWith("admin-")) AdminInterface.GeneralMenu(user.ID);
                             else UserInterface.GeneralMenu(user.ID);
 

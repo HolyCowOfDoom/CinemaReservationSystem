@@ -244,7 +244,7 @@ public class Helper
                 switch (type)
                 {
                     case "username":
-                        if (!IsValidUsername(input))
+                        if (!IsValidUsernameLog(input))
                         {
                             Console.ForegroundColor = ConsoleColor.DarkRed;
                             WriteInCenter("Invalid username. Must be atleast 3 chars long.");

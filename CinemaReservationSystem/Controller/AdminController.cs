@@ -128,6 +128,8 @@ public class AdminController
                         if (yorn == 'y')
                         {
                             User user = new User(username, birthDate, email, password, true);
+                            Console.WriteLine("\b\b");
+                            Console.Clear();
                             AdminInterface.GeneralMenu(fid);
                         }
                     }
