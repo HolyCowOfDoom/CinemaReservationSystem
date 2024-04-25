@@ -97,9 +97,9 @@ public static class CsvHandler
         }
         //we'd rather not continue with this error, as returned record will be null and will throw an exception elsewhere
         //and we won't know why
-        throw new Exception($"Couldn't get record with {header} matching {hasValue}, ");
-        //Console.WriteLine($"Couldn't get record with {header} matching {value}, ");
-        //return default;
+        //throw new Exception($"Couldn't get record with {header} matching {hasValue}, ");
+        Console.WriteLine($"Couldn't get record with {header} matching {hasValue}, ");
+        return default;
     }
 
     //"J" can't be replaced with "object" as MySetProperty needs List<J> rather than List<object>

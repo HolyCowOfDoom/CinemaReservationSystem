@@ -1,5 +1,6 @@
 public class Movie : ObjectHasID
 {
+    public static string DBFilePath = "Model/ScreeningDB.json";
     public string Title;
     public int AgeRating;
     public string Description;
@@ -36,13 +37,13 @@ public class Movie : ObjectHasID
     public void RemoveScreening(string screeningID)
     {
         ScreeningIDs.Remove(screeningID);
-        JsonHandler.Remove<Screening>(screeningID, "Model/ScreeningDB.json");
+        JsonHandler.Remove<Screening>(screeningID, DBFilePath);
         UpdateMovie();
     }
 
     public List<Screening> GetAllMovieScreenings()
     {
-        List<Screening>? allScreenings = JsonHandler.Read<Screening>("Model/ScreeningDB.json");
+        List<Screening>? allScreenings = JsonHandler.Read<Screening>(DBFilePath);
         List<Screening> movieScreenings = new List<Screening>();
         if (allScreenings != null)
         {
@@ -57,5 +58,5 @@ public class Movie : ObjectHasID
         return movieScreenings;
     }
     
-    public void UpdateMovie() => JsonHandler.Update<Movie>(this, "Model/MovieDB.json");
+    public void UpdateMovie() => JsonHandler.Update<Movie>(this, DBFilePath);
 }
