@@ -12,4 +12,23 @@ public class TestUser
         Assert.AreEqual(user.Email, "test.user@gmail.com");
         Assert.AreEqual(user.Password, "testpassword");
     }
+
+    [TestMethod]
+    public void TestAddUser()
+    {
+        
+    }
+
+    [TestMethod]
+    public void GetUserWithValue()
+    {
+
+    }
+
+    [TestMethod]
+    public void UpdateUserWithValue()
+    {
+
+    }
+
 }

@@ -91,15 +91,6 @@ public class User : IEquatable<User>
         return CsvHandler.UpdateRecordWithValue<User, J>(DBFilePath, user, header, newValue);
     }
 
-
-    public static bool ValidatePassword(User user, string password)
-    {
-        User userInDB = GetUserWithValue("ID", user.ID);
-        string userPassword = userInDB.Password;
-        if(password == userPassword) return true;
-        else return false;
-    }
-
     //makes object1.Equals(object2) return true if their fields match. default returns false as they ae different obects.
     //https://stackoverflow.com/questions/25461585/operator-overloading-equals
     public static bool operator== (User? user1, User? user2)
