@@ -364,6 +364,21 @@ public class Helper
         }
         return false;
     }
+    
+    public static bool IsValidUsernameLog(string input)
+    {
+        List<User> users = CsvHandler.Read<User>("Model/UserDB.csv");
+ 
+        if(!string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 28)
+        {
+            foreach(User user in users)  
+            {
+                if (user.Name.Equals(input)) return true;
+            }  
+            return false;
+        }
+        return false;
+    }
     public static bool IsValidEmail(string input)
     {
         List<User> users = CsvHandler.Read<User>("Model/UserDB.csv");
