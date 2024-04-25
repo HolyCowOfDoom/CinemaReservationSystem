@@ -183,7 +183,8 @@ public class Helper
         return new string(chars);
     }
 
-    public static (string, string) Catchinput(int left, int top, int maxLength, string type, string Case, string username = "", string birthdate = "", string email = "", string password = "")
+    public static (string, string) Catchinput(int left, int top, int maxLength, string type,
+        string Case, string username = "", string birthdate = "", string email = "", string password = "")
     {
         Console.SetCursorPosition(left, top);
         string input = string.Empty;
@@ -207,9 +208,10 @@ public class Helper
                 break;
         }
 
+
         if (Case == "register") Graphics.DrawRegister(username, birthdate, email, password);
         else if (Case == "login") Graphics.DrawLogin(input);
-        else if (Case == "loginpassword")
+        else if (Case == "password")
         {
             if (spacebar)
             {
@@ -220,6 +222,7 @@ public class Helper
                 Graphics.DrawLogin(username, new string('*', input.Length));
             }
         }
+
 
         while (true)
         {
@@ -244,19 +247,36 @@ public class Helper
                 switch (type)
                 {
                     case "username":
-                        if (!IsValidUsernameLog(input) && Case != "register")
+                        if (Case == "login")
                         {
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            WriteInCenter("Invalid username. Must be atleast 3 chars long.");
-                            Console.ForegroundColor = ConsoleColor.Gray;
+                            if (IsValidUsernameLog(input) == -1)
+                            {
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
+                                char yorn = Helper.ReadInput((char c) => c == 'y' || c == 'n', "username not found", "Username could not be found. Register account? Y/N");
+                                Console.ForegroundColor = ConsoleColor.Gray;
+                                if (yorn == 'y') InterfaceController.RegisterUser();
+                                else InterfaceController.LogIn();
+                            }
+                            else if (IsValidUsernameLog(input) == 1) validated = true;
+
                         }
-                        else if (!IsValidUsername(input) && Case == "register")
+                        else if (Case == "register")
                         {
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            WriteInCenter("Username already registered");
-                            Console.ForegroundColor = ConsoleColor.Gray;
+                            if (IsValidUsername(input) == 0)
+                            {
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
+                                WriteInCenter("Invalid username. Must be atleast 3 chars long.");
+                                Console.ForegroundColor = ConsoleColor.Gray;
+                            }
+                            else if (IsValidUsername(input) == -1)
+                            {
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
+                                WriteInCenter("Username already in use.");
+                                Console.ForegroundColor = ConsoleColor.Gray;
+                            }
+                            else if (IsValidUsername(input) == 1) validated = true;
                         }
-                        else if (!IsValidUsernameLog(input)) validated = true;
+                        else if (IsValidUsername(input) == 1) validated = true;
                         break;
                     case "birthdate":
                         if (!IsValidBD(input))
@@ -277,10 +297,16 @@ public class Helper
                         else validated = true;
                         break;
                     case "password":
-                        if (!IsValidPassword(input))
+                        if (!IsValidPassword(input) && Case == "password")
                         {
                             Console.ForegroundColor = ConsoleColor.DarkRed;
                             WriteInCenter("Invalid password. Must be atleast 6 chars long and contain a digit.");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                        }
+                        else if (!IsValidPassword(input) && Case == "loginpassword")
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            WriteInCenter("Invalid password........");
                             Console.ForegroundColor = ConsoleColor.Gray;
                         }
                         else validated = true;
@@ -306,6 +332,7 @@ public class Helper
                 Console.Clear();
                 input += key.KeyChar;
             }
+
 
 
             
@@ -356,7 +383,7 @@ public class Helper
     }
     public static bool IsNotNull(string input) => !string.IsNullOrWhiteSpace(input);
     public static bool IsValidInt(string input) => input.All(char.IsDigit);
-    public static bool IsValidUsername(string input)
+    public static int IsValidUsername(string input)
     {
         List<User> users = CsvHandler.Read<User>("Model/UserDB.csv");
  
@@ -364,14 +391,14 @@ public class Helper
         {
             foreach(User user in users)  
             {
-                if (user.Name.Equals(input)) return false;
+                if (user.Name.Equals(input)) return -1;
             }  
-            return true;
+            return 1;
         }
-        return false;
+        return 0;
     }
     
-    public static bool IsValidUsernameLog(string input)
+    public static int IsValidUsernameLog(string input)
     {
         List<User> users = CsvHandler.Read<User>("Model/UserDB.csv");
  
@@ -379,11 +406,11 @@ public class Helper
         {
             foreach(User user in users)  
             {
-                if (user.Name.Equals(input)) return true;
+                if (user.Name.Equals(input)) return 1;
             }  
-            return false;
+            return -1;
         }
-        return false;
+        return -1;
     }
     public static bool IsValidEmail(string input)
     {

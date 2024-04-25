@@ -43,20 +43,11 @@ public class InterfaceController
                         Interface.GeneralMenu();
                         return;
                     }
-                    else if (EscorTaborshift == "TAB") break;
-                    else if (EscorTaborshift == "SHIFT") RegisterUser();
+                    else if (EscorTaborshift == "TAB") RegisterUser();
+                    else if (EscorTaborshift == "SHIFT") break;
                     else if (!string.IsNullOrEmpty(username))
                     {
                         user = User.GetUserWithValue("Name", username);
-
-                        if (user is null)
-                        {
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            char yorn = Helper.ReadInput((char c) => c == 'y' || c == 'n', "username not found", "Username could not be found. Register account? Y/N");
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            if (yorn == 'y') RegisterUser();
-                            else LogIn();
-                        }
                         currentField = "password";
                     }
                     break;
@@ -71,9 +62,9 @@ public class InterfaceController
                     }
                     else if (EscorTaborshift == "TAB")
                     {
-                        currentField = "username";
+                        RegisterUser();
                     }
-                    else if (EscorTaborshift == "SHIFT") RegisterUser();
+                    else if (EscorTaborshift == "SHIFT") break;
                     else if (!string.IsNullOrEmpty(password))
                     {
                         if (password == user.Password)
