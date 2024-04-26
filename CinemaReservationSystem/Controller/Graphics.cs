@@ -166,7 +166,7 @@ U U U U U U U U U U U   U U U U U U U U   U U U U U U U U U U U
             Console.WriteLine("\b \b");
             Console.Clear();
 
-            Console.WriteLine("Use arrow keys to move the cursor (X) and ESC to quit, max reservable seats: 40");
+            Console.WriteLine("Use arrow keys to move the cursor (X), (SPACEBAR) to select seat and ESC to quit, max reservable seats: 40");
             if (IsSeat(auditorium, indexPos)) Console.WriteLine($"Seat: {numbertoletter[GetRowFromIndex(auditorium, indexPos) + 1]} {GetSeatNumberFromIndex(auditorium, indexPos)}");
             else Console.WriteLine();
 
