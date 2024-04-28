@@ -303,6 +303,12 @@ public class Helper
                             WriteInCenter("Invalid password. Must be atleast 6 chars long and contain a digit.");
                             Console.ForegroundColor = ConsoleColor.Gray;
                         }
+                        else if (!IsValidPassword(input) && Case == "register")
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            WriteInCenter("Invalid password. Must be atleast 6 chars long and contain a digit.");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                        }
                         else if (!IsValidPassword(input) && Case == "loginpassword")
                         {
                             Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -316,9 +322,9 @@ public class Helper
             }
             else if (key.Key == ConsoleKey.Backspace && input.Length > 0)
             {
-                input = input.Remove(input.Length - 1);
                 Console.Write("\b \b");
                 Console.Clear();
+                input = input.Remove(input.Length - 1);
             }
             else if (input.Length == maxLength)
             {
@@ -328,14 +334,14 @@ public class Helper
             }
             else if (char.IsLetterOrDigit(key.KeyChar) || char.IsSymbol(key.KeyChar) || char.IsPunctuation(key.KeyChar))
             {
-                Console.Write("\b \b");
-                Console.Clear();
+                if (Case == "register" && type == "birthdate")
+                {
+                    if (input.Length == 2 || input.Length == 5) input += "-";
+                }
                 input += key.KeyChar;
             }
 
 
-
-            
             if (Case == "login") Graphics.DrawLogin(input);
             else if (Case == "loginpassword")
             {

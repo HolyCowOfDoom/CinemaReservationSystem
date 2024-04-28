@@ -335,29 +335,25 @@ public class UserController
 
     public static void ReserveSeats(Screening screening, string id)
     {
-        int seatAmount = Convert.ToInt32(Helper.GetValidInput("Please enter the amount of seats you'd like to reserve: ", Helper.IsNotNull));
-        List<string> reservedSeatIDs = [];
-        for (int i = 0; i < seatAmount; i++)
+        string auditorium;
+        switch (screening.AssignedAuditorium.ID)
         {
-            while(true)
-            {
-                string seatID = Helper.GetValidInput("Please enter valid seat number: ", Helper.IsNotNull);
-                bool succesfullReserve = screening.ReserveSeat(seatID);
-                if (succesfullReserve) {
-                    Console.WriteLine("UserController.cs: Seat was not reserved, but is now");
-                    reservedSeatIDs.Add(seatID);
-                    break;
-                }
-                //else if (check if there's even any seats available) break;
-                else
-                {
-                    Console.WriteLine("UserController.cs: Seat was already reserved!");
-                }
-            }
+            case "1":
+                auditorium = Graphics.auditorium1;
+                break;
+            case "2":
+                auditorium = Graphics.auditorium2;
+                break;
+            case "3":
+                auditorium = Graphics.auditorium3;
+                break;
+            default:
+                return;
         }
+        List<string> reservedSeatIDs = Graphics.AuditoriumView(screening, auditorium);
 
         //insert price calculation here>
-        
+
         User user = User.GetUserWithValue("ID", id);
         Reservation newReservation = new Reservation(reservedSeatIDs, screening.ID, 20);
         User.UpdateUserWithValue(user, "Reservations", newReservation);
