@@ -212,8 +212,8 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
             DrawAuditoriumInfo(auditorium, auditoriumScreen, coloredAuditorium, indexPos, selectedseats, numbertoletter);
 
             //user input handling
-            HandleUserInput(screening, user, auditorium, width, maxindex, mintopindex, ref indexPos, ref selectedseats, ref listreservedindex, 
-                            ref numbertoletter, ref reservedbyotheruser, ref reservedseatIDs, ref reservedDone);
+            HandleUserInput(screening, user, auditorium, width, maxindex, mintopindex, ref indexPos, selectedseats, listreservedindex, 
+                            numbertoletter, reservedbyotheruser, reservedseatIDs, reservedDone);
 
             //update auditorium visual
             coloredAuditorium = GetColoredAuditorium(auditorium, indexPos, reservedbyotheruser, listreservedindex, seatIDcolor);
@@ -222,94 +222,102 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
     }
 
     private static void HandleUserInput(Screening screening, User user, string auditorium, int width, int maxindex, int mintopindex, ref int indexPos,
-                                        ref List<string>selectedseats, ref List<int> listreservedindex, ref Dictionary<int, char> numbertoletter, 
-                                        ref List<int> reservedbyotheruser, ref List<string> reservedseatIDs, ref bool reservedDone)
+                                        List<string> selectedseats, List<int> listreservedindex, Dictionary<int, char> numbertoletter,
+                                        List<int> reservedbyotheruser, List<string> reservedseatIDs, bool reservedDone)
     {
         ConsoleKeyInfo key = Console.ReadKey(true);
-        //handle user movement
-        if (key.Key == ConsoleKey.LeftArrow)
-        {
-            if (indexPos - 2 == -2) indexPos = maxindex;
-            else if (indexPos - 2 >= 0 && indexPos - 2 <= maxindex)
-            {
-                indexPos -= 2;
-            }
-        }
-        else if (key.Key == ConsoleKey.RightArrow)
-        {
-            if (indexPos + 2 == maxindex + 2) indexPos = 0;
-            else if (indexPos + 2 >= 0 && indexPos + 2 <= maxindex)
-            {
-                indexPos += 2;
-            }
-        }
-        else if (key.Key == ConsoleKey.DownArrow)
-        {
-            if (indexPos + width >= maxindex && indexPos + width <= maxindex + width + 2) indexPos -= mintopindex;
-            else if (indexPos + width >= 0 && indexPos + width <= maxindex)
-            {
-                indexPos += width + 2;
-            }
-        }
-        else if (key.Key == ConsoleKey.UpArrow)
-        {
-            if (indexPos - width >= -width && indexPos - width <= 0) indexPos += mintopindex;
-            else if (indexPos - width >= 0 && indexPos - width <= maxindex)
-            {
-                indexPos -= width + 2;
-            }
-        }
-        //reservations check and list additions for reserved seats display and later DB update
-        else if (key.Key == ConsoleKey.Spacebar)
-        {
-            if (!selectedseats.Contains($"{numbertoletter[GetRowFromIndex(auditorium, indexPos) + 1]}{GetSeatNumberFromIndex(auditorium, indexPos)}") &&
-                IsSeat(auditorium, indexPos) && !listreservedindex.Contains(indexPos) && !reservedbyotheruser.Contains(indexPos) && selectedseats.Count < 40)
-            {
-                selectedseats.Add($"{numbertoletter[GetRowFromIndex(auditorium, indexPos) + 1]}{GetSeatNumberFromIndex(auditorium, indexPos)}");
-                listreservedindex.Add(indexPos);
-            }
-            else if (selectedseats.Contains($"{numbertoletter[GetRowFromIndex(auditorium, indexPos) + 1]}{GetSeatNumberFromIndex(auditorium, indexPos)}") &&
-                     IsSeat(auditorium, indexPos))
-            {
-                selectedseats.Remove($"{numbertoletter[GetRowFromIndex(auditorium, indexPos) + 1]}{GetSeatNumberFromIndex(auditorium, indexPos)}");
-                listreservedindex.Remove(indexPos);
-            }
-        }
-        //confirm reservation y/n
-        else if (key.Key == ConsoleKey.Enter)
-        {
-            
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            char confirm = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Confirm reservation", "Are you happy with you reservations? Y/N");
-            Console.ForegroundColor = ConsoleColor.Gray;
-            if (string.Equals(Convert.ToString(confirm).ToLower(), "n")) return;
-            else
-            {
-                foreach (int index in listreservedindex)
-                {
-                    screening.ReserveSeat(Convert.ToString(GetSeatNumberFromIndex(auditorium, index, true) + GetAuditoriumOffset(Int32.Parse(screening.AssignedAuditorium.ID))));
-                    reservedseatIDs.Add(Convert.ToString(GetSeatNumberFromIndex(auditorium, index, true) + GetAuditoriumOffset(Int32.Parse(screening.AssignedAuditorium.ID))));
-                }
-                reservedDone = true;
-            }
-        }
-        //delete selected reserved seats
-        else if (key.Key == ConsoleKey.Backspace)
-        {
-            if (listreservedindex.Count > 0)
-            {
-                listreservedindex.RemoveAt(listreservedindex.Count - 1);
-                selectedseats.RemoveAt(selectedseats.Count - 1);
-            }
-        }
-        //return to previous menu
-        else if (key.Key == ConsoleKey.Escape)
-        {
-            Console.Write("\f\u001bc\x1b[3J");
 
-            if (user.ID.StartsWith("admin-")) AdminInterface.GeneralMenu(user.ID);
-            else UserInterface.GeneralMenu(user.ID);
+        switch (key.Key)
+        {
+            case ConsoleKey.LeftArrow:
+            case ConsoleKey.RightArrow:
+            case ConsoleKey.DownArrow:
+            case ConsoleKey.UpArrow:
+                HandleUserMovement(key, ref indexPos, width, maxindex, mintopindex);
+                break;
+            case ConsoleKey.Spacebar:
+                HandleSpacebarKeyPress(auditorium, indexPos, selectedseats, listreservedindex, reservedbyotheruser, numbertoletter);
+                break;
+            case ConsoleKey.Enter:
+                HandleEnterKeyPress(screening, auditorium, listreservedindex, reservedseatIDs, reservedDone);
+                break;
+            case ConsoleKey.Backspace:
+                HandleBackspaceKeyPress(listreservedindex, selectedseats);
+                break;
+            case ConsoleKey.Escape:
+                HandleEscapeKeyPress(user);
+                break;
         }
+    }
+
+    private static void HandleSpacebarKeyPress(string auditorium, int indexPos, List<string> selectedseats,
+                                                List<int> listreservedindex, List<int> reservedbyotheruser, Dictionary<int, char> numbertoletter)
+    {
+        string representingseat = $"{numbertoletter[GetRowFromIndex(auditorium, indexPos) + 1]}{GetSeatNumberFromIndex(auditorium, indexPos)}";
+        if (!selectedseats.Contains(representingseat) &&
+            IsSeat(auditorium, indexPos) && !listreservedindex.Contains(indexPos) &&
+            !reservedbyotheruser.Contains(indexPos) && selectedseats.Count < 40)
+        {
+            selectedseats.Add(representingseat);
+            listreservedindex.Add(indexPos);
+        }
+        else if (selectedseats.Contains(representingseat) &&
+                 IsSeat(auditorium, indexPos))
+        {
+            selectedseats.Remove(representingseat);
+            listreservedindex.Remove(indexPos);
+        }
+    }
+
+    private static void HandleEnterKeyPress(Screening screening, string auditorium, List<int> listreservedindex,
+                                            List<string> reservedseatIDs, bool reservedDone)
+    {
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        char confirm = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Confirm reservation", "Are you happy with your reservations? Y/N");
+        Console.ForegroundColor = ConsoleColor.Gray;
+        if (string.Equals(Convert.ToString(confirm), "n")) return;
+        foreach (int index in listreservedindex)
+        {
+            screening.ReserveSeat(Convert.ToString(GetSeatNumberFromIndex(auditorium, index, true) + GetAuditoriumOffset(Int32.Parse(screening.AssignedAuditorium.ID))));
+            reservedseatIDs.Add(Convert.ToString(GetSeatNumberFromIndex(auditorium, index, true) + GetAuditoriumOffset(Int32.Parse(screening.AssignedAuditorium.ID))));
+        }
+        reservedDone = true;
+    }
+
+    private static void HandleBackspaceKeyPress(List<int> listreservedindex, List<string> selectedseats)
+    {
+        if (listreservedindex.Count > 0)
+        {
+            listreservedindex.RemoveAt(listreservedindex.Count - 1);
+            selectedseats.RemoveAt(selectedseats.Count - 1);
+        }
+    }
+
+    private static void HandleEscapeKeyPress(User user)
+    {
+        Console.Write("\f\u001bc\x1b[3J");
+        if (user.ID.StartsWith("admin-")) AdminInterface.GeneralMenu(user.ID);
+        else UserInterface.GeneralMenu(user.ID);
+    }
+
+    private static void HandleUserMovement(ConsoleKeyInfo key, ref int indexPos, int width, int maxindex, int mintopindex)
+    {
+        indexPos = key.Key switch
+        {
+            ConsoleKey.LeftArrow when indexPos - 2 == - 2 => maxindex,
+            ConsoleKey.LeftArrow when indexPos - 2 >= 0 && indexPos - 2 <= maxindex => indexPos -= 2,
+
+            ConsoleKey.RightArrow when indexPos + 2 == maxindex + 2 => 0,
+            ConsoleKey.RightArrow when indexPos + 2 >= 0 && indexPos + 2 <= maxindex => indexPos += 2,
+
+            ConsoleKey.DownArrow when indexPos + width >= maxindex && indexPos + width <= maxindex + width + 2 => indexPos -= mintopindex,
+            ConsoleKey.DownArrow when indexPos + width >= 0 && indexPos + width <= maxindex => indexPos += width + 2,
+
+            ConsoleKey.UpArrow when indexPos - width >= -width && indexPos - width <= 0 => indexPos += mintopindex,
+            ConsoleKey.UpArrow when indexPos - width >= 0 && indexPos - width <= maxindex => indexPos -= width + 2,
+
+            _ => indexPos
+        };
     }
 
     private static void InitAuditorium(Screening screening, User user, out int indexPos, out int width, out int maxindex,
@@ -400,24 +408,33 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
     private static string GetColoredAuditorium(string auditorium, int indexPos, IEnumerable<int> reservedbyotheruser, IEnumerable<int> listreservedindex, IDictionary<int, (string, bool)> seatIDcolor)
     {
         StringBuilder coloredAuditorium = new StringBuilder();
+        int auditoriumLength = auditorium.Length;
 
-        for (int i = 0; i < auditorium.Length; i++)
+        for (int i = 0; i < auditoriumLength; i++)
         {
-            if (i == indexPos)
-                coloredAuditorium.Append(Colorize("X", "lavender"));
-            else if (auditorium[i] == 'U' && listreservedindex.Contains(i))
-                coloredAuditorium.Append(Colorize("U", "green"));
-            else if (auditorium[i] == 'U' && !listreservedindex.Contains(i) && seatIDcolor.ContainsKey(GetSeatNumberFromIndex(auditorium, i, true)))
+            coloredAuditorium.Append(auditorium[i] switch
             {
-                (string color, bool reserved) = seatIDcolor[GetSeatNumberFromIndex(auditorium, i, true)];
-                if (reserved is true && reservedbyotheruser.Contains(i)) coloredAuditorium.Append(Colorize("U", "magenta"));
-                else if (string.Equals(color, "Yellow")) coloredAuditorium.Append(Colorize("U", "yellow"));
-                else if (string.Equals(color, "Blue")) coloredAuditorium.Append(Colorize("U", "blue"));
-                else if (string.Equals(color, "Red")) coloredAuditorium.Append(Colorize("U", "red"));
-            }
-            else coloredAuditorium.Append(auditorium[i]);
+                _ when i == indexPos => Colorize("X", "lavender"),
+                'U' when listreservedindex.Contains(i) => Colorize("U", "green"),
+                'U' when !listreservedindex.Contains(i) &&
+                         seatIDcolor.ContainsKey(GetSeatNumberFromIndex(auditorium, i, true)) =>
+                         GetColorizedUnchangingU(auditorium, i, seatIDcolor, reservedbyotheruser),
+                _ => auditorium[i].ToString()
+            });
         }
         return coloredAuditorium.ToString();
+    }
+    private static string GetColorizedUnchangingU(string auditorium, int i, IDictionary<int, (string, bool)> seatIDcolor, IEnumerable<int> reservedbyotheruser)
+    {
+        (string color, bool reserved) = seatIDcolor[GetSeatNumberFromIndex(auditorium, i, true)];
+        return (reserved, reservedbyotheruser.Contains(i), color) switch
+        {
+            (true, true, _) => Colorize("U", "magenta"),
+            (_, _, "Yellow") => Colorize("U", "yellow"),
+            (_, _, "Blue") => Colorize("U", "blue"),
+            (_, _, "Red") => Colorize("U", "red"),
+            _ => "U"
+        };
     }
     public static string Colorize(string character, string color)
     {
@@ -523,16 +540,12 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
 
     private static int GetAuditoriumOffset(int id)
     {
-        switch (id)
+        return id switch
         {
-            case 1:
-                return 0;
-            case 2: 
-                return 150;
-            case 3:
-                return 450;
-            default:
-                return 0;
-        }
+            1 => 0,
+            2 => 150,
+            3 => 450,
+            _ => 0
+        };
     }
 }
