@@ -268,6 +268,7 @@ public class UserController
 
     public static string InputMovie(string id)
     {
+        Helper.WriteInCenter(Graphics.cinemacustom);
         while (true) {
         char genreFilterInput = Helper.ReadInput((char c) => c == '1' || c == '2',
             "Movie Options", "1. Select Screening\n2. Go Back");
@@ -335,27 +336,14 @@ public class UserController
 
     public static void ReserveSeats(Screening screening, string id)
     {
-        string auditorium;
-        switch (screening.AssignedAuditorium.ID)
-        {
-            case "1":
-                auditorium = Graphics.auditorium1;
-                break;
-            case "2":
-                auditorium = Graphics.auditorium2;
-                break;
-            case "3":
-                auditorium = Graphics.auditorium3;
-                break;
-            default:
-                return;
-        }
-        List<string> reservedSeatIDs = Graphics.AuditoriumView(screening, auditorium);
-
-        //insert price calculation here>
-
         User user = User.GetUserWithValue("ID", id);
-        Reservation newReservation = new Reservation(reservedSeatIDs, screening.ID, 20);
+
+
+        IEnumerable<string> reservedSeatIDs = Graphics.AuditoriumView(screening, user);
+        //priceCalc will be done through AuditoriumView
+
+        
+        Reservation newReservation = new Reservation(reservedSeatIDs.ToList(), screening.ID, 20);
         User.UpdateUserWithValue(user, "Reservations", newReservation);
 
         XToGoBack(id);
