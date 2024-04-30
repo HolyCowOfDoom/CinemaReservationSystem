@@ -7,9 +7,12 @@ using CsvHelper.Configuration.Attributes;
 public class UserController
 {
     public static void LogOut(){
-        // (optioneel) een method voor de logica om te zorgen dat je niet meer bij login only data kan.
         Console.WriteLine("You have been succesfully logged out");
-        XToGoBack();
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            Interface.GeneralMenu();
+        }
     }
 
     public static void ViewMovies(string id){
@@ -45,8 +48,9 @@ public class UserController
                 Console.WriteLine("You are too young too see these movies. Press X to go back.");
                 char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
                 if (specificLetterInput == 'x'){
-                    if (id.StartsWith("admin-")) AdminInterface.GeneralMenu(id);
-                    else UserInterface.GeneralMenu(id);    
+                    User IdCheck = User.GetUserWithValue("ID", id);
+                    if (IdCheck.Admin) AdminInterface.GeneralMenu(id); 
+                    else UserInterface.GeneralMenu(id);   
                 }
             }
         }
@@ -68,13 +72,12 @@ public class UserController
                 Console.WriteLine("You are too young too see these movies. Press X to go back.");
                 char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
                 if (specificLetterInput == 'x'){
-                    if (id.StartsWith("admin-")) AdminInterface.GeneralMenu(id);
-                    else UserInterface.GeneralMenu(id);    
+                    User IdCheck = User.GetUserWithValue("ID", id);
+                    if (IdCheck.Admin) AdminInterface.GeneralMenu(id); 
+                    else UserInterface.GeneralMenu(id);   
                 }   
             }
         }
-
-        XToGoBack(id);
     }
 
     public static int InputAge()
@@ -193,7 +196,11 @@ public class UserController
             Console.WriteLine($"│ {index} │ Movie name: {movietitle,-40} │ Screening Date: {screening.ScreeningDateTime, -16} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
         }
         Console.WriteLine("└───┴──────────────────────────────────────────────────────┴────────────────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
-        XToGoBack(id);
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            UserInterface.GeneralMenu(id);
+        }
     }
 
     public static string? GetMovieByID(string screeningID)
@@ -223,7 +230,12 @@ public class UserController
         if (specificLetterInput == 'y'){
             SelectMovie(id);
         }
-        UserInterface.GeneralMenu(id);
+        else
+        {
+            User IdCheck = User.GetUserWithValue("ID", id);
+            if (IdCheck.Admin) AdminInterface.GeneralMenu(id); 
+            else UserInterface.GeneralMenu(id);
+        }
     }
 
     private static void SelectMovie(string id)
@@ -241,7 +253,8 @@ public class UserController
             movie = null;
         }
         } while (movie == null);
-        if (id.StartsWith("admin-")) AdminController.AdminMovieInterface(movie, id);
+        User IdCheck = User.GetUserWithValue("ID", id);
+        if (IdCheck.Admin) AdminController.AdminMovieInterface(movie, id); 
         else MovieInterface(movie, id);
     }
 
@@ -298,7 +311,8 @@ public class UserController
         }
         } while (chosenScreening == null);
 
-        if (id.StartsWith("admin-")) AdminController.AdminScreeningInterface(chosenScreening, id);
+        User IdCheck = User.GetUserWithValue("ID", id);
+        if (IdCheck.Admin) AdminController.AdminScreeningInterface(chosenScreening, id); 
         else ScreeningInterface(chosenScreening, id);
     }
 
@@ -346,17 +360,12 @@ public class UserController
         Reservation newReservation = new Reservation(reservedSeatIDs.ToList(), screening.ID, 20);
         User.UpdateUserWithValue(user, "Reservations", newReservation);
 
-        XToGoBack(id);
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            Interface.GeneralMenu();
+        }
     }
 
-    private static void XToGoBack(string id)
-    {
-        InterfaceController.XToGoBack(id);
-    }
-
-    private static void XToGoBack()
-    {
-        InterfaceController.XToGoBack();
-    }
 
 }

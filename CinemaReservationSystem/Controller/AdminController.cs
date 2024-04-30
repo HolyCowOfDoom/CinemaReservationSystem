@@ -12,7 +12,11 @@ public class AdminController
 
         Movie addedMovie = new Movie(title, ageRating, description, genre);
 
-        XToGoBack(id);
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            AdminInterface.GeneralMenu(id);
+        }
     }
 
     public static void AddScreening(Movie movie, string id)
@@ -28,7 +32,11 @@ public class AdminController
         DateTime screeningDT = DateTime.ParseExact(dateTimeString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
         movie.AddScreening(screeningAud, screeningDT);
 
-        XToGoBack(id);
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            AdminInterface.GeneralMenu(id);
+        }
     }
 
     public static void RegisterAdmin(string fid)
@@ -56,7 +64,7 @@ public class AdminController
                     {
                         Console.WriteLine("\b\b");
                         Console.Clear();
-                        Interface.GeneralMenu();
+                        AdminInterface.GeneralMenu(fid);
                         return;
                     }
                     else if (escapetab == "TAB")
@@ -75,7 +83,7 @@ public class AdminController
                     {
                         Console.WriteLine("\b\b");
                         Console.Clear();
-                        Interface.GeneralMenu();
+                        AdminInterface.GeneralMenu(fid);
                         return;
                     }
                     else if (escapetab == "TAB")
@@ -94,7 +102,7 @@ public class AdminController
                     {
                         Console.WriteLine("\b\b");
                         Console.Clear();
-                        Interface.GeneralMenu();
+                        AdminInterface.GeneralMenu(fid);
                         return;
                     }
                     else if (escapetab == "TAB")
@@ -113,7 +121,7 @@ public class AdminController
                     {
                         Console.WriteLine("\b\b");
                         Console.Clear();
-                        Interface.GeneralMenu();
+                        AdminInterface.GeneralMenu(fid);
                         return;
                     }
                     else if (escapetab == "TAB")
@@ -139,7 +147,11 @@ public class AdminController
     }
     public static void LogOut(){
         Console.WriteLine("You have been succesfully logged out");
-        XToGoBack();
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            Interface.GeneralMenu();
+        }
     }
 
     public static void AdminMovieInterface(Movie movie, string id)
@@ -161,7 +173,11 @@ public class AdminController
             AddScreening(movie, id);
         }
 
-        XToGoBack(id);
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            AdminInterface.GeneralMenu(id);
+        }
     }
 
     public static string AdminInputMovie(string id)
@@ -182,16 +198,10 @@ public class AdminController
     public static void AdminScreeningInterface(Screening screening, string id)
     {
         Console.WriteLine("Reserve seats and display audit plan in this menu...");
-        XToGoBack(id);
-    }
-
-    private static void XToGoBack(string id)
-    {
-        InterfaceController.XToGoBack(id);
-    }
-
-    private static void XToGoBack()
-    {
-        InterfaceController.XToGoBack();
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            AdminInterface.GeneralMenu(id);
+        }
     }
 }

@@ -12,7 +12,11 @@ public class InterfaceController
             Console.WriteLine($"│ {Movies.IndexOf(movie) + 1, -2} │ {movie.Title,-40} │ {movie.AgeRating,-11} │ {movie.Genre, -11} │ {movie.Description,-60} │");
         }
         Console.WriteLine("└────┴──────────────────────────────────────────┴─────────────┴─────────────┴──────────────────────────────────────────────────────────────┘");
-        XToGoBack();
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            Interface.GeneralMenu();
+        }
     }
 
     public static void LogIn()
@@ -191,20 +195,4 @@ public class InterfaceController
         }
     }
 
-    public static void XToGoBack(){
-        Console.WriteLine("Press x to go back to the main menu");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-        if (specificLetterInput == 'x'){
-            Interface.GeneralMenu();
-        }
-    }
-
-    public static void XToGoBack(string id){
-        Console.WriteLine("Press x to go back to the main menu");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-        if (specificLetterInput == 'x'){
-            if (id.StartsWith("admin-")) AdminInterface.GeneralMenu(id);
-            else UserInterface.GeneralMenu(id);
-        }
-    }
 }
