@@ -97,9 +97,9 @@ public static class CsvHandler
         }
         //we'd rather not continue with this error, as returned record will be null and will throw an exception elsewhere
         //and we won't know why
-        throw new Exception($"Couldn't get record with {header} matching {hasValue}, ");
-        //Console.WriteLine($"Couldn't get record with {header} matching {value}, ");
-        //return default;
+        //throw new Exception($"Couldn't get record with {header} matching {hasValue}, ");
+        Console.WriteLine($"Couldn't get record with {header} matching {hasValue}, ");
+        return default;
     }
 
     //"J" can't be replaced with "object" as MySetProperty needs List<J> rather than List<object>
@@ -109,7 +109,7 @@ public static class CsvHandler
         for(int i = 0; i < records.Count; i++)
         {
             //object propertyObject = MyGetProperty<object, T>(records[i], header);
-            List<Reservation> reservations = (List<Reservation>)MyGetProperty<object, T>(records[i], header);
+            List<Reservation> reservations = (List<Reservation>)MyGetProperty<object, T>(records[i], "Reservations");
             if(reservations is null) reservations = new();
             string ID = (string)MyGetProperty<string, T>(records[i], "ID");
             Console.WriteLine("ID: " + ID);
@@ -182,6 +182,14 @@ public static class CsvHandler
             return default;
         }
     }
+
+
+    // public static void CreateTestFile(string fileName)
+    // {
+    //     StreamReader reader = new(fileName);
+        
+    //    File.Create(fileName); //overwrites file with same name, to avoid duplicates
+    // }
 
     // public static int CountRecords(string csvFile)
     // {

@@ -2,6 +2,7 @@ using System.Globalization;
 
 public class Screening : ObjectHasID
 {
+    public static string DBFilePath = "Model/ScreeningDB.json";
     public Auditorium AssignedAuditorium;
     public DateTime ScreeningDateTime;
     public List<Bundle> Bundles;
@@ -107,5 +108,5 @@ public class Screening : ObjectHasID
     }
 
     // updates this.screening to the database
-    public void UpdateScreening() => JsonHandler.Update<Screening>(this, "Model/ScreeningDB.json");
+    public void UpdateScreening() => JsonHandler.Update<Screening>(this, DBFilePath);
 }
