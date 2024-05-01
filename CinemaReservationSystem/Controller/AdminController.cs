@@ -41,109 +41,41 @@ public class AdminController
 
     public static void RegisterAdmin(string fid)
     {
-        string username = string.Empty;
-        string birthDate = string.Empty;
-        string email = string.Empty;
-        string password = string.Empty;
-        string escapetab = string.Empty;
+        string username = string.Empty, birthDate = string.Empty, email = string.Empty, password = string.Empty, escapetab = string.Empty;
+        bool registercomplete = false;
 
         Console.CursorVisible = false;
-        Console.WriteLine("\b\b");
-        Console.Clear();
+        Helper.ConsoleClear();
 
         // Start with the username input
         string currentField = "username";
 
-        while (true)
+        while (!registercomplete)
         {
             switch (currentField)
             {
                 case "username":
-                    (username, escapetab) = Helper.Catchinput(30, 1, 27, "username", "register", username, birthDate, email, password);
-                    if (escapetab == "ESC")
-                    {
-                        Console.WriteLine("\b\b");
-                        Console.Clear();
-                        AdminInterface.GeneralMenu(fid);
-                        return;
-                    }
-                    else if (escapetab == "TAB")
-                    {
-                        break;
-                    }
-                    else if (!string.IsNullOrEmpty(username))
-                    {
-                        currentField = "birthdate";
-                    }
+                    (username, escapetab) = Helper.Catchinput(27, "username", "register", username, birthDate, email, password);
+                    currentField = InterfaceController.HandleRegisterinput(currentField, username, escapetab, "birthdate", lastfield: null);
                     break;
-
                 case "birthdate":
-                    (birthDate, escapetab) = Helper.Catchinput(30, 1, 10, "birthdate", "register", username, birthDate, email, password);
-                    if (escapetab == "ESC")
-                    {
-                        Console.WriteLine("\b\b");
-                        Console.Clear();
-                        AdminInterface.GeneralMenu(fid);
-                        return;
-                    }
-                    else if (escapetab == "TAB")
-                    {
-                        currentField = "username";
-                    }
-                    else if (!string.IsNullOrEmpty(birthDate))
-                    {
-                        currentField = "email";
-                    }
+                    (birthDate, escapetab) = Helper.Catchinput(10, "birthdate", "register", username, birthDate, email, password);
+                    currentField = InterfaceController.HandleRegisterinput(currentField, birthDate, escapetab, "email", "username");
                     break;
-
                 case "email":
-                    (email, escapetab) = Helper.Catchinput(30, 1, 30, "email", "register", username, birthDate, email, password);
-                    if (escapetab == "ESC")
-                    {
-                        Console.WriteLine("\b\b");
-                        Console.Clear();
-                        AdminInterface.GeneralMenu(fid);
-                        return;
-                    }
-                    else if (escapetab == "TAB")
-                    {
-                        currentField = "birthdate";
-                    }
-                    else if (!string.IsNullOrEmpty(email))
-                    {
-                        currentField = "password";
-                    }
+                    (email, escapetab) = Helper.Catchinput(30, "email", "register", username, birthDate, email, password);
+                    currentField = InterfaceController.HandleRegisterinput(currentField, email, escapetab, "password", "birthdate");
                     break;
-
                 case "password":
-                    (password, escapetab) = Helper.Catchinput(30, 1, 27, "password", "register", username, birthDate, email, password);
-                    if (escapetab == "ESC")
-                    {
-                        Console.WriteLine("\b\b");
-                        Console.Clear();
-                        AdminInterface.GeneralMenu(fid);
-                        return;
-                    }
-                    else if (escapetab == "TAB")
-                    {
-                        currentField = "email";
-                    }
-                    else if (!string.IsNullOrEmpty(password))
-                    {
-                        // Successfully completed registration
-                        Graphics.DrawRegister(username, birthDate, email, password);
-                        char yorn = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Complete registration", "Are you happy to register with current details? Y/N");
-                        if (yorn == 'y')
-                        {
-                            User user = new User(username, birthDate, email, password, true);
-                            Console.WriteLine("\b\b");
-                            Console.Clear();
-                            AdminInterface.GeneralMenu(fid);
-                        }
-                    }
+                    (password, escapetab) = Helper.Catchinput(27, "password", "register", username, birthDate, email, password);
+                    currentField = InterfaceController.HandleRegisterinput(currentField, password, escapetab, nextfield: null, "email");
+                    if (string.Equals(currentField, "validated")) registercomplete = true;
                     break;
             }
         }
+        User user = new User(username, birthDate, email, password, admin: true);
+        Helper.ConsoleClear();
+        AdminInterface.GeneralMenu(fid);
     }
     public static void LogOut(){
         Console.WriteLine("You have been succesfully logged out");

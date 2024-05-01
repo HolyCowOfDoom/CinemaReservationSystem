@@ -21,16 +21,11 @@ public class InterfaceController
 
     public static void LogIn()
     {
-        string username;
-        string password;
+        string username = string.Empty, password = string.Empty;
         string EscorTaborshift;
         User? user = null;
-
-        username = string.Empty;
-        password = string.Empty;
         Console.CursorVisible = false;
-        Console.Write("\b \b");
-        Console.Clear();
+        Helper.ConsoleClear();
 
         string currentField = "username";
 
@@ -39,43 +34,45 @@ public class InterfaceController
             switch (currentField)
             {
                 case "username":
-                    (username, EscorTaborshift) = Helper.Catchinput(30, 1, 27, "username", "login", username);
-                    if (EscorTaborshift == "ESC")
+                    (username, EscorTaborshift) = Helper.Catchinput(27, "username", "login", username);
+                    switch (EscorTaborshift)
                     {
-                        Console.WriteLine("\b\b");
-                        Console.Clear();
-                        Interface.GeneralMenu();
-                        return;
+                        case "ESC":
+                            Helper.ConsoleClear();
+                            Interface.GeneralMenu();
+                            break;
+                        case "TAB":
+                            RegisterUser();
+                            break;
+                        default:
+                            break;
                     }
-                    else if (EscorTaborshift == "TAB") RegisterUser();
-                    else if (EscorTaborshift == "SHIFT") break;
-                    else if (!string.IsNullOrEmpty(username))
+                    if (!string.IsNullOrEmpty(username))
                     {
                         user = User.GetUserWithValue("Name", username);
                         currentField = "password";
                     }
                     break;
                 case "password":
-                    (password, EscorTaborshift) = Helper.Catchinput(30, 1, 27, "password", "loginpassword", username, "", "", password);
-                    if (EscorTaborshift == "ESC")
+                    (password, EscorTaborshift) = Helper.Catchinput(27, "password", "loginpassword", username, "", "", password);
+                    switch (EscorTaborshift)
                     {
-                        Console.WriteLine("\b\b");
-                        Console.Clear();
-                        Interface.GeneralMenu();
-                        return;
+                        case "ESC":
+                            Helper.ConsoleClear();
+                            Interface.GeneralMenu();
+                            break;
+                        case "TAB":
+                            RegisterUser();
+                            break;
+                        default:
+                            break;
                     }
-                    else if (EscorTaborshift == "TAB")
+                    if (!string.IsNullOrEmpty(password))
                     {
-                        RegisterUser();
-                    }
-                    else if (EscorTaborshift == "SHIFT") break;
-                    else if (!string.IsNullOrEmpty(password))
-                    {
-                        if (password == user.Password)
+                        if (string.Equals(password, user.Password))
                         {
-                            Console.WriteLine("\b\b");
-                            Console.Clear();
-                            if (user.ID.StartsWith("admin-")) AdminInterface.GeneralMenu(user.ID);
+                            Helper.ConsoleClear();
+                            if (user.Admin is true) AdminInterface.GeneralMenu(user.ID);
                             else UserInterface.GeneralMenu(user.ID);
                             break;
                         }
@@ -88,111 +85,73 @@ public class InterfaceController
 
     public static void RegisterUser()
     {
-        string username = string.Empty;
-        string birthDate = string.Empty;
-        string email = string.Empty;
-        string password = string.Empty;
-        string escapetab = string.Empty;
+        string username = string.Empty, birthDate = string.Empty, email = string.Empty, password = string.Empty, escapetab = string.Empty;
+        bool registercomplete = false;
 
         Console.CursorVisible = false;
-        Console.WriteLine("\b\b");
-        Console.Clear();
+        Helper.ConsoleClear();
 
         // Start with the username input
         string currentField = "username";
 
-        while (true)
+        while (!registercomplete)
         {
             switch (currentField)
             {
                 case "username":
-                    (username, escapetab) = Helper.Catchinput(30, 1, 27, "username", "register", username, birthDate, email, password);
-                    if (escapetab == "ESC")
-                    {
-                        Console.WriteLine("\b\b");
-                        Console.Clear();
-                        Interface.GeneralMenu();
-                        return;
-                    }
-                    else if (escapetab == "TAB")
-                    {
-                        break;
-                    }
-                    else if (!string.IsNullOrEmpty(username))
-                    {
-                        currentField = "birthdate";
-                    }
+                    (username, escapetab) = Helper.Catchinput(27, "username", "register", username, birthDate, email, password);
+                    currentField = HandleRegisterinput(currentField, username, escapetab, "birthdate", lastfield: null);
                     break;
-
                 case "birthdate":
-                    (birthDate, escapetab) = Helper.Catchinput(30, 1, 10, "birthdate", "register", username, birthDate, email, password);
-                    if (escapetab == "ESC")
-                    {
-                        Console.WriteLine("\b\b");
-                        Console.Clear();
-                        Interface.GeneralMenu();
-                        return;
-                    }
-                    else if (escapetab == "TAB")
-                    {
-                        currentField = "username";
-                    }
-                    else if (!string.IsNullOrEmpty(birthDate))
-                    {
-                        currentField = "email";
-                    }
+                    (birthDate, escapetab) = Helper.Catchinput(10, "birthdate", "register", username, birthDate, email, password);
+                    currentField = HandleRegisterinput(currentField, birthDate, escapetab, "email", "username");
                     break;
-
                 case "email":
-                    (email, escapetab) = Helper.Catchinput(30, 1, 30, "email", "register", username, birthDate, email, password);
-                    if (escapetab == "ESC")
-                    {
-                        Console.WriteLine("\b\b");
-                        Console.Clear();
-                        Interface.GeneralMenu();
-                        return;
-                    }
-                    else if (escapetab == "TAB")
-                    {
-                        currentField = "birthdate";
-                    }
-                    else if (!string.IsNullOrEmpty(email))
-                    {
-                        currentField = "password";
-                    }
+                    (email, escapetab) = Helper.Catchinput(30, "email", "register", username, birthDate, email, password);
+                    currentField = HandleRegisterinput(currentField, email, escapetab, "password", "birthdate");
                     break;
-
                 case "password":
-                    (password, escapetab) = Helper.Catchinput(30, 1, 27, "password", "register", username, birthDate, email, password);
-                    if (escapetab == "ESC")
-                    {
-                        Console.WriteLine("\b\b");
-                        Console.Clear();
-                        Interface.GeneralMenu();
-                        return;
-                    }
-                    else if (escapetab == "TAB")
-                    {
-                        currentField = "email";
-                    }
-                    else if (!string.IsNullOrEmpty(password))
-                    {
-                        // Successfully completed registration
-                        Graphics.DrawRegister(username, birthDate, email, password);
-                        char yorn = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Complete registration", "Are you happy to register with current details? Y/N");
-                        if (yorn == 'y')
-                        {
-                            User user = new User(username, birthDate, email, password);
-                            Console.WriteLine("\b\b");
-                            Console.Clear();
-                            if (user.ID.StartsWith("admin-")) AdminInterface.GeneralMenu(user.ID);
-                            else UserInterface.GeneralMenu(user.ID);
-
-                        }
-                    }
+                    (password, escapetab) = Helper.Catchinput(27, "password", "register", username, birthDate, email, password);
+                    currentField = HandleRegisterinput(currentField, password, escapetab, nextfield: null, "email");
+                    if (string.Equals(currentField, "validated")) registercomplete = true;
                     break;
             }
         }
+        User user = new User(username, birthDate, email, password);
+        Helper.ConsoleClear();
+        if (user.Admin is true) AdminInterface.GeneralMenu(user.ID);
+        else UserInterface.GeneralMenu(user.ID);
+    }
+
+    public static string HandleRegisterinput(string currentField, string userinfo, string escapetab, string nextfield, string lastfield)
+    {
+        switch (escapetab)
+        {
+            case "ESC":
+                Helper.ConsoleClear();
+                Interface.GeneralMenu();
+                break;
+            case "TAB":
+                if (nextfield is not null) currentField = nextfield;
+                return currentField;
+            case "SHIFTTAB":
+                if (lastfield is not null) currentField = lastfield;
+                return currentField;
+        }
+        if (!string.IsNullOrEmpty(userinfo))
+        {
+            if (string.Equals(currentField, "password"))
+            {
+                char yorn = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Complete registration",
+                                             "Are you happy to register with current details? Y/N");
+                if (yorn == 'y')
+                {
+                    return "validated";
+                }
+            }
+            currentField = nextfield;
+        }
+        return currentField;
     }
 
 }

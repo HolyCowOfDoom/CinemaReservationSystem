@@ -24,12 +24,13 @@ public class Helper
         char specificNumberInput = ReadInput((char c) => c == '5');*/
         Console.CursorVisible = false;
         char input;
-        bool isValidInput = false;
+        bool isValidInput;
         Console.WriteLine();
         do
         {
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             input = keyInfo.KeyChar;
+            input = char.ToLower(input);
 
             isValidInput = validationCriteria(input);
 
@@ -45,7 +46,6 @@ public class Helper
         Console.Clear();
         return input;
     }
-
     //Can be used to filter string and displayer menu with header and user options in a box graphic
     // Displays user input key for key, user can backspace input
     //Can be used for login page for input validation
@@ -149,202 +149,160 @@ public class Helper
 
     }
 
-    public static void WriteColoredLetter(string letters)
-    {
-        Char[] array = letters.ToCharArray();
-        char[] yellow = { 'S', 'B', 'G', 'P', 'U', 'V', 'F', 'T', 'H', '1', '2', '3', '4', '5' };
 
-        foreach (Char c in array)
-        {
-            if (c == 'X')
-            {
-                Console.ForegroundColor = System.ConsoleColor.DarkRed;
-                Console.Write(c);
-            }
-            else if (yellow.Contains(c))
-            {
-                Console.ForegroundColor = System.ConsoleColor.Yellow;
-                Console.Write(c);
-            }
-            else
-            {
-                Console.ForegroundColor = System.ConsoleColor.Gray;
-                Console.Write(c);
-            }
-        }
-        Console.WriteLine();
-        Console.ForegroundColor = System.ConsoleColor.Gray;
-    }
-
-    public static string ReplaceAt(string input, int index, char newChar)
-    {
-        char[] chars = input.ToCharArray();
-        chars[index] = newChar;
-        return new string(chars);
-    }
-
-    public static (string, string) Catchinput(int left, int top, int maxLength, string type,
+    public static (string, string) Catchinput(int maxLength, string type,
         string Case, string username = "", string birthdate = "", string email = "", string password = "")
     {
-        Console.SetCursorPosition(left, top);
-        string input = string.Empty;
+        string input = GetInputString(type, username, birthdate, email, password);
         string taboresc = string.Empty;
-        bool validated = false;
-        bool spacebar = false;
-        
-        switch (type)
-        {
-            case "username":
-                if (!string.IsNullOrEmpty(username)) input = username;
-                break;
-            case "birthdate":
-                if (!string.IsNullOrEmpty(birthdate)) input = birthdate;
-                break;
-            case "email":
-                if (!string.IsNullOrEmpty(email)) input = email;
-                break;
-            case "password":
-                if (!string.IsNullOrEmpty(password)) input = password;
-                break;
-        }
+        bool spacebar = false, validated = false;
 
-
-        if (Case == "register") Graphics.DrawRegister(username, birthdate, email, password);
-        else if (Case == "login") Graphics.DrawLogin(input);
-        else if (Case == "password")
-        {
-            if (spacebar)
-            {
-                Graphics.DrawLogin(username, input);
-            }
-            else
-            {
-                Graphics.DrawLogin(username, new string('*', input.Length));
-            }
-        }
-
+        DrawUI(Case, username, birthdate, email, password, input, spacebar);
 
         while (true)
         {
-            ConsoleKeyInfo key = Console.ReadKey(true);
+            ConsoleKeyInfo key = Console.ReadKey(intercept: true);
 
-            if (key.Key == ConsoleKey.Escape)
+            switch (key.Key)
             {
-                taboresc = "ESC";
-                return (input, taboresc);
+                case ConsoleKey.Escape:
+                    taboresc = "ESC";
+                    return (input, taboresc);
+                case ConsoleKey.Tab when (key.Modifiers & ConsoleModifiers.Shift) != 0:
+                    taboresc = "SHIFTTAB";
+                    return (input, taboresc);
+                case ConsoleKey.Tab:
+                    taboresc = "TAB";
+                    return (input, taboresc);
+                case ConsoleKey.Spacebar when string.Equals(Case, "loginpassword"):
+                    spacebar = !spacebar;
+                    break;
+                case ConsoleKey.Backspace when input.Length > 0:
+                    ConsoleClear();
+                    input = input.Remove(input.Length - 1);
+                    break;
+                case ConsoleKey.Enter:
+                    Helper.ConsoleClear();
+                    UpdateUI(Case, type, input, username, birthdate, email, password, spacebar);
+                    validated = ValidateUserInput(Case, type, input);
+                    break;
+                default:
+                    Helper.ConsoleClear();
+                    UpdateUI(Case, type, input, username, birthdate, email, password, spacebar);
+                    HandleInputKey(ref input, maxLength, key.KeyChar, type, Case);
+                    break;
             }
-            else if (key.Key == ConsoleKey.Tab)
-            {
-                taboresc = "TAB";
-                return (input, taboresc);
-            }
-            else if (key.Key == ConsoleKey.Spacebar && Case == "loginpassword")
-            {
-                spacebar = !spacebar;
-            }
-            else if (key.Key == ConsoleKey.Enter)
-            {
-                switch (type)
+            UpdateUI(Case, type, input, username, birthdate, email, password, spacebar);
+            if (validated is true) return (input, taboresc);
+        }
+    }
+    private static bool ValidateUserInput(string Case, string type, string input)
+    {
+        switch (type)
+        {
+            case "username":
+
+                switch (Case)
                 {
-                    case "username":
-                        if (Case == "login")
+                    case "login":
+                        if (IsValidUsernameLog(input) == -1)
                         {
-                            if (IsValidUsernameLog(input) == -1)
-                            {
-                                Console.ForegroundColor = ConsoleColor.DarkRed;
-                                char yorn = Helper.ReadInput((char c) => c == 'y' || c == 'n', "username not found", "Username could not be found. Register account? Y/N");
-                                Console.ForegroundColor = ConsoleColor.Gray;
-                                if (yorn == 'y') InterfaceController.RegisterUser();
-                                else InterfaceController.LogIn();
-                            }
-                            else if (IsValidUsernameLog(input) == 1) validated = true;
-
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            char confirm = Helper.ReadInput((char c) => c == 'y' || c == 'n', "username not found",
+                                                            "Username could not be found. Register account? Y/N");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            if (confirm == 'y') InterfaceController.RegisterUser();
+                            else InterfaceController.LogIn();
                         }
-                        else if (Case == "register")
-                        {
-                            if (IsValidUsername(input) == 0)
-                            {
-                                Console.ForegroundColor = ConsoleColor.DarkRed;
-                                WriteInCenter("Invalid username. Must be atleast 3 chars long.");
-                                Console.ForegroundColor = ConsoleColor.Gray;
-                            }
-                            else if (IsValidUsername(input) == -1)
-                            {
-                                Console.ForegroundColor = ConsoleColor.DarkRed;
-                                WriteInCenter("Username already in use.");
-                                Console.ForegroundColor = ConsoleColor.Gray;
-                            }
-                            else if (IsValidUsername(input) == 1) validated = true;
-                        }
-                        else if (IsValidUsername(input) == 1) validated = true;
+                        else if (IsValidUsernameLog(input) == 1) return true;
                         break;
-                    case "birthdate":
-                        if (!IsValidBD(input))
+                    case "register":
+                        if (IsValidUsername(input) == 0)
                         {
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            WriteInCenter("Invalid birthdate. Use format: dd-MM-yyyy.");
-                            Console.ForegroundColor = ConsoleColor.Gray;
+                            WriteErrorMessage("Invalid username. Must be atleast 3 chars long.");
                         }
-                        else validated = true;
-                        break;
-                    case "email":
-                        if (!IsValidEmail(input))
+                        else if (IsValidUsername(input) == -1)
                         {
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            WriteInCenter("""Invalid email. Must contain "@" and ".".""");
-                            Console.ForegroundColor = ConsoleColor.Gray;
+                            WriteErrorMessage("Username already in use.");
                         }
-                        else validated = true;
-                        break;
-                    case "password":
-                        if (!IsValidPassword(input) && Case == "password")
-                        {
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            WriteInCenter("Invalid password. Must be atleast 6 chars long and contain a digit.");
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                        }
-                        else if (!IsValidPassword(input) && Case == "register")
-                        {
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            WriteInCenter("Invalid password. Must be atleast 6 chars long and contain a digit.");
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                        }
-                        else if (!IsValidPassword(input) && Case == "loginpassword")
-                        {
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            WriteInCenter("Invalid password........");
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                        }
-                        else validated = true;
+                        else if (IsValidUsername(input) == 1) return true;
                         break;
                 }
-                if (validated is true) return (input, taboresc);
-            }
-            else if (key.Key == ConsoleKey.Backspace && input.Length > 0)
+                break;
+            case "birthdate":
+                if (!IsValidBD(input))
+                {
+                    WriteErrorMessage("Invalid birthdate. Use format: dd-MM-yyyy.");
+                }
+                else return true;
+                break;
+            case "email":
+                if (!IsValidEmail(input))
+                {
+                    WriteErrorMessage("""Invalid email. Must contain "@" and ".".""");
+                }
+                else return true;
+                break;
+            case "password":
+                if (!IsValidPassword(input) && string.Equals(Case, "password") || !IsValidPassword(input) && string.Equals(Case, "register"))
+                {
+                    WriteErrorMessage("Invalid password. Must be atleast 6 chars long and contain a digit.");
+                }
+                else if (!IsValidPassword(input) && string.Equals(Case, "loginpassword"))
+                {
+                    WriteErrorMessage("Invalid password........");
+                }
+                else return true;
+                break;
+        }
+        return false;
+    }
+
+    private static void WriteErrorMessage(string error)
+    {
+        Console.ForegroundColor = ConsoleColor.DarkRed;
+        WriteInCenter(error);
+        Console.ForegroundColor = ConsoleColor.Gray;
+    }
+
+    private static void HandleInputKey(ref string input, int maxLength, char keyChar, string type, string Case)
+    {
+        if (input.Length == maxLength)
+        {
+            WriteErrorMessage("Max input length reached!");
+        }
+        else if (char.IsLetterOrDigit(keyChar) || char.IsSymbol(keyChar) || char.IsPunctuation(keyChar))
+        {
             {
-                Console.Write("\b \b");
-                Console.Clear();
-                input = input.Remove(input.Length - 1);
-            }
-            else if (input.Length == maxLength)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                WriteInCenter("Max input length reached");
-                Console.ForegroundColor = ConsoleColor.Gray;
-            }
-            else if (char.IsLetterOrDigit(key.KeyChar) || char.IsSymbol(key.KeyChar) || char.IsPunctuation(key.KeyChar))
-            {
-                if (Case == "register" && type == "birthdate")
+                if (string.Equals(Case, "register") && string.Equals(type, "birthdate"))
                 {
                     if (input.Length == 2 || input.Length == 5) input += "-";
                 }
-                input += key.KeyChar;
+                input += keyChar;
             }
-
-
-            if (Case == "login") Graphics.DrawLogin(input);
-            else if (Case == "loginpassword")
+        }
+    }
+    private static string GetInputString(string type, string username, string birthdate, string email, string password)
+    {
+        {
+            return type switch
             {
+                "username" => !string.IsNullOrEmpty(username) ? username : string.Empty,
+                "birthdate" => !string.IsNullOrEmpty(birthdate) ? birthdate : string.Empty,
+                "email" => !string.IsNullOrEmpty(email) ? email : string.Empty,
+                "password" => !string.IsNullOrEmpty(password) ? password : string.Empty,
+                _ => string.Empty
+            };
+        }
+    }
+    private static void UpdateUI(string Case, string type, string input, string username, string birthdate, string email, string password, bool spacebar)
+    {
+        switch (Case)
+        {
+            case "login":
+                Graphics.DrawLogin(input);
+                break;
+            case "loginpassword":
                 if (spacebar)
                 {
                     Graphics.DrawLogin(username, input);
@@ -353,9 +311,8 @@ public class Helper
                 {
                     Graphics.DrawLogin(username, new string('*', input.Length));
                 }
-            }
-            else if (Case == "register")
-            {
+                break;
+            case "register":
                 switch (type)
                 {
                     case "username":
@@ -371,8 +328,35 @@ public class Helper
                         Graphics.DrawRegister(username, birthdate, email, input);
                         break;
                 }
-            }
+                break;
         }
+    }
+    private static void DrawUI(string Case, string username, string birthdate, string email, string password, string input, bool spacebar)
+    {
+        switch (Case)
+        {
+            case "register":
+                Graphics.DrawRegister(username, birthdate, email, password);
+                break;
+            case "login":
+                Graphics.DrawLogin(input);
+                break;
+            case "password":
+                if (spacebar)
+                {
+                    Graphics.DrawLogin(username, input);
+                }
+                else
+                {
+                    Graphics.DrawLogin(username, new string('*', input.Length));
+                }
+                break;
+        }
+    }
+    public static void ConsoleClear()
+    {
+        Console.WriteLine("\b \b");
+        Console.Clear();
     }
 
     // everything about getting the valid input.

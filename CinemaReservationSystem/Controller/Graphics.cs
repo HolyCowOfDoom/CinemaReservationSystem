@@ -151,6 +151,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         Console.ForegroundColor = ConsoleColor.Blue;
         Helper.WriteInCenter("Login or press ESC to go back to menu, press TAB to register an account.");
         Console.ForegroundColor = ConsoleColor.Gray;
+        Console.SetCursorPosition((Console.WindowWidth - 50) / 2, 10);
         Helper.WriteInCenter("╔═════════════════════════════════════╗");
         Helper.WriteInCenter("║                LOGIN                ║");
         Helper.WriteInCenter("╠═════════════════════════════════════╣");
@@ -162,21 +163,55 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
 
     public static void DrawRegister(string username = "", string birthdate = "", string email = "", string password = "")
     {
+        int usernamerightpadding, birthdaterightpadding, emailrightpadding, passwordrightpadding;
+        int usernameleftpadding, birthdateleftpadding, emailleftpadding, passwordleftpadding;
+        (username, usernamerightpadding, usernameleftpadding) = GetInstructionString(username, "username");
+        (birthdate, birthdaterightpadding, birthdateleftpadding) = GetInstructionString(birthdate, "birthdate");
+        (email, emailrightpadding, emailleftpadding) = GetInstructionString(email, "email");
+        (password, passwordrightpadding, passwordleftpadding) = GetInstructionString(password, "password");
+
         Console.SetCursorPosition(0, 0);
         Console.ForegroundColor = ConsoleColor.Blue;
-        Helper.WriteInCenter("Register, press TAB to go back a field or press ESC to go to back to menu.");
+        Helper.WriteInCenter("Register or press ESC to go to back to menu.");
         Console.ForegroundColor = ConsoleColor.Gray;
+        
+        Console.SetCursorPosition((Console.WindowWidth - 50) / 2, 8);
         Helper.WriteInCenter("╔═════════════════════════════════════╗");
         Helper.WriteInCenter("║               REGISTER              ║");
         Helper.WriteInCenter("╠═════════════════════════════════════╣");
-        Helper.WriteInCenter("║USERNAME: " + username.PadRight(27) + "║");
+        Helper.WriteInCenter("║USERNAME: ".PadLeft(usernameleftpadding) + username.PadRight(usernamerightpadding) + "║");
         Helper.WriteInCenter("╠═════════════════════════════════════╣");
-        Helper.WriteInCenter("║BIRTHDATE: " + birthdate.PadRight(26) + "║");
+        Helper.WriteInCenter("║BIRTHDATE: ".PadLeft(birthdateleftpadding) + birthdate.PadRight(birthdaterightpadding) + "║");
         Helper.WriteInCenter("╠═════════════════════════════════════╣");
-        Helper.WriteInCenter("║EMAIL: " + email.PadRight(30) + "║");
+        Helper.WriteInCenter("║EMAIL: ".PadLeft(emailleftpadding) + email.PadRight(emailrightpadding) + "║");
         Helper.WriteInCenter("╠═════════════════════════════════════╣");
-        Helper.WriteInCenter("║PASSWORD: " + password.PadRight(27) + "║");
+        Helper.WriteInCenter("║PASSWORD: ".PadLeft(passwordleftpadding) + password.PadRight(passwordrightpadding) + "║");
         Helper.WriteInCenter("╚═════════════════════════════════════╝");
+    }
+    public static (string, int, int) GetInstructionString(string registerinfo, string type)
+    {
+        if (string.IsNullOrEmpty(registerinfo))
+        {
+            return (type) switch
+            {
+
+                "username" => (Colorize("username > 3 chars", "gray"), 36, 20),
+                "birthdate" => (Colorize("format: dd-MM-yyyy", "gray"), 35, 21),
+                "email" => (Colorize("email has '@' and '.'", "gray"), 39, 17),
+                "password" => (Colorize("password has digit", "gray"), 36, 20),
+                _ => throw new ArgumentException(nameof(registerinfo), $"Could not find type for: {registerinfo}")
+            };
+        }
+
+        return (type) switch
+        {
+
+        "username" => (registerinfo, 27, 0),
+        "birthdate" => (registerinfo, 26, 0),
+        "email" => (registerinfo, 30, 0),
+        "password" => (registerinfo, 27, 0),
+        _ => throw new ArgumentException(nameof(registerinfo), $"Could not find type for: {registerinfo}")
+        };
     }
 
     private static void DrawLegend(string Blueprice, string Redprice, string Yellowprice)
@@ -278,8 +313,8 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         if (string.Equals(Convert.ToString(confirm), "n")) return;
         foreach (int index in listreservedindex)
         {
-            screening.ReserveSeat(Convert.ToString(GetSeatNumberFromIndex(auditorium, index, true) + GetAuditoriumOffset(Int32.Parse(screening.AssignedAuditorium.ID))));
-            reservedseatIDs.Add(Convert.ToString(GetSeatNumberFromIndex(auditorium, index, true) + GetAuditoriumOffset(Int32.Parse(screening.AssignedAuditorium.ID))));
+            screening.ReserveSeat(Convert.ToString(GetSeatNumberFromIndex(auditorium, index, database: true) + GetAuditoriumOffset(Int32.Parse(screening.AssignedAuditorium.ID))));
+            reservedseatIDs.Add(Convert.ToString(GetSeatNumberFromIndex(auditorium, index, database: true) + GetAuditoriumOffset(Int32.Parse(screening.AssignedAuditorium.ID))));
         }
         reservedDone = true;
     }
@@ -296,7 +331,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
     private static void HandleEscapeKeyPress(User user)
     {
         Console.Write("\f\u001bc\x1b[3J");
-        if (user.ID.StartsWith("admin-")) AdminInterface.GeneralMenu(user.ID);
+        if (user.Admin is true) AdminInterface.GeneralMenu(user.ID);
         else UserInterface.GeneralMenu(user.ID);
     }
 
@@ -316,7 +351,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
             ConsoleKey.UpArrow when indexPos - width >= -width && indexPos - width <= 0 => indexPos += mintopindex,
             ConsoleKey.UpArrow when indexPos - width >= 0 && indexPos - width <= maxindex => indexPos -= width + 2,
 
-            _ => indexPos
+            _ => _ => throw new ArgumentException(nameof(indexPos), $"Could not find new position for: {indexPos}")
         };
     }
 
@@ -377,11 +412,12 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         {
             if (auditorium[i] == 'U')
             {
-                (_, bool reserved) = seatIDcolor[GetSeatNumberFromIndex(auditorium, i, true)];
+                (_, bool reserved) = seatIDcolor[GetSeatNumberFromIndex(auditorium, i, database: true)];
                 if (reserved && !listreservedindex.Contains(i)) reservedbyotheruser.Add(i);
             }
         }
     }
+    
 
     private static void DrawAuditoriumInfo(string auditorium, string auditoriumScreen, string coloredAuditorium, int indexPos, IEnumerable<string> selectedseats, IDictionary<int, char> numbertoletter)
     {
@@ -433,7 +469,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
             (_, _, "Yellow") => Colorize("U", "yellow"),
             (_, _, "Blue") => Colorize("U", "blue"),
             (_, _, "Red") => Colorize("U", "red"),
-            _ => "U"
+            _ => throw new ArgumentException(nameof(i), $"Could not find color for seat: {GetSeatNumberFromIndex(auditorium, i, true)}")
         };
     }
     public static string Colorize(string character, string color)
@@ -449,7 +485,8 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
             "cyan" => $"\u001b[36m{character}\u001b[0m",
             "white" => $"\u001b[37m{character}\u001b[0m",
             "lavender" => $"\u001b[38;5;147m{character}\u001b[0m",
-            _ => throw new ArgumentException("Invalid color"),
+            "gray" => $"\u001b[90m{character}\u001b[0m",
+            _ => throw new ArgumentException(nameof(color), $"Invalid color: {color}")
         };
     }
 
