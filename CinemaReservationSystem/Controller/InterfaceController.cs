@@ -12,80 +12,6 @@ public class InterfaceController
             Console.WriteLine($"│ {Movies.IndexOf(movie) + 1, -2} │ {movie.Title,-40} │ {movie.AgeRating,-11} │ {movie.Genre, -11} │ {movie.Description,-60} │");
         }
         Console.WriteLine("└────┴──────────────────────────────────────────┴─────────────┴─────────────┴──────────────────────────────────────────────────────────────┘");
-        XToGoBack();
-    }
-
-    public static void LogIn(){
-        bool quit = false;
-        do{
-        Console.WriteLine("Enter your username or press q to quit.");
-
-        string username = Console.ReadLine();
-        if(username.ToLower() == "q") quit = true;
-        User? user = User.GetUserWithValue("Name", username);
-        if (user != null)
-        {
-            // hier CSV handler die username krijgt en ID + Password returned om in te loggen.
-            int attempts = 3;
-            while (attempts > 0)
-            {
-                Console.WriteLine($"Enter the password associated with the username: {username}");
-                string passin = Console.ReadLine();
-                // called hier een method van user.cs en krijgt een user ID gereturned
-
-                if (passin == user.Password)
-                {
-                    string id = user.ID;
-                    Console.WriteLine($"Succesfully logged into {user.Name}");
-                    XToGoBack(id);
-                    break;
-                }
-                else
-                {
-                    attempts--;
-                    Console.WriteLine($"{attempts} attempts remaining.");
-                }
-            }
-        }
-        Console.WriteLine("Attempt limit reached on trying passwords.");
-        XToGoBack();
-        break;
-        } while (!quit);
-        XToGoBack();
-    }
-
-    public static void Login()
-    {
-        Console.CursorVisible = false;
-        Console.Clear();
-
-        string username = Helper.CaptureInput(30, 1);
-        string password = Helper.CaptureInputPassword(30, 1, username);
-
-        //test
-        Helper.DrawLogin(username, password);
-
-        Console.ReadKey();
-    }
-
-    public static void RegisterUser()
-    {
-        Console.WriteLine("USER REGISTRATION\n-------------------------------------");
-        string username = Helper.GetValidInput("Username needs to be atleast 3 characters and not more than 20 characters.\nEnter username: ", Helper.IsValidUsername);
-        string birthDate = Helper.GetValidInput("Birthdate needs to be dd-MM-yyyy.\nEnter birthdate: ", Helper.IsValidBD);
-        string email = Helper.GetValidInput("An email address needs to include (@) and (.).\nEnter email: ", Helper.IsValidEmail);
-        string password = Helper.GetValidInput("Password needs to be atleast 6 characters long and have a digit in it.\nEnter password: ", Helper.IsValidPassword);
-        Console.Clear();
-        User user = new User(username, birthDate, email, password);
-        Console.WriteLine("User registration successful!");
-        Console.WriteLine($"Username: {user.Name}");
-        Console.WriteLine($"Birth date: {user.BirthDate}");
-        Console.WriteLine($"Email: {user.Email}");
-        
-        XToGoBack(user.ID);
-    }
-    
-    public static void XToGoBack(){
         Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
         if (specificLetterInput == 'x'){
@@ -93,12 +19,139 @@ public class InterfaceController
         }
     }
 
-    public static void XToGoBack(string id){
-        Console.WriteLine("Press x to go back to the main menu");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-        if (specificLetterInput == 'x'){
-            if (id.StartsWith("admin-")) AdminInterface.GeneralMenu(id);
-            else UserInterface.GeneralMenu(id);
+    public static void LogIn()
+    {
+        string username = string.Empty, password = string.Empty;
+        string EscorTaborshift;
+        User? user = null;
+        Console.CursorVisible = false;
+        Helper.ConsoleClear();
+
+        string currentField = "username";
+
+        while (true)
+        {
+            switch (currentField)
+            {
+                case "username":
+                    (username, EscorTaborshift) = Helper.Catchinput(27, "username", "login", username);
+                    switch (EscorTaborshift)
+                    {
+                        case "ESC":
+                            Helper.ConsoleClear();
+                            Interface.GeneralMenu();
+                            break;
+                        case "TAB":
+                            RegisterUser();
+                            break;
+                        default:
+                            break;
+                    }
+                    if (!string.IsNullOrEmpty(username))
+                    {
+                        user = User.GetUserWithValue("Name", username);
+                        currentField = "password";
+                    }
+                    break;
+                case "password":
+                    (password, EscorTaborshift) = Helper.Catchinput(27, "password", "loginpassword", username, "", "", password);
+                    switch (EscorTaborshift)
+                    {
+                        case "ESC":
+                            Helper.ConsoleClear();
+                            Interface.GeneralMenu();
+                            break;
+                        case "TAB":
+                            RegisterUser();
+                            break;
+                        default:
+                            break;
+                    }
+                    if (!string.IsNullOrEmpty(password))
+                    {
+                        if (string.Equals(password, user.Password))
+                        {
+                            Helper.ConsoleClear();
+                            if (user.Admin is true) AdminInterface.GeneralMenu(user.ID);
+                            else UserInterface.GeneralMenu(user.ID);
+                            break;
+                        }
+                    }
+                    break;
+            }  
         }
     }
+
+
+    public static void RegisterUser()
+    {
+        string username = string.Empty, birthDate = string.Empty, email = string.Empty, password = string.Empty, escapetab = string.Empty;
+        bool registercomplete = false;
+
+        Console.CursorVisible = false;
+        Helper.ConsoleClear();
+
+        // Start with the username input
+        string currentField = "username";
+
+        while (!registercomplete)
+        {
+            switch (currentField)
+            {
+                case "username":
+                    (username, escapetab) = Helper.Catchinput(27, "username", "register", username, birthDate, email, password);
+                    currentField = HandleRegisterinput(currentField, username, escapetab, "birthdate", lastfield: null);
+                    break;
+                case "birthdate":
+                    (birthDate, escapetab) = Helper.Catchinput(10, "birthdate", "register", username, birthDate, email, password);
+                    currentField = HandleRegisterinput(currentField, birthDate, escapetab, "email", "username");
+                    break;
+                case "email":
+                    (email, escapetab) = Helper.Catchinput(30, "email", "register", username, birthDate, email, password);
+                    currentField = HandleRegisterinput(currentField, email, escapetab, "password", "birthdate");
+                    break;
+                case "password":
+                    (password, escapetab) = Helper.Catchinput(27, "password", "register", username, birthDate, email, password);
+                    currentField = HandleRegisterinput(currentField, password, escapetab, nextfield: null, "email");
+                    if (string.Equals(currentField, "validated")) registercomplete = true;
+                    break;
+            }
+        }
+        User user = new User(username, birthDate, email, password);
+        Helper.ConsoleClear();
+        if (user.Admin is true) AdminInterface.GeneralMenu(user.ID);
+        else UserInterface.GeneralMenu(user.ID);
+    }
+
+    public static string HandleRegisterinput(string currentField, string userinfo, string escapetab, string nextfield, string lastfield)
+    {
+        switch (escapetab)
+        {
+            case "ESC":
+                Helper.ConsoleClear();
+                Interface.GeneralMenu();
+                break;
+            case "TAB":
+                if (nextfield is not null) currentField = nextfield;
+                return currentField;
+            case "SHIFTTAB":
+                if (lastfield is not null) currentField = lastfield;
+                return currentField;
+        }
+        if (!string.IsNullOrEmpty(userinfo))
+        {
+            if (string.Equals(currentField, "password"))
+            {
+                char yorn = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Complete registration",
+                                             "Are you happy to register with current details? Y/N");
+                if (yorn == 'y')
+                {
+                    return "validated";
+                }
+            }
+            currentField = nextfield;
+        }
+        return currentField;
+    }
+
 }

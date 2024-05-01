@@ -43,3 +43,7 @@ using System.Security.AccessControl;
 // C.UpdateAuditoriumJson();
 Interface.GeneralMenu();
 // Console.ReadLine(); //keeps external terminal open
+//below are the three auditorium visuals to test reserving seats 
+//Graphics.AuditoriumView(Graphics.auditorium1, 24, 362, 338);
+//Graphics.AuditoriumView(Graphics.auditorium2, 40, 796, 756);
+//Graphics.AuditoriumView(Graphics.auditorium3, 64, 1384, 1320);

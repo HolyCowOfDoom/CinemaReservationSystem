@@ -12,7 +12,11 @@ public class AdminController
 
         Movie addedMovie = new Movie(title, ageRating, description, genre);
 
-        XToGoBack(id);
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            AdminInterface.GeneralMenu(id);
+        }
     }
 
     public static void AddScreening(Movie movie, string id)
@@ -28,30 +32,58 @@ public class AdminController
         DateTime screeningDT = DateTime.ParseExact(dateTimeString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
         movie.AddScreening(screeningAud, screeningDT);
 
-        XToGoBack(id);
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            AdminInterface.GeneralMenu(id);
+        }
     }
 
-    public static void RegisterAdmin(string id)
+    public static void RegisterAdmin(string fid)
     {
-        Console.WriteLine("ADMIN REGISTRATION\n─────────────────────────────────");
-        // passed naar een validator, kan ook nog in ander file als we willen dat dit alleen view is.
-        string username = Helper.GetValidInput("Username needs to be atleast 3 characters and not more than 20 characters.\nEnter username: ", Helper.IsValidUsername);
-        string birthDate = Helper.GetValidInput("Birthdate needs to be dd-MM-yyyy.\nEnter birthdate: ", Helper.IsValidBD);
-        string email = Helper.GetValidInput("An email address needs to include (@) and (.).\nEnter email: ", Helper.IsValidEmail);
-        string password = Helper.GetValidInput("Password needs to be atleast 6 characters long and have a digit in it.\nEnter password: ", Helper.IsValidPassword);
-        Console.Clear();
-        User user = new User(username, birthDate, email, password, true);
-        Console.WriteLine("User registration successful!");
-        Console.WriteLine($"Username: {user.Name}");
-        Console.WriteLine($"Birth date: {user.BirthDate}");
-        Console.WriteLine($"Email: {user.Email}");
-        
-        XToGoBack(id);
-    }
+        string username = string.Empty, birthDate = string.Empty, email = string.Empty, password = string.Empty, escapetab = string.Empty;
+        bool registercomplete = false;
 
+        Console.CursorVisible = false;
+        Helper.ConsoleClear();
+
+        // Start with the username input
+        string currentField = "username";
+
+        while (!registercomplete)
+        {
+            switch (currentField)
+            {
+                case "username":
+                    (username, escapetab) = Helper.Catchinput(27, "username", "register", username, birthDate, email, password);
+                    currentField = InterfaceController.HandleRegisterinput(currentField, username, escapetab, "birthdate", lastfield: null);
+                    break;
+                case "birthdate":
+                    (birthDate, escapetab) = Helper.Catchinput(10, "birthdate", "register", username, birthDate, email, password);
+                    currentField = InterfaceController.HandleRegisterinput(currentField, birthDate, escapetab, "email", "username");
+                    break;
+                case "email":
+                    (email, escapetab) = Helper.Catchinput(30, "email", "register", username, birthDate, email, password);
+                    currentField = InterfaceController.HandleRegisterinput(currentField, email, escapetab, "password", "birthdate");
+                    break;
+                case "password":
+                    (password, escapetab) = Helper.Catchinput(27, "password", "register", username, birthDate, email, password);
+                    currentField = InterfaceController.HandleRegisterinput(currentField, password, escapetab, nextfield: null, "email");
+                    if (string.Equals(currentField, "validated")) registercomplete = true;
+                    break;
+            }
+        }
+        User user = new User(username, birthDate, email, password, admin: true);
+        Helper.ConsoleClear();
+        AdminInterface.GeneralMenu(fid);
+    }
     public static void LogOut(){
         Console.WriteLine("You have been succesfully logged out");
-        XToGoBack();
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            Interface.GeneralMenu();
+        }
     }
 
     public static void AdminMovieInterface(Movie movie, string id)
@@ -73,7 +105,11 @@ public class AdminController
             AddScreening(movie, id);
         }
 
-        XToGoBack(id);
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            AdminInterface.GeneralMenu(id);
+        }
     }
 
     public static string AdminInputMovie(string id)
@@ -94,16 +130,10 @@ public class AdminController
     public static void AdminScreeningInterface(Screening screening, string id)
     {
         Console.WriteLine("Reserve seats and display audit plan in this menu...");
-        XToGoBack(id);
-    }
-
-    private static void XToGoBack(string id)
-    {
-        InterfaceController.XToGoBack(id);
-    }
-
-    private static void XToGoBack()
-    {
-        InterfaceController.XToGoBack();
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            AdminInterface.GeneralMenu(id);
+        }
     }
 }
