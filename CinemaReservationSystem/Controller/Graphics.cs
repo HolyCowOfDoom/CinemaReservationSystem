@@ -351,7 +351,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
             ConsoleKey.UpArrow when indexPos - width >= -width && indexPos - width <= 0 => indexPos += mintopindex,
             ConsoleKey.UpArrow when indexPos - width >= 0 && indexPos - width <= maxindex => indexPos -= width + 2,
 
-            _ => _ => throw new ArgumentException(nameof(indexPos), $"Could not find new position for: {indexPos}")
+            _ => throw new ArgumentException(nameof(indexPos), $"Could not find new position for: {indexPos}")
         };
     }
 
