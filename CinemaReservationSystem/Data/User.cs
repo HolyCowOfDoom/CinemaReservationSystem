@@ -7,7 +7,7 @@ using CsvHelper.Configuration.Attributes;
 public class User : IEquatable<User>
 {
     //static string DBFilePath = Path.GetFullPath("Model/UserDB.csv");
-    static string DBFilePath = "Model/UserDB.csv";
+    
     private string _id;
     //private string _name; 
     //private string _birthDate;
@@ -43,7 +43,7 @@ public class User : IEquatable<User>
         Admin = admin;
         if(reservations != null) Reservations = reservations;
         else Reservations = new(); //
-        AddUser(this);
+        UserDataController.AddUser(this);
     }
     //for use by CsVHandler.Read(), copies ID rather than generating a new one
     public User(string id, string name, string birthDate, string email,string password, bool admin, List<Reservation> reservations)//, string reservations)
@@ -72,24 +72,7 @@ public class User : IEquatable<User>
         Admin = user.Admin;
         Reservations = user.Reservations;
     }
-    public static bool AddUser(User user)
-    {
-        //List<object> records = new()
-        CsvHandler.Append(DBFilePath, new List<object>{user});
-        //CsvHandler.Write(UserDBFilePath);
-        return true;
-    }
-
-    public static User GetUserWithValue(string header, object hasValue)
-    {
-        return CsvHandler.GetRecordWithValue<User>(DBFilePath, header, hasValue);
-    }
-
-    //"J" can't be replaced with "object", as MySetProperty in UpdateRecordWithValue needs List<J> rather than List<object>
-    public static bool UpdateUserWithValue<J>(User user, string header, J newValue)
-    {
-        return CsvHandler.UpdateRecordWithValue<User, J>(DBFilePath, user, header, newValue);
-    }
+    
 
     //makes object1.Equals(object2) return true if their fields match. default returns false as they ae different obects.
     //https://stackoverflow.com/questions/25461585/operator-overloading-equals
@@ -140,27 +123,5 @@ public class User : IEquatable<User>
     //this last line is because the one above can't override Equals due to a signature mismatch due to "User other"
     public override bool Equals(object obj) => obj is User && Equals(obj as User);
 
-    // private static string EncryptPassword(string password)
-    // {
-    //     string encrypted = "";
-    //     foreach(char letter in password)
-    //     {
-    //         if(letter % 2 == 0) encrypted += letter + 13; //even -> odd
-    //         else encrypted += (char)(letter + 9); //odd -> even 7 + 9 -> 16
-    //     }
-    //     return encrypted;
-    // }
-
-    // private static string DecryptPassword(string password)
-    // {
-    //     string decrypted = "";
-    //     foreach(char letter in password)
-    //     {
-    //         if(letter % 2 != 0) decrypted += (char)(letter - 13); //odd -> even
-    //         else decrypted += (char)(letter - 9); //even -> odd 16 - 9 => 7
-    //     }
-    //     return decrypted;
-    // }
-   
 }
 

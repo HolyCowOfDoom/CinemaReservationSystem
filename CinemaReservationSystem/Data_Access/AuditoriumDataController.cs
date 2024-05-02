@@ -1,42 +1,25 @@
-
-public class Auditorium : ObjectHasID
+public static class AuditoriumDataController
 {
-    public List<Seat> Seats { get; }
-    public string ID { get; }
-
-    public Auditorium(string id, List<Seat>? seats = null)
+    private static string DBFilePath = "Data/AuditoriumDB.json";
+    public static void InitializeSeats(Auditorium auditorium)
     {
-        ID = id;
-        if (seats != null)
-        {
-            Seats = seats;
-        }
-        else
-        {
-            Seats = new List<Seat>();
-            InitializeSeats();
-        }
-    }
-
-    private void InitializeSeats()
-    {
-        switch (this.ID)
+        switch (auditorium.ID)
         {
             case "1":
-                InitializeSeatsForAuditorium1(150);
+                InitializeSeatsForAuditorium1(auditorium, 150);
                 break;
             case "2":
-                InitializeSeatsForAuditorium2(300);
+                InitializeSeatsForAuditorium2(auditorium, 300);
                 break;
             case "3":
-                InitializeSeatsForAuditorium3(500);
+                InitializeSeatsForAuditorium3(auditorium, 500);
                 break;
             default:
-                throw new ArgumentException($"Invalid auditorium ID. Current ID: {ID}");
+                throw new ArgumentException($"Invalid auditorium ID. Current ID: {auditorium.ID}");
         }
     }
 
-    private void InitializeSeatsForAuditorium1(int numberOfSeats)
+    private static void InitializeSeatsForAuditorium1(Auditorium auditorium, int numberOfSeats)
     {
         for (int i = 1; i <= numberOfSeats; i++)
         {
@@ -58,11 +41,11 @@ public class Auditorium : ObjectHasID
                 color = "Red";
             }
 
-            Seats.Add(new Seat(color));
+            auditorium.Seats.Add(new Seat(color));
         }
     }
 
-    private void InitializeSeatsForAuditorium2(int numberOfSeats)
+    private static void InitializeSeatsForAuditorium2(Auditorium auditorium, int numberOfSeats)
     {
         for (int i = 1; i <= numberOfSeats; i++)
         {
@@ -88,11 +71,11 @@ public class Auditorium : ObjectHasID
                 color = "Red";
             }
 
-            Seats.Add(new Seat(color));
+            auditorium.Seats.Add(new Seat(color));
         }
     }
 
-    private void InitializeSeatsForAuditorium3(int numberOfSeats)
+    private static void InitializeSeatsForAuditorium3(Auditorium auditorium, int numberOfSeats)
     {
         for (int i = 1; i <= numberOfSeats; i++)
         {
@@ -102,7 +85,7 @@ public class Auditorium : ObjectHasID
                 (i >= 347 && i <= 359) || (i >= 374 && i <= 386) || (i >= 399 && i <= 412) || (i >= 423 && i <= 438) ||
                 (i >= 446 && i <= 500))
             {
-                Seats.Add(new Seat("Blue"));
+                auditorium.Seats.Add(new Seat("Blue"));
             }
             else if ((i >= 29 && i <= 40) || (i >= 52 && i <= 65) || (i >= 76 && i <= 89) || (i >= 99 && i <= 105) ||
                     (i >= 110 && i <= 115) || (i >= 125 && i <= 129) || (i >= 136 && i <= 140) || (i >= 151 && i <= 155) ||
@@ -112,20 +95,20 @@ public class Auditorium : ObjectHasID
                     (i >= 342 && i <= 346) || (i >= 360 && i <= 373) || (i >= 387 && i <= 398) || (i >= 413 && i <= 422) ||
                     (i >= 439 && i <= 445))
             {
-                Seats.Add(new Seat("Yellow"));
+                auditorium.Seats.Add(new Seat("Yellow"));
             }
             else if ((i >= 106 && i <= 109) || (i >= 130 && i <= 135) || (i >= 156 && i <= 163) || (i >= 185 && i <= 192) ||
                     (i >= 216 && i <= 224) || (i >= 247 && i <= 254) || (i >= 277 && i <= 284) || (i >= 307 && i <= 314) ||
                     (i >= 338 && i <= 341))
             {
-                Seats.Add(new Seat("Red"));
+                auditorium.Seats.Add(new Seat("Red"));
             }
         }
     }
 
-    public string GetSeatInfo(string seatID)
+    public static string GetSeatInfo(Auditorium auditorium, string seatID)
     {
-        foreach (Seat seat in Seats)
+        foreach (Seat seat in auditorium.Seats)
         {
             if (seat.ID == seatID)
                 return seat.ToString();
@@ -148,9 +131,9 @@ public class Auditorium : ObjectHasID
         }
     }
 
-    public bool ReserveSeat(string seatID)
+    public static bool ReserveSeat(Auditorium auditorium, string seatID)
     {
-        Seat? seat = Seats.Find(s => s.ID == seatID);
+        Seat? seat = auditorium.Seats.Find(s => s.ID == seatID);
         if (seat != null && !seat.IsReserved)
         {
             seat.ReserveSeat();
@@ -164,16 +147,8 @@ public class Auditorium : ObjectHasID
         }
     }
 
-    public void UpdateAuditoriumJson()
+    public static void UpdateAuditoriumJson(Auditorium auditorium)
     {
-        JsonHandler.Update<Auditorium>(this, "Model/AuditoriumDB.json");
-    }
-
-    public override string ToString()
-    {
-        return $"Auditorium ID: {ID}, Number of Seats: {Seats.Count}";
+        JsonHandler.Update<Auditorium>(auditorium, DBFilePath);
     }
 }
-
-
-
