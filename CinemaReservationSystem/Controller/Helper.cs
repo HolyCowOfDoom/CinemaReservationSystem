@@ -260,9 +260,14 @@ public class Helper
 
     private static void WriteErrorMessage(string error)
     {
+        int cursortop;
+        
+        Console.WriteLine(new string(' ', Console.WindowWidth));
+        (_, cursortop) = Console.GetCursorPosition();
         Console.ForegroundColor = ConsoleColor.DarkRed;
+        Console.SetCursorPosition(0, cursortop -1);
         WriteInCenter(error);
-        Console.ForegroundColor = ConsoleColor.Gray;
+        Console.ResetColor();
     }
 
     private static void HandleInputKey(ref string input, int maxLength, char keyChar, string type, string Case)
