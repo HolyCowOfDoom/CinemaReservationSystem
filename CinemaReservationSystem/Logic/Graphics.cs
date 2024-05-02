@@ -248,7 +248,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
 
             //user input handling
             HandleUserInput(screening, user, auditorium, width, maxindex, mintopindex, ref indexPos, selectedseats, listreservedindex, 
-                            numbertoletter, reservedbyotheruser, reservedseatIDs, reservedDone);
+                            numbertoletter, reservedbyotheruser, reservedseatIDs, ref reservedDone);
 
             //update auditorium visual
             coloredAuditorium = GetColoredAuditorium(auditorium, indexPos, reservedbyotheruser, listreservedindex, seatIDcolor);
@@ -258,7 +258,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
 
     private static void HandleUserInput(Screening screening, User user, string auditorium, int width, int maxindex, int mintopindex, ref int indexPos,
                                         List<string> selectedseats, List<int> listreservedindex, Dictionary<int, char> numbertoletter,
-                                        List<int> reservedbyotheruser, List<string> reservedseatIDs, bool reservedDone)
+                                        List<int> reservedbyotheruser, List<string> reservedseatIDs, ref bool reservedDone)
     {
         ConsoleKeyInfo key = Console.ReadKey(true);
 
@@ -274,7 +274,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
                 HandleSpacebarKeyPress(auditorium, indexPos, selectedseats, listreservedindex, reservedbyotheruser, numbertoletter);
                 break;
             case ConsoleKey.Enter:
-                HandleEnterKeyPress(screening, auditorium, listreservedindex, reservedseatIDs, reservedDone);
+                HandleEnterKeyPress(screening, auditorium, listreservedindex, reservedseatIDs, ref reservedDone);
                 break;
             case ConsoleKey.Backspace:
                 HandleBackspaceKeyPress(listreservedindex, selectedseats);
@@ -305,7 +305,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
     }
 
     private static void HandleEnterKeyPress(Screening screening, string auditorium, List<int> listreservedindex,
-                                            List<string> reservedseatIDs, bool reservedDone)
+                                            List<string> reservedseatIDs, ref bool reservedDone)
     {
         Console.ForegroundColor = ConsoleColor.Cyan;
         char confirm = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Confirm reservation", "Are you happy with your reservations? Y/N");

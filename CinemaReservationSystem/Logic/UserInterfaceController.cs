@@ -363,7 +363,7 @@ public class UserController
         Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
         if (specificLetterInput == 'x'){
-            Interface.GeneralMenu();
+            UserInterface.GeneralMenu(user.ID);
         }
     }
 
