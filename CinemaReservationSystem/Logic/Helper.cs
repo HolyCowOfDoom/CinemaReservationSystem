@@ -182,13 +182,9 @@ public class Helper
                     input = input.Remove(input.Length - 1);
                     break;
                 case ConsoleKey.Enter:
-                    Helper.ConsoleClear();
-                    UpdateUI(Case, type, input, username, birthdate, email, password, spacebar);
                     validated = ValidateUserInput(Case, type, input);
                     break;
                 default:
-                    Helper.ConsoleClear();
-                    UpdateUI(Case, type, input, username, birthdate, email, password, spacebar);
                     HandleInputKey(ref input, maxLength, key.KeyChar, type, Case);
                     break;
             }
