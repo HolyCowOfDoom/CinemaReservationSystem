@@ -290,12 +290,12 @@
         {
           "Color": "Red",
           "ID": "58",
-          "IsReserved": false
+          "IsReserved": true
         },
         {
           "Color": "Red",
           "ID": "59",
-          "IsReserved": false
+          "IsReserved": true
         },
         {
           "Color": "Yellow",
@@ -350,12 +350,12 @@
         {
           "Color": "Red",
           "ID": "70",
-          "IsReserved": false
+          "IsReserved": true
         },
         {
           "Color": "Red",
           "ID": "71",
-          "IsReserved": false
+          "IsReserved": true
         },
         {
           "Color": "Yellow",

@@ -70,7 +70,6 @@ public static class AuditoriumDataController
             {
                 color = "Red";
             }
-
             auditorium.Seats.Add(new Seat(color));
         }
     }
@@ -140,13 +139,20 @@ public static class AuditoriumDataController
             Console.WriteLine($"Auditorium.cs: Seat {seatID} reserved successfully.");
             return true;
         }
+        else if(seat.IsReserved)
+        {
+            Console.WriteLine($"Auditorium.cs: Seat {seatID} is already reserved.");
+            return false;
+        }
         else
         {
-            Console.WriteLine($"Auditorium.cs: Seat {seatID} is either already reserved or does not exist.");
+            Console.WriteLine($"Auditorium.cs: Seat {seatID} probably does not exist.");
             return false;
         }
     }
 
+    //this method is currently not used anywhere. proably because we haven't had a need to change 
+    //an auditorium, as they're just a template used for a screening.
     public static void UpdateAuditoriumJson(Auditorium auditorium)
     {
         JsonHandler.Update<Auditorium>(auditorium, DBFilePath);

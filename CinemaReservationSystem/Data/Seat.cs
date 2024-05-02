@@ -1,9 +1,8 @@
 public class Seat : ObjectHasID
 {
-    public string Color { get; }
-    public string ID { get; }
-    public bool IsReserved { get; private set; }
-
+    public string Color {get;}
+    public string ID {get;}
+    public bool IsReserved {get; private set;}
     private static int lastID = 0;
 
     public Seat(string color, string? id = null, bool isReserved = false)
@@ -18,10 +17,10 @@ public class Seat : ObjectHasID
         IsReserved = true;
     }
 
-    public bool IsSeatReserved()
-    {
-        return IsReserved;
-    }
+    // public bool IsSeatReserved() //property should suffice
+    // {
+    //     return IsReserved;
+    // }
 
     public override string ToString()
     {

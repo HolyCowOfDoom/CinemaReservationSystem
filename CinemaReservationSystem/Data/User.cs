@@ -6,8 +6,6 @@ using CsvHelper.Configuration.Attributes;
 
 public class User : IEquatable<User>
 {
-    //static string DBFilePath = Path.GetFullPath("Model/UserDB.csv");
-    
     private string _id;
     //private string _name; 
     //private string _birthDate;
@@ -33,8 +31,8 @@ public class User : IEquatable<User>
 
     public User(string name, string birthDate, string email, string password, bool admin = false, List<Reservation> reservations = null)
     {
-        Directory.CreateDirectory("Model");
-        using (StreamWriter w = File.AppendText("Model/UserDB.csv")) //create file if it doesn't already exist
+        Directory.CreateDirectory("Data");
+        using (StreamWriter w = File.AppendText("Data/UserDB.csv")) //create file if it doesn't already exist
         ID = Guid.NewGuid().ToString();
         Name = name;
         BirthDate = birthDate;

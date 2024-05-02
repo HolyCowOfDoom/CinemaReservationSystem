@@ -25,12 +25,12 @@ public class AdminController
         do
         {
         string auditID = Helper.GetValidInput("Please input valid auditorium ID related to the screening:", Helper.IsNotNull);
-        screeningAud = JsonHandler.Get<Auditorium>(auditID, "Model/AuditoriumDB.json");
+        screeningAud = JsonHandler.Get<Auditorium>(auditID, "Data/AuditoriumDB.json");
         } while (screeningAud == null);
 
         string dateTimeString = Helper.GetValidInput("Please input screening date: <DD-MM-YYYY HH:MM>", Helper.IsValidDT);
         DateTime screeningDT = DateTime.ParseExact(dateTimeString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
-        movie.AddScreening(screeningAud, screeningDT);
+        MovieDataController.AddScreening(movie, screeningAud, screeningDT);
 
         Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
@@ -90,7 +90,7 @@ public class AdminController
     {
         Console.Clear();
         Console.WriteLine($"Title: {movie.Title,-40} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
-        List<Screening> screenings = movie.GetAllMovieScreenings();
+        List<Screening> screenings = MovieDataController.GetAllMovieScreenings(movie);
         foreach (Screening screening in screenings)
         {
             Console.WriteLine($"Date and Time: {screening.ScreeningDateTime, -40:dd-MM-yyyy HH:mm} | Auditorium: {screening.AssignedAuditorium.ID}");

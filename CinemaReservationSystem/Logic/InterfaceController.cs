@@ -4,7 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 public class InterfaceController
 {
     public static void ViewMovies(){
-        List<Movie> Movies = JsonHandler.Read<Movie>("Model/MovieDB.json");
+        List<Movie> Movies = JsonHandler.Read<Movie>("Data/MovieDB.json");
         Console.WriteLine("┌────┬──────────────────────────────────────────┬─────────────┬─────────────┬──────────────────────────────────────────────────────────────┐");
         Console.WriteLine($"│ ID │ {"Title",-40} │ {"Age Rating",-11} │ {"Genre",-11} │ {"Description",-60} │");
         foreach (Movie movie in Movies)
@@ -49,7 +49,7 @@ public class InterfaceController
                     }
                     if (!string.IsNullOrEmpty(username))
                     {
-                        user = User.GetUserWithValue("Name", username);
+                        user = UserDataController.GetUserWithValue("Name", username);
                         currentField = "password";
                     }
                     break;

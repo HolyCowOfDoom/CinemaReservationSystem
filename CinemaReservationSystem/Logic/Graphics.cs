@@ -313,8 +313,11 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         if (string.Equals(Convert.ToString(confirm), "n")) return;
         foreach (int index in listreservedindex)
         {
-            screening.ReserveSeat(Convert.ToString(GetSeatNumberFromIndex(auditorium, index, database: true) + GetAuditoriumOffset(Int32.Parse(screening.AssignedAuditorium.ID))));
+            ScreeningDataController.ReserveSeat(screening,Convert.ToString(GetSeatNumberFromIndex(auditorium, index, database: true) + GetAuditoriumOffset(Int32.Parse(screening.AssignedAuditorium.ID))));
             reservedseatIDs.Add(Convert.ToString(GetSeatNumberFromIndex(auditorium, index, database: true) + GetAuditoriumOffset(Int32.Parse(screening.AssignedAuditorium.ID))));
+            int totalPrice = 999999;
+            Reservation reservation = new(reservedseatIDs, screening.ID, totalPrice);
+            //UserDataController.UpdateUserWithValue(user?, "Reservations", reservation); //how should i get currentUser here?
         }
         reservedDone = true;
     }

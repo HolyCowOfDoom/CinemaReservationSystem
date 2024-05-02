@@ -16,8 +16,6 @@ public static class CsvHandler
         using StreamReader reader = new(csvFile);
         using CsvHelper.CsvReader csvReader = new(reader, config);
         csvReader.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter());
-        // csvReader.Context.TypeConverterOptionsCache.
-        //csvReader.Context.RegisterClassMap<UserClassMap>();
         return csvReader.GetRecords<T>().ToList();
     }
 
@@ -26,7 +24,6 @@ public static class CsvHandler
         using StreamWriter writer = new(csvFile);
         using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
         csvWriter.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter()); 
-        //csvWriter.Context.RegisterClassMap<UserClassMap>();
         csvWriter.WriteRecords(recordsList);
         return true;
     }
@@ -40,16 +37,10 @@ public static class CsvHandler
             // Don't write the header again.
             HasHeaderRecord = fileEmpty ? true : false, //write header if file is empty
         };
-        StreamWriter writer = new(csvFile, true);
-        CsvHelper.CsvWriter csvWriter = new(writer, config);
+        using StreamWriter writer = new(csvFile, true);
+        using CsvHelper.CsvWriter csvWriter = new(writer, config);
         csvWriter.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter());  
-        //csvWriter.Context.RegisterClassMap<UserClassMap>();
         csvWriter.WriteRecords(records);
-        writer.Close();
-
-        StreamReader reader = new(csvFile);
-        //Console.WriteLine(reader.ReadToEnd());
-        reader.Close();
         return true;
     }
 
@@ -67,7 +58,6 @@ public static class CsvHandler
         using CsvHelper.CsvReader csvReader = new(reader, config);
         csvReader.Context.TypeConverterCache.AddConverter<Reservation>(new ReservationConverter()); 
         csvReader.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter()); 
-        //csvReader.Context.RegisterClassMap<UserClassMap>();
         
         csvReader.Read();
         csvReader.ReadHeader();
@@ -95,29 +85,26 @@ public static class CsvHandler
                 return record; //will never be null due to if statement
             }
         }
-        //we'd rather not continue with this error, as returned record will be null and will throw an exception elsewhere
-        //and we won't know why
-        //throw new Exception($"Couldn't get record with {header} matching {hasValue}, ");
         Console.WriteLine($"Couldn't get record with {header} matching {hasValue}, ");
         return default;
     }
 
     //"J" can't be replaced with "object" as MySetProperty needs List<J> rather than List<object>
-    public static bool UpdateRecordWithValue<T, J>(string csvFile, T record, string header, J newValue)// where T : IEquatable<T>
+    public static bool UpdateRecordWithValue<T, J>(string csvFile, T record, string header, J newValue)
     {
         List<T> records = Read<T>(csvFile);
-        for(int i = 0; i < records.Count; i++)
-        {
-            //object propertyObject = MyGetProperty<object, T>(records[i], header);
-            List<Reservation> reservations = (List<Reservation>)MyGetProperty<object, T>(records[i], "Reservations");
-            if(reservations is null) reservations = new();
-            string ID = (string)MyGetProperty<string, T>(records[i], "ID");
-            Console.WriteLine("ID: " + ID);
-            foreach(Reservation reservation in reservations)
-            {
-                Console.WriteLine($"SeatIDs: {reservation.SeatIDs}; ScreeningID: {reservation.ScreeningID}; TotalPrice: {reservation.ScreeningID}");
-            }
-        }
+        // for(int i = 0; i < records.Count; i++)
+        // {
+        //     //object propertyObject = MyGetProperty<object, T>(records[i], header);
+        //     // List<Reservation> reservations = (List<Reservation>)MyGetProperty<object, T>(records[i], "Reservations");
+        //     // if(reservations is null) reservations = new();
+        //     string ID = (string)MyGetProperty<string, T>(records[i], "ID");
+        //     Console.WriteLine("ID: " + ID);
+        //     foreach(Reservation reservation in reservations)
+        //     {
+        //         Console.WriteLine($"SeatIDs: {reservation.SeatIDs}; ScreeningID: {reservation.ScreeningID}; TotalPrice: {reservation.ScreeningID}");
+        //     }
+        // }
         for(int i = 0; i < records.Count; i++) //for each record in DB
         {
             Console.WriteLine(records[i]);

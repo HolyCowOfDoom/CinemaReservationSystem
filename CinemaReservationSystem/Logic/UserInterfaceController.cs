@@ -16,7 +16,7 @@ public class UserController
     }
 
     public static void ViewMovies(string id){
-        List<Movie> Movies = JsonHandler.Read<Movie>("Model/MovieDB.json");
+        List<Movie> Movies = JsonHandler.Read<Movie>("Data/MovieDB.json");
         Console.WriteLine("┌────┬──────────────────────────────────────────┬─────────────┬─────────────┬──────────────────────────────────────────────────────────────┐");
         Console.WriteLine($"│ ID │ {"Title",-40} │ {"Age Rating",-11} │ {"Genre",-11} │ {"Description",-60} │");
         foreach (Movie movie in Movies)
@@ -30,8 +30,8 @@ public class UserController
     public static void FilterMovies(string id, string option)
     {
         // char genreFilterInput;
-        List<Movie> Movies = JsonHandler.Read<Movie>("Model/MovieDB.json");
-        User user = User.GetUserWithValue("ID", id);
+        List<Movie> Movies = JsonHandler.Read<Movie>("Data/MovieDB.json");
+        User user = UserDataController.GetUserWithValue("ID", id);
         int age = Helper.GetUserAge(user);
         List<Movie> sortedMovies = Movies.OrderBy(movie => movie.AgeRating).ToList(); // kan ook in de JsonHandler.cs
         int rating = 0;
@@ -48,7 +48,7 @@ public class UserController
                 Console.WriteLine("You are too young too see these movies. Press X to go back.");
                 char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
                 if (specificLetterInput == 'x'){
-                    User IdCheck = User.GetUserWithValue("ID", id);
+                    User IdCheck = UserDataController.GetUserWithValue("ID", id);
                     if (IdCheck.Admin) AdminInterface.GeneralMenu(id); 
                     else UserInterface.GeneralMenu(id);   
                 }
@@ -72,7 +72,7 @@ public class UserController
                 Console.WriteLine("You are too young too see these movies. Press X to go back.");
                 char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
                 if (specificLetterInput == 'x'){
-                    User IdCheck = User.GetUserWithValue("ID", id);
+                    User IdCheck = UserDataController.GetUserWithValue("ID", id);
                     if (IdCheck.Admin) AdminInterface.GeneralMenu(id); 
                     else UserInterface.GeneralMenu(id);   
                 }   
@@ -181,7 +181,7 @@ public class UserController
 
 
     public static void ViewUser(string id){
-        User user = User.GetUserWithValue( "ID", id);
+        User user = UserDataController.GetUserWithValue( "ID", id);
         Console.WriteLine("┌────────────────────────────────┬───────────────────────────────────────┬────────────────────────┬─────────┐");
         Console.WriteLine($"│ Username: {user.Name,-20} │ Email: {user.Email,-30} │ Birth date: {user.BirthDate} │ Age: {Helper.GetUserAge(user),-2} │");
         Console.WriteLine("└────────────────────────────────┴───────────────────────────────────────┴────────────────────────┴─────────┘");
@@ -205,7 +205,7 @@ public class UserController
 
     public static string? GetMovieByID(string screeningID)
     {
-        List<Movie> MovieList = JsonHandler.Read<Movie>("Model/MovieDB.json");
+        List<Movie> MovieList = JsonHandler.Read<Movie>("Data/MovieDB.json");
         foreach(Movie movie in MovieList)
         {
             if (movie.ScreeningIDs.Contains(screeningID)) return movie.Title;
@@ -215,7 +215,7 @@ public class UserController
 
     public static Screening? GetScreeningByID(string screeningID)
     {
-        List<Screening> ScreeningList = JsonHandler.Read<Screening>("Model/ScreeningDB.json");
+        List<Screening> ScreeningList = JsonHandler.Read<Screening>("Data/ScreeningDB.json");
         foreach(Screening screening in ScreeningList)
         {
             if (screening.ID == screeningID) return screening;
@@ -232,7 +232,7 @@ public class UserController
         }
         else
         {
-            User IdCheck = User.GetUserWithValue("ID", id);
+            User IdCheck = UserDataController.GetUserWithValue("ID", id);
             if (IdCheck.Admin) AdminInterface.GeneralMenu(id); 
             else UserInterface.GeneralMenu(id);
         }
@@ -240,7 +240,7 @@ public class UserController
 
     private static void SelectMovie(string id)
     {
-        List<Movie> movies = JsonHandler.Read<Movie>("Model/MovieDB.json");
+        List<Movie> movies = JsonHandler.Read<Movie>("Data/MovieDB.json");
         Movie? movie;
         do{
         int movieNbr = Convert.ToInt32(Helper.GetValidInput("Please type movie number: ", Helper.IsValidInt));
@@ -253,7 +253,7 @@ public class UserController
             movie = null;
         }
         } while (movie == null);
-        User IdCheck = User.GetUserWithValue("ID", id);
+        User IdCheck = UserDataController.GetUserWithValue("ID", id);
         if (IdCheck.Admin) AdminController.AdminMovieInterface(movie, id); 
         else MovieInterface(movie, id);
     }
@@ -262,7 +262,7 @@ public class UserController
     {
         Console.Clear();
         Console.WriteLine($"Title: {movie.Title,-40} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
-        List<Screening> screenings = movie.GetAllMovieScreenings();
+        List<Screening> screenings = MovieDataController.GetAllMovieScreenings(movie);
         foreach (Screening screening in screenings)
         {
             int screeningNbr = screenings.IndexOf(screening) + 1;
@@ -311,7 +311,7 @@ public class UserController
         }
         } while (chosenScreening == null);
 
-        User IdCheck = User.GetUserWithValue("ID", id);
+        User IdCheck = UserDataController.GetUserWithValue("ID", id);
         if (IdCheck.Admin) AdminController.AdminScreeningInterface(chosenScreening, id); 
         else ScreeningInterface(chosenScreening, id);
     }
@@ -323,7 +323,7 @@ public class UserController
         if (input == "Return")
         {
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-            Movie movie = JsonHandler.Get<Movie>(screening.MovieID, "Model/MovieDB.json");
+            Movie movie = JsonHandler.Get<Movie>(screening.MovieID, "Data/MovieDB.json");
 #pragma warning disable CS8604 // Possible null reference argument.
             MovieInterface(movie, id);
         }
@@ -350,7 +350,7 @@ public class UserController
 
     public static void ReserveSeats(Screening screening, string id)
     {
-        User user = User.GetUserWithValue("ID", id);
+        User user = UserDataController.GetUserWithValue("ID", id);
 
 
         IEnumerable<string> reservedSeatIDs = Graphics.AuditoriumView(screening, user);
@@ -358,7 +358,7 @@ public class UserController
 
         
         Reservation newReservation = new Reservation(reservedSeatIDs.ToList(), screening.ID, 20);
-        User.UpdateUserWithValue(user, "Reservations", newReservation);
+        UserDataController.UpdateUserWithValue(user, "Reservations", newReservation);
 
         Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');

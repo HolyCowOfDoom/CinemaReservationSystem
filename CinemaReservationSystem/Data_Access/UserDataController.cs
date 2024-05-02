@@ -1,6 +1,6 @@
 public static class UserDataController
 {
-    private static string DBFilePath = "Model/UserDB.csv";
+    private static string DBFilePath = "Data/UserDB.csv";
     public static bool AddUser(User user)
     {
         //List<object> records = new()

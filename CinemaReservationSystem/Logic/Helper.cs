@@ -375,7 +375,7 @@ public class Helper
     public static bool IsValidInt(string input) => input.All(char.IsDigit);
     public static int IsValidUsername(string input)
     {
-        List<User> users = CsvHandler.Read<User>("Model/UserDB.csv");
+        List<User> users = CsvHandler.Read<User>("Data/UserDB.csv");
  
         if(!string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 28)
         {
@@ -390,7 +390,7 @@ public class Helper
     
     public static int IsValidUsernameLog(string input)
     {
-        List<User> users = CsvHandler.Read<User>("Model/UserDB.csv");
+        List<User> users = CsvHandler.Read<User>("Data/UserDB.csv");
  
         if(!string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 28)
         {
@@ -404,7 +404,7 @@ public class Helper
     }
     public static bool IsValidEmail(string input)
     {
-        List<User> users = CsvHandler.Read<User>("Model/UserDB.csv");
+        List<User> users = CsvHandler.Read<User>("Data/UserDB.csv");
 
         if(!string.IsNullOrWhiteSpace(input) && input.Contains('@') && input.Contains('.') && input.Length < 31)
         {

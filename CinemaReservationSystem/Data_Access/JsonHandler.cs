@@ -79,9 +79,9 @@ public static class JsonHandler
         return default;
     }
 
-    public static Movie? GetByMovieName(string name)
-    {
-        List<Movie> listOfObjects = Read<Movie>("Model/MovieDB.json");
+    public static Movie? GetByMovieName(string name) //can this be moved to MovieDataController?
+    { //or removed? since it has no references
+        List<Movie> listOfObjects = Read<Movie>("Data/MovieDB.json");
         foreach (Movie item in listOfObjects)
         {
             if (item.Title == name)

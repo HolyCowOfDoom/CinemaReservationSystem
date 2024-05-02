@@ -2,7 +2,7 @@ using System.Globalization;
 
 public class Screening : ObjectHasID
 {
-    public static string DBFilePath = "Model/ScreeningDB.json";
+    public static string DBFilePath = "Data/ScreeningDB.json";
     public Auditorium AssignedAuditorium;
     public DateTime ScreeningDateTime;
     public List<Bundle> Bundles;
