@@ -83,9 +83,10 @@ public class InterfaceController
     }
 
 
-    public static void RegisterUser()
+    public static void RegisterUser(string? username = null)
     {
-        string username = string.Empty, birthDate = string.Empty, email = string.Empty, password = string.Empty, escapetab = string.Empty;
+        if (username is null) username = string.Empty;
+        string birthDate = string.Empty, email = string.Empty, password = string.Empty, escapetab = string.Empty;
         bool registercomplete = false;
 
         Console.CursorVisible = false;

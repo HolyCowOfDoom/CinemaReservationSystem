@@ -207,7 +207,7 @@ public class Helper
                             char confirm = Helper.ReadInput((char c) => c == 'y' || c == 'n', "username not found",
                                                             "Username could not be found. Register account? Y/N");
                             Console.ForegroundColor = ConsoleColor.Gray;
-                            if (confirm == 'y') InterfaceController.RegisterUser();
+                            if (confirm == 'y') InterfaceController.RegisterUser(input);
                             else InterfaceController.LogIn();
                         }
                         else if (IsValidUsernameLog(input) == 1) return true;
