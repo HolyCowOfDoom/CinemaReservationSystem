@@ -182,13 +182,9 @@ public class Helper
                     input = input.Remove(input.Length - 1);
                     break;
                 case ConsoleKey.Enter:
-                    Helper.ConsoleClear();
-                    UpdateUI(Case, type, input, username, birthdate, email, password, spacebar);
                     validated = ValidateUserInput(Case, type, input);
                     break;
                 default:
-                    Helper.ConsoleClear();
-                    UpdateUI(Case, type, input, username, birthdate, email, password, spacebar);
                     HandleInputKey(ref input, maxLength, key.KeyChar, type, Case);
                     break;
             }
@@ -211,7 +207,7 @@ public class Helper
                             char confirm = Helper.ReadInput((char c) => c == 'y' || c == 'n', "username not found",
                                                             "Username could not be found. Register account? Y/N");
                             Console.ForegroundColor = ConsoleColor.Gray;
-                            if (confirm == 'y') InterfaceController.RegisterUser();
+                            if (confirm == 'y') InterfaceController.RegisterUser(input);
                             else InterfaceController.LogIn();
                         }
                         else if (IsValidUsernameLog(input) == 1) return true;
