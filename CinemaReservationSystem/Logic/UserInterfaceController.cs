@@ -4,7 +4,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using CsvHelper.Configuration.Attributes;
 
-public class UserController
+public class UserInterfaceController
 {
     public static void LogOut(){
         Console.WriteLine("You have been succesfully logged out");
@@ -254,7 +254,7 @@ public class UserController
         }
         } while (movie == null);
         User IdCheck = UserDataController.GetUserWithValue("ID", id);
-        if (IdCheck.Admin) AdminController.AdminMovieInterface(movie, id); 
+        if (IdCheck.Admin) AdminInterfaceController.AdminMovieInterface(movie, id); 
         else MovieInterface(movie, id);
     }
 
@@ -312,7 +312,7 @@ public class UserController
         } while (chosenScreening == null);
 
         User IdCheck = UserDataController.GetUserWithValue("ID", id);
-        if (IdCheck.Admin) AdminController.AdminScreeningInterface(chosenScreening, id); 
+        if (IdCheck.Admin) AdminInterfaceController.AdminScreeningInterface(chosenScreening, id); 
         else ScreeningInterface(chosenScreening, id);
     }
 

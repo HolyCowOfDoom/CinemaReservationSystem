@@ -107,13 +107,13 @@ public static class CsvHandler
         // }
         for(int i = 0; i < records.Count; i++) //for each record in DB
         {
-            Console.WriteLine(records[i]);
-            Console.WriteLine(record);
+            //Console.WriteLine(records[i]);
+           // Console.WriteLine(record);
             if(records[i].Equals(record)) //if record in DB matches given record
             {
                 object propertyObject = MyGetProperty<object, T>(records[i], header); //get property of record in DB using header
                 if(propertyObject == null) break;
-                Console.WriteLine("propertyObject: ", propertyObject);
+                //Console.WriteLine("propertyObject: ", propertyObject);
                 if(propertyObject is ICollection) //if object associated with header is e.g. a List
                 {
                     //https://stackoverflow.com/questions/2837063/cast-object-to-generic-list

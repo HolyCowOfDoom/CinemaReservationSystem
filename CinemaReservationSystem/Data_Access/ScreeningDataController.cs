@@ -15,9 +15,8 @@ public static class ScreeningDataController
             Console.WriteLine("Format error. Please use [dd-MM-yyyy HH:mm]");
         }
     }
-
-    // Adjust screening time based on a datetime string format : HH:mm
     public static void AdjustTime(Screening screening, string time)
+    // Adjust screening time based on a datetime string format : HH:mmWS    public static void AdjustTime(Screening screening, string time)
     {
         try
         {

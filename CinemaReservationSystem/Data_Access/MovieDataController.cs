@@ -1,6 +1,6 @@
 public static class MovieDataController
 {
-    private static string DBFilePath = "Data/ScreeningDB.json";
+    private static string DBFilePath = "Data/MovieDB.json";
     public static void AddScreening(Movie movie, Auditorium assignedAuditorium, DateTime? screeningDateTime)
     {
         Screening newScreening = new Screening(assignedAuditorium, screeningDateTime, movie.ID);
@@ -17,7 +17,7 @@ public static class MovieDataController
 
     public static List<Screening> GetAllMovieScreenings(Movie movie)
     {
-        List<Screening>? allScreenings = JsonHandler.Read<Screening>(DBFilePath);
+        List<Screening>? allScreenings = JsonHandler.Read<Screening>("Data/ScreeningDB.json");
         List<Screening> movieScreenings = new List<Screening>();
         if (allScreenings != null)
         {

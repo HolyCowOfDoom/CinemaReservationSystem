@@ -8,7 +8,7 @@ public class UserInterface
         switch(DigitInput) 
         {
             case '1':
-                UserController.ViewMovies(id);
+                UserInterfaceController.ViewMovies(id);
                 break;
                 // called overloaded versie van ViewMovies, kan dus gebruikt worden om
                 // seats te reserveren en op te slaan in de id van een employee.
@@ -18,19 +18,19 @@ public class UserInterface
                 if(FilterOption == '1')
                 {
                     string option = "Age"; 
-                    UserController.FilterMovies(id, option);
+                    UserInterfaceController.FilterMovies(id, option);
                     break; 
                 }
                 else if(FilterOption == '2')
                 {
                     string option = "Genre";
-                    UserController.FilterMovies(id, option);
+                    UserInterfaceController.FilterMovies(id, option);
                     break;
                 }
                 else if(FilterOption == '3')
                 {
                     string option = "Both";
-                    UserController.FilterMovies(id, option);
+                    UserInterfaceController.FilterMovies(id, option);
                     break;
                 }
                 else if(FilterOption == '4') 
@@ -42,10 +42,10 @@ public class UserInterface
                     break;
                 }
             case '3':
-                UserController.ViewUser(id);
+                UserInterfaceController.ViewUser(id);
                 break;
             case '4':
-                UserController.LogOut();
+                UserInterfaceController.LogOut();
                 break;
                 // Heeft geen id nodig, want called GeneralMenu zonder id.
             default:

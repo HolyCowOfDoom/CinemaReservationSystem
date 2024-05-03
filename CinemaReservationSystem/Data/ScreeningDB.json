@@ -1,37 +1,3 @@
 [
-  {
-    "Title": null,
-    "AgeRating": 0,
-    "Description": null,
-    "Genre": null,
-    "ScreeningIDs": [],
-    "ID": "26f506f7-47e9-48f7-9159-b152d2f89487"
-  },
-  {
-    "Title": null,
-    "AgeRating": 0,
-    "Description": null,
-    "Genre": null,
-    "ScreeningIDs": [],
-    "ID": "39bbd7f7-56f2-47ce-8e49-279daedace05"
-  },
-  {
-    "Title": "The Matrix",
-    "AgeRating": 15,
-    "Description": "A mind-bending sci-fi classic",
-    "Genre": "Action",
-    "ScreeningIDs": [
-      "c95e6637-05cb-48ab-b39b-711dc3aabcd9",
-      "2c25abc8-275d-4ab2-88e8-0d328ee586cc"
-    ],
-    "ID": "1"
-  },
-  {
-    "Title": null,
-    "AgeRating": 0,
-    "Description": null,
-    "Genre": null,
-    "ScreeningIDs": [],
-    "ID": "2c25abc8-275d-4ab2-88e8-0d328ee586cc"
-  }
+
 ]

@@ -6,7 +6,7 @@ public class AdminInterface
         switch(DigitInput) 
         {
             case '1':
-                UserController.ViewMovies(id);
+                UserInterfaceController.ViewMovies(id);
                 break; 
             case '2':
                 char FilterOption = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4',
@@ -14,19 +14,19 @@ public class AdminInterface
                 if(FilterOption == '1')
                 {
                     string option = "Age"; 
-                    UserController.FilterMovies(id, option);
+                    UserInterfaceController.FilterMovies(id, option);
                     break; 
                 }
                 else if(FilterOption == '2')
                 {
                     string option = "Genre";
-                    UserController.FilterMovies(id, option);
+                    UserInterfaceController.FilterMovies(id, option);
                     break;
                 }
                 else if(FilterOption == '3')
                 {
                     string option = "Both";
-                    UserController.FilterMovies(id, option);
+                    UserInterfaceController.FilterMovies(id, option);
                     break;
                 }
                 else if(FilterOption == '4') 
@@ -38,16 +38,16 @@ public class AdminInterface
                     break;
                 }
             case '3':
-                UserController.ViewUser(id);
+                UserInterfaceController.ViewUser(id);
                 break;
             case '4':
-                AdminController.CreateMovie(id);
+                AdminInterfaceController.CreateMovie(id);
                 break;
             case '5':
-                AdminController.RegisterAdmin(id);
+                AdminInterfaceController.RegisterAdmin(id);
                 break;
             case '6':
-                AdminController.LogOut();
+                AdminInterfaceController.LogOut();
                 break;
             default:
                 GeneralMenu(id);

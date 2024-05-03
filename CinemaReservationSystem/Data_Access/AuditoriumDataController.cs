@@ -74,7 +74,7 @@ public static class AuditoriumDataController
         }
     }
 
-    private void InitializeSeatsForAuditorium3(int numberOfSeats)
+    private static void InitializeSeatsForAuditorium3(Auditorium auditorium, int numberOfSeats)
     {
         for (int i = 1; i <= numberOfSeats; i++)
         {
@@ -102,7 +102,7 @@ public static class AuditoriumDataController
                 color = "Red";
             }
 
-            Seats.Add(new Seat(color));
+            auditorium.Seats.Add(new Seat(color));
         }
     }
 
