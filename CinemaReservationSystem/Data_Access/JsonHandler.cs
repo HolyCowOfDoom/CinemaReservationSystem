@@ -34,9 +34,11 @@ public static class JsonHandler
         List<T>? listOfObjects = new List<T>();
         try
         {
+            Console.WriteLine("jsonFile:", jsonFile);
             using (StreamReader reader = new StreamReader(jsonFile))
             {
                 string fileData = reader.ReadToEnd();
+                Console.WriteLine("json data:", fileData);
                 listOfObjects = JsonConvert.DeserializeObject<List<T>>(fileData);
             }
         }
@@ -71,6 +73,7 @@ public static class JsonHandler
         List<T> listOfObjects = Read<T>(jsonFile);
         foreach (T item in listOfObjects)
         {
+            Console.WriteLine("item.ID: ", item.ID);
             if (item.ID == objectID)
             {
                 return item;
@@ -81,7 +84,7 @@ public static class JsonHandler
 
     public static Movie? GetByMovieName(string name) //can this be moved to MovieDataController?
     { //or removed? since it has no references
-        List<Movie> listOfObjects = Read<Movie>("Data/MovieDB.json");
+        List<Movie> listOfObjects = Read<Movie>("../Data/MovieDB.json");
         foreach (Movie item in listOfObjects)
         {
             if (item.Title == name)

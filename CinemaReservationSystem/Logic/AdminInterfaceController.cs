@@ -25,11 +25,14 @@ public class AdminController
         do
         {
         string auditID = Helper.GetValidInput("Please input valid auditorium ID related to the screening:", Helper.IsNotNull);
-        screeningAud = JsonHandler.Get<Auditorium>(auditID, "Data/AuditoriumDB.json");
+        screeningAud = JsonHandler.Get<Auditorium>(auditID, "CinemaReservationSystem/Data/AuditoriumDB.json");
+        Console.WriteLine("auditID:", auditID);
         } while (screeningAud == null);
-
+        Console.WriteLine("screeningAud.ID:", screeningAud.ID);
         string dateTimeString = Helper.GetValidInput("Please input screening date: <DD-MM-YYYY HH:MM>", Helper.IsValidDT);
         DateTime screeningDT = DateTime.ParseExact(dateTimeString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+        Console.WriteLine("dateTimeString:", dateTimeString);
+        Console.WriteLine("movie.Title:", movie.Title);
         MovieDataController.AddScreening(movie, screeningAud, screeningDT);
 
         Console.WriteLine("Press x to go back to the main menu");
