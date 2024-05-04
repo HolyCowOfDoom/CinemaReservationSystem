@@ -38,12 +38,8 @@ using System.Security.AccessControl;
 // Auditorium A = new Auditorium("1");
 // Auditorium B = new Auditorium("2");
 // Auditorium C = new Auditorium("3");
-// A.UpdateAuditoriumJson();
-// B.UpdateAuditoriumJson();
-// C.UpdateAuditoriumJson();
+// AuditoriumDataController.UpdateAuditoriumJson(A);
+// AuditoriumDataController.UpdateAuditoriumJson(B);
+// AuditoriumDataController.UpdateAuditoriumJson(C);
 Interface.GeneralMenu();
 // Console.ReadLine(); //keeps external terminal open
-//below are the three auditorium visuals to test reserving seats 
-//Graphics.AuditoriumView(Graphics.auditorium1, 24, 362, 338);
-//Graphics.AuditoriumView(Graphics.auditorium2, 40, 796, 756);
-//Graphics.AuditoriumView(Graphics.auditorium3, 64, 1384, 1320);
