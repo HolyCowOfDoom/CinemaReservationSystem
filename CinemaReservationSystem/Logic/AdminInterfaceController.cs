@@ -95,33 +95,32 @@ public class AdminInterfaceController
             Console.WriteLine($"Date and Time: {screening.ScreeningDateTime, -40:dd-MM-yyyy HH:mm} | Auditorium: {screening.AssignedAuditorium.ID}");
         }
         string input = AdminInputMovie(id);
-        if (input == "Select")
-        {
-            UserInterfaceController.ScreeningSelect(screenings, id);
-        }
-        if (input == "Add")
-        {
-            AddScreening(movie, id);
-        }
-
-        Console.WriteLine("Press x to go back to the main menu");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-        if (specificLetterInput == 'x'){
-            AdminInterface.GeneralMenu(id);
-        }
+        switch (input) {
+            case "Select":
+                UserInterfaceController.ScreeningSelect(screenings, id);
+                break;
+            case "Add":
+                AddScreening(movie, id);
+                break;
+            case "Return":
+                AdminInterface.GeneralMenu(id);
+                break;
+            }
     }
 
     public static string AdminInputMovie(string id)
     {
         while (true) {
-        char genreFilterInput = Helper.ReadInput((char c) => c == '1' || c == '2',
-            "Movie Options", "1. Select Screening\n2. Add Screening");
+        char genreFilterInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3',
+            "Movie Options", "1. Select Screening\n2. Add Screening\n3. Go Back");
 
         switch (genreFilterInput) {
             case '1':
                 return "Select";
             case '2':
                 return "Add";
+            case '3':
+                return "Return";
             }
         }
     }
