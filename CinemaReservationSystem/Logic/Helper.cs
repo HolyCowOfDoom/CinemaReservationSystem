@@ -36,9 +36,33 @@ public class Helper
 
             if (!isValidInput)
             {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                WriteInCenter("Invalid input. Please try again.");
-                Console.ForegroundColor = ConsoleColor.White;
+                WriteErrorMessage("Invalid input. Please try again.");
+            }
+            ClearLineDo();
+        } while (!isValidInput);
+
+        Console.Clear();
+        return input;
+    }
+
+    public static ConsoleKey ReadInput(Func<ConsoleKey, bool> validationCriteria, string header = "", string text = "")
+    {
+        Graphics.BoxText(text, header);
+
+        Console.CursorVisible = false;
+        ConsoleKey input;
+        bool isValidInput;
+        Console.WriteLine();
+        do
+        {
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            input = keyInfo.Key;
+
+            isValidInput = validationCriteria(input);
+
+            if (!isValidInput)
+            {
+                WriteErrorMessage("Invalid input. Please try again.");
             }
             ClearLineDo();
         } while (!isValidInput);

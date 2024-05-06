@@ -63,8 +63,7 @@ S       U U U U U U U U   U U U U U U U U   U U U U U U U U
 T         U U U U U U U   U U U U U U U U   U U U U U U U         
 ";
 
-    public static readonly string cinemaVintage = @"
-                          |
+    public static readonly string cinemaVintage = @"                        |
                           ___________I____________
                          ( _____________________ ()
                        _.-'|                    ||
@@ -77,7 +76,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
    /  \             `-._  ||       STAR         ||
   /    \                `-.I____________________||
  /      \                 ------------------------
-   /________\___________________/________________\______";
+  /________\___________________/________________\______";
 
     public static readonly string cinemacustom = @" _____________________________
 |                             |
@@ -413,7 +412,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         //add seats to reservedbyotheruser list
         for (int i = 0; i < auditorium.Length; i++)
         {
-            if (auditorium[i] == 'U')
+            if (IsSeat(auditorium, i))
             {
                 (_, bool reserved) = seatIDcolor[GetSeatNumberFromIndex(auditorium, i, database: true)];
                 if (reserved && !listreservedindex.Contains(i)) reservedbyotheruser.Add(i);
@@ -498,6 +497,11 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         return auditorium[index] == 'U';
     }
 
+    private static bool EndofRow(string auditorium, int index)
+    {
+        return auditorium[index] == '\n';
+    }
+
     private static int GetIndexFromSeat(string auditorium, int seatnr)
     {
         int seatNumber = 0;
@@ -505,7 +509,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         for (int i = 0; i <= auditorium.Length; i++)
         {
             
-            if (auditorium[i] == 'U')
+            if (IsSeat(auditorium, i))
             {
                 seatNumber++;
             }
@@ -521,8 +525,8 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
 
         for (int i = 0; i < index && i < auditorium.Length; i++)
         {
-            if (auditorium[i] == 'U') seat = true;
-            else if (auditorium[i] == '\n' && seat is true)
+            if (IsSeat(auditorium, i)) seat = true;
+            else if (EndofRow(auditorium, i) && seat is true)
             {
                 row++;
                 seat = false;
@@ -538,8 +542,8 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
 
         for (int i = 0; i <= index; i++)
         {
-            if (auditorium[i] == '\n') seatNumber = 0;
-            else if (auditorium[i] == 'U')
+            if (EndofRow(auditorium, i)) seatNumber = 0;
+            else if (IsSeat(auditorium, i))
             {
                 seatNumber++;
                 seatDBnumber++;
@@ -553,7 +557,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
     {
         for (int i = 0; i <= auditorium.Length; i++)
         {
-            if (auditorium[i] == '\n') return i - 1;
+            if (EndofRow(auditorium, i)) return i - 1;
         }
         return 0;
     }
