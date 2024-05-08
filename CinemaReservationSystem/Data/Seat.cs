@@ -34,4 +34,18 @@ public class Seat : ObjectHasID
     {
         return Price;
     }
+
+    public double GetPrice(User user)
+    {
+        double price = Price;
+        
+        int userAge = Helper.GetUserAge(user);
+        if (userAge < 12 || userAge > 60)
+        {
+            // 20% discount for users below age 12 or above age 60
+            price *= 0.8;
+        }
+
+        return price;
+    }
 }
