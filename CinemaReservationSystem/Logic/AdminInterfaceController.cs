@@ -96,7 +96,7 @@ public class AdminInterfaceController
         string input = AdminInputMovie(id);
         switch (input) {
             case "Select":
-                UserInterfaceController.ScreeningSelect(screenings, id);
+                UserInterfaceController.ScreeningSelect(movie, id);
                 break;
             case "Add":
                 AddScreening(movie, id);
