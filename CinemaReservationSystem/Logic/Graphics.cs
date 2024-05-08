@@ -97,7 +97,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
 |    |    |    |    |    |    |
 ||~~~~~||~~~~~||~~~~~||~~~~~~|| 
 `'     `'     `'     `'      `'";
-    public static void BoxText(string text, string header = "")
+    public static void BoxText(string text, string header = "") //draws something
     {
 
         string upperHeader = header.ToUpper();
@@ -144,7 +144,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         Helper.WriteInCenter(bottomBorder);
     }
 
-    public static void DrawLogin(string username = "", string password = "")
+    public static void DrawLogin(string username = "", string password = "") //draws something
     {
         Console.SetCursorPosition(0, 0);
         Console.ForegroundColor = ConsoleColor.Blue;
@@ -160,7 +160,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         Helper.WriteInCenter("╚═════════════════════════════════════╝");
     }
 
-    public static void DrawRegister(string username = "", string birthdate = "", string email = "", string password = "")
+    public static void DrawRegister(string username = "", string birthdate = "", string email = "", string password = "") //draws something
     {
         int usernamerightpadding, birthdaterightpadding, emailrightpadding, passwordrightpadding;
         int usernameleftpadding, birthdateleftpadding, emailleftpadding, passwordleftpadding;
@@ -187,7 +187,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         Helper.WriteInCenter("║PASSWORD: ".PadLeft(passwordleftpadding) + password.PadRight(passwordrightpadding) + "║");
         Helper.WriteInCenter("╚═════════════════════════════════════╝");
     }
-    public static (string, int, int) GetInstructionString(string registerinfo, string type)
+    public static (string, int, int) GetInstructionString(string registerinfo, string type) //XXXXXXXXXXXXXXXXXXXXXXX//
     {
         if (string.IsNullOrEmpty(registerinfo))
         {
@@ -213,7 +213,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         };
     }
 
-    private static void DrawLegend(string Blueprice, string Redprice, string Yellowprice)
+    private static void DrawLegend(string Blueprice, string Redprice, string Yellowprice) //draws something
     {
         Console.WriteLine($"\nSEATS {Colorize("U", "magenta")} ARE ALREADY RESERVED"
             + $", {Colorize("U", "blue")} PRICE: " + Blueprice
@@ -221,7 +221,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
             + $", {Colorize("U", "red")} PRICE: " + Redprice);
     }
 
-    public static IEnumerable<string> AuditoriumView(Screening screening, User user)
+    public static IEnumerable<string> AuditoriumView(Screening screening, User user) //logic for drawing auditorium 
     {
         //init all data needed for display and backend
         int indexPos, width, maxindex, mintopindex;
@@ -255,6 +255,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         return reservedseatIDs;
     }
 
+    //user input handling
     private static void HandleUserInput(Screening screening, User user, string auditorium, int width, int maxindex, int mintopindex, ref int indexPos,
                                         List<string> selectedseats, List<int> listreservedindex, Dictionary<int, char> numbertoletter,
                                         List<int> reservedbyotheruser, List<string> reservedseatIDs, ref bool reservedDone)
@@ -284,6 +285,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         }
     }
 
+    //user input handling
     private static void HandleSpacebarKeyPress(string auditorium, int indexPos, List<string> selectedseats,
                                                 List<int> listreservedindex, List<int> reservedbyotheruser, Dictionary<int, char> numbertoletter)
     {
@@ -303,6 +305,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         }
     }
 
+    //user input handling
     private static void HandleEnterKeyPress(Screening screening, string auditorium, List<int> listreservedindex,
                                             List<string> reservedseatIDs, ref bool reservedDone)
     {
@@ -321,6 +324,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         reservedDone = true;
     }
 
+    //user input handling
     private static void HandleBackspaceKeyPress(List<int> listreservedindex, List<string> selectedseats)
     {
         if (listreservedindex.Count > 0)
@@ -330,6 +334,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         }
     }
 
+    //user input handling
     private static void HandleEscapeKeyPress(User user)
     {
         Console.Write("\f\u001bc\x1b[3J");
@@ -337,6 +342,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         else UserInterface.GeneralMenu(user.ID);
     }
 
+    //user input handling
     private static void HandleUserMovement(ConsoleKeyInfo key, ref int indexPos, int width, int maxindex, int mintopindex)
     {
         indexPos = key.Key switch
@@ -357,6 +363,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         };
     }
 
+    //logic for drawing auditorium 
     private static void InitAuditorium(Screening screening, User user, out int indexPos, out int width, out int maxindex,
         out int mintopindex, out string auditoriumScreen, out string auditorium, out List<string> selectedseats, 
         out List<int> listreservedindex, out List<int> reservedbyotheruser, out Dictionary<int, char> numbertoletter, 
@@ -421,6 +428,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
     }
     
 
+    //draws something
     private static void DrawAuditoriumInfo(string auditorium, string auditoriumScreen, string coloredAuditorium, int indexPos, IEnumerable<string> selectedseats, IDictionary<int, char> numbertoletter)
     {
         Console.WriteLine("\b \b");
@@ -443,6 +451,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         DrawLegend("10", "15", "12");
     }
 
+    //logic used to draw something
     private static string GetColoredAuditorium(string auditorium, int indexPos, IEnumerable<int> reservedbyotheruser, IEnumerable<int> listreservedindex, IDictionary<int, (string, bool)> seatIDcolor)
     {
         StringBuilder coloredAuditorium = new StringBuilder();
@@ -462,6 +471,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         }
         return coloredAuditorium.ToString();
     }
+    //logic used to draw something
     private static string GetColorizedUnchangingU(string auditorium, int i, IDictionary<int, (string, bool)> seatIDcolor, IEnumerable<int> reservedbyotheruser)
     {
         (string color, bool reserved) = seatIDcolor[GetSeatNumberFromIndex(auditorium, i, true)];
@@ -474,6 +484,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
             _ => throw new ArgumentException(nameof(i), $"Could not find color for seat: {GetSeatNumberFromIndex(auditorium, i, true)}")
         };
     }
+    //logic used to draw something
     public static string Colorize(string character, string color)
     {
         return color.ToLower() switch
@@ -492,16 +503,17 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         };
     }
 
+    //auditorium logic
     private static bool IsSeat(string auditorium, int index)
     {
         return auditorium[index] == 'U';
     }
-
+    //auditorium logic
     private static bool EndofRow(string auditorium, int index)
     {
         return auditorium[index] == '\n';
     }
-
+    //auditorium logic
     private static int GetIndexFromSeat(string auditorium, int seatnr)
     {
         int seatNumber = 0;
@@ -517,7 +529,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         }
         return 0;
     }
-
+    //auditorium logic
     private static int GetRowFromIndex(string auditorium, int index)
     {
         int row = 0;
@@ -534,7 +546,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         }
         return row;
     }
-
+    //auditorium logic
     private static int GetSeatNumberFromIndex(string auditorium, int index, bool database = false)
     {
         int seatNumber = 0;
@@ -552,7 +564,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         if (database is true) return seatDBnumber;
         else return seatNumber;
     }
-
+    //auditorium logic
     private static int GetWidth(string auditorium)
     {
         for (int i = 0; i <= auditorium.Length; i++)
@@ -561,12 +573,12 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         }
         return 0;
     }
-
+    //auditorium logic
     private static int GetMaxIndex(string auditorium)
     {
         return auditorium.Length - 2;
     }
-
+    //auditorium logic
     private static string GetScreen(int width)
     {
         string screen = "";
@@ -581,7 +593,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
 
         return screen;
     }
-
+    //auditorium logic
     private static int GetAuditoriumOffset(int id)
     {
         return id switch
