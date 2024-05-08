@@ -14,6 +14,24 @@ public class Seat : ObjectHasID
         ID = id != null ? id : Convert.ToString(++lastID);
         IsReserved = isReserved;
     }
+    
+    /*
+    this method adds prices without the need of a price parameter
+    private double GetPriceFromColor(string color)
+    {
+        switch (color.ToLower())
+        {
+            case "red":
+                return 20;
+            case "yellow":
+                return 15;
+            case "blue":
+                return 10;
+            default:
+                throw new ArgumentException("Invalid color specified.");
+        }
+    }
+    */
 
     public void ReserveSeat()
     {
@@ -35,17 +53,17 @@ public class Seat : ObjectHasID
         return Price;
     }
 
-    public double GetPrice(User user)
+    public double GetDiscountedPrice(User user)
     {
-        double price = Price;
-        
+        double finalPrice = Price;
         int userAge = Helper.GetUserAge(user);
+        
+        // discount for users below the age of 12 and above the age of 60
         if (userAge < 12 || userAge > 60)
         {
-            // 20% discount for users below age 12 or above age 60
-            price *= 0.8;
+            finalPrice *= 0.8; // 20% discount
         }
 
-        return price;
+        return finalPrice;
     }
 }
