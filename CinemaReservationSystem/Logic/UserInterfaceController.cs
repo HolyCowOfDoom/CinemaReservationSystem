@@ -63,7 +63,7 @@ public class UserInterfaceController
         else if (key.Key == ConsoleKey.Home)
         {
             ResetFields();
-            UserInterface.GeneralMenu(id);
+            Helper.HandleHomeKey(id);
         }
     }
 
@@ -398,7 +398,7 @@ public class UserInterfaceController
         else if (key.Key == ConsoleKey.Home)
         {
             ResetFields();
-            UserInterface.GeneralMenu(id);
+            Helper.HandleHomeKey(id);
         }     
     }
 

@@ -507,4 +507,17 @@ public class Helper
         }
         return age;
     }
+    public static void HandleHomeKey(string id)
+    {
+        if (!string.Equals(id, "not logged in"))
+        {
+            ConsoleClear();
+            UserInterface.GeneralMenu(id);
+        }
+        else
+        {
+            ConsoleClear();
+            Interface.GeneralMenu();
+        }
+    }
 }

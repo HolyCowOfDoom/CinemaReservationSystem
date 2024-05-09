@@ -282,8 +282,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
                 HandleEscapeKeyPress(user, screening);
                 break;
             case ConsoleKey.Home:
-                Helper.ConsoleClear();
-                UserInterface.GeneralMenu(user.ID);
+                Helper.HandleHomeKey(user.ID);
                 break;
         }
     }
