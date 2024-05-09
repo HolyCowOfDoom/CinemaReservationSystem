@@ -160,57 +160,109 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         Helper.WriteInCenter("╚═════════════════════════════════════╝");
     }
 
-    public static void DrawRegister(string username = "", string birthdate = "", string email = "", string password = "")
+    public static void DrawRegister(string activefield, string username = "", string birthdate = "", string email = "", string password = "")
     {
+        string usernamefield, birthdatefield, emailfield, passwordfield;
         int usernamerightpadding, birthdaterightpadding, emailrightpadding, passwordrightpadding;
         int usernameleftpadding, birthdateleftpadding, emailleftpadding, passwordleftpadding;
-        (username, usernamerightpadding, usernameleftpadding) = GetInstructionString(username, "username");
-        (birthdate, birthdaterightpadding, birthdateleftpadding) = GetInstructionString(birthdate, "birthdate");
-        (email, emailrightpadding, emailleftpadding) = GetInstructionString(email, "email");
-        (password, passwordrightpadding, passwordleftpadding) = GetInstructionString(password, "password");
+        usernamefield = GetActiveField("username", activefield);
+        birthdatefield = GetActiveField("birthdate", activefield);
+        emailfield = GetActiveField("email", activefield);
+        passwordfield = GetActiveField("password", activefield);
+        (username, usernamerightpadding, usernameleftpadding) = GetInstructionString(username, "username", activefield);
+        (birthdate, birthdaterightpadding, birthdateleftpadding) = GetInstructionString(birthdate, "birthdate", activefield);
+        (email, emailrightpadding, emailleftpadding) = GetInstructionString(email, "email", activefield);
+        (password, passwordrightpadding, passwordleftpadding) = GetInstructionString(password, "password", activefield);
+
 
         Console.SetCursorPosition(0, 0);
         Console.ForegroundColor = ConsoleColor.Blue;
         Helper.WriteInCenter("Register or press ESC to go to back to menu.");
-        Console.ForegroundColor = ConsoleColor.Gray;
+        Console.ResetColor();
         
         Console.SetCursorPosition((Console.WindowWidth - 50) / 2, 8);
         Helper.WriteInCenter("╔═════════════════════════════════════╗");
         Helper.WriteInCenter("║               REGISTER              ║");
         Helper.WriteInCenter("╠═════════════════════════════════════╣");
-        Helper.WriteInCenter("║USERNAME: ".PadLeft(usernameleftpadding) + username.PadRight(usernamerightpadding) + "║");
+        Helper.WriteInCenter($"║{usernamefield} ".PadLeft(usernameleftpadding) + username.PadRight(usernamerightpadding) + "║");
         Helper.WriteInCenter("╠═════════════════════════════════════╣");
-        Helper.WriteInCenter("║BIRTHDATE: ".PadLeft(birthdateleftpadding) + birthdate.PadRight(birthdaterightpadding) + "║");
+        Helper.WriteInCenter($"║{birthdatefield} ".PadLeft(birthdateleftpadding) + birthdate.PadRight(birthdaterightpadding) + "║");
         Helper.WriteInCenter("╠═════════════════════════════════════╣");
-        Helper.WriteInCenter("║EMAIL: ".PadLeft(emailleftpadding) + email.PadRight(emailrightpadding) + "║");
+        Helper.WriteInCenter($"║{emailfield} ".PadLeft(emailleftpadding) + email.PadRight(emailrightpadding) + "║");
         Helper.WriteInCenter("╠═════════════════════════════════════╣");
-        Helper.WriteInCenter("║PASSWORD: ".PadLeft(passwordleftpadding) + password.PadRight(passwordrightpadding) + "║");
+        Helper.WriteInCenter($"║{passwordfield} ".PadLeft(passwordleftpadding) + password.PadRight(passwordrightpadding) + "║");
         Helper.WriteInCenter("╚═════════════════════════════════════╝");
     }
-    public static (string, int, int) GetInstructionString(string registerinfo, string type)
+
+    private static string GetActiveField(string type, string activefield)
     {
+        return (type) switch
+        {
+            "username" => string.Equals(type, activefield) ? $"{Colorize("USERNAME:", "yellow")}" : "USERNAME:",
+            "birthdate" => string.Equals(type, activefield) ? $"{Colorize("BIRTHDATE:", "yellow")}" : "BIRTHDATE:",
+            "email" => string.Equals(type, activefield) ? $"{Colorize("EMAIL:", "yellow")}" : "EMAIL:",
+            "password" => string.Equals(type, activefield) ? $"{Colorize("PASSWORD:", "yellow")}" : "PASSWORD:",
+            _ => throw new ArgumentException(nameof(type), $"Could not find {type}")
+        };
+    }
+
+    public static (string, int, int) GetInstructionString(string registerinfo, string type, string activefield)
+    {
+        int offsetusername = 0, offsetbirthdate = 0, offsetemail = 0, offsetpassword = 0;
         if (string.IsNullOrEmpty(registerinfo))
         {
+            switch (activefield)
+            {
+                case "username":
+                    offsetusername = 17;
+                    break;
+                case "birthdate":
+                    offsetbirthdate = 18;
+                    break;
+                case "email":
+                    offsetemail = 17;
+                    break;
+                case "password":
+                    offsetpassword = 17;
+                    break;
+            }
             return (type) switch
             {
 
-                "username" => (Colorize("username > 3 chars", "gray"), 36, 20),
-                "birthdate" => (Colorize("format: dd-MM-yyyy", "gray"), 35, 21),
-                "email" => (Colorize("email has '@' and '.'", "gray"), 39, 17),
-                "password" => (Colorize("password has digit", "gray"), 36, 20),
+                "username" => (Colorize("username > 3 chars", "gray"), 36, 20 + offsetusername),
+                "birthdate" => (Colorize("format: dd-MM-yyyy", "gray"), 35, 21 + offsetbirthdate),
+                "email" => (Colorize("email has '@' and '.'", "gray"), 39, 17 + offsetemail),
+                "password" => (Colorize("password has digit", "gray"), 36, 20 + offsetpassword),
                 _ => throw new ArgumentException(nameof(registerinfo), $"Could not find type for: {registerinfo}")
             };
         }
-
-        return (type) switch
+        else
         {
+            switch (activefield)
+            {
+                case "username":
+                    offsetusername = 28;
+                    break;
+                case "birthdate":
+                    offsetbirthdate = 30;
+                    break;
+                case "email":
+                    offsetemail = 25;
+                    break;
+                case "password":
+                    offsetpassword = 28;
+                    break;
+            }
+            return (type) switch
+            {
 
-        "username" => (registerinfo, 27, 0),
-        "birthdate" => (registerinfo, 26, 0),
-        "email" => (registerinfo, 30, 0),
-        "password" => (registerinfo, 27, 0),
-        _ => throw new ArgumentException(nameof(registerinfo), $"Could not find type for: {registerinfo}")
-        };
+                "username" => (registerinfo, 27, 0 + offsetusername),
+                "birthdate" => (registerinfo, 26, 0 + offsetbirthdate),
+                "email" => (registerinfo, 30, 0 + offsetemail),
+                "password" => (registerinfo, 27, 0 + offsetpassword),
+                _ => throw new ArgumentException(nameof(registerinfo), $"Could not find type for: {registerinfo}")
+            };
+        }
     }
 
     private static void DrawLegend(string Blueprice, string Redprice, string Yellowprice)

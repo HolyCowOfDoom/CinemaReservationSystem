@@ -185,6 +185,7 @@ public class Helper
 
         while (true)
         {
+            UpdateUI(Case, type, input, username, birthdate, email, password, spacebar);
             ConsoleKeyInfo key = Console.ReadKey(intercept: true);
 
             switch (key.Key)
@@ -212,7 +213,6 @@ public class Helper
                     HandleInputKey(ref input, maxLength, key.KeyChar, type, Case);
                     break;
             }
-            UpdateUI(Case, type, input, username, birthdate, email, password, spacebar);
             if (validated is true) return (input, taboresc);
         }
     }
@@ -298,6 +298,7 @@ public class Helper
         }
         else if (char.IsLetterOrDigit(keyChar) || char.IsSymbol(keyChar) || char.IsPunctuation(keyChar))
         {
+            ConsoleClear();
             {
                 if (string.Equals(Case, "register") && string.Equals(type, "birthdate"))
                 {
@@ -341,16 +342,16 @@ public class Helper
                 switch (type)
                 {
                     case "username":
-                        Graphics.DrawRegister(input, birthdate, email, password);
+                        Graphics.DrawRegister(type, input, birthdate, email, password);
                         break;
                     case "birthdate":
-                        Graphics.DrawRegister(username, input, email, password);
+                        Graphics.DrawRegister(type, username, input, email, password);
                         break;
                     case "email":
-                        Graphics.DrawRegister(username, birthdate, input, password);
+                        Graphics.DrawRegister(type, username, birthdate, input, password);
                         break;
                     case "password":
-                        Graphics.DrawRegister(username, birthdate, email, input);
+                        Graphics.DrawRegister(type, username, birthdate, email, input);
                         break;
                 }
                 break;
@@ -361,7 +362,7 @@ public class Helper
         switch (Case)
         {
             case "register":
-                Graphics.DrawRegister(username, birthdate, email, password);
+                Graphics.DrawRegister("username", username, birthdate, email, password);
                 break;
             case "login":
                 Graphics.DrawLogin(input);
