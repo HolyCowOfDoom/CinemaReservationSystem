@@ -279,7 +279,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
                 HandleBackspaceKeyPress(listreservedindex, selectedseats);
                 break;
             case ConsoleKey.Escape:
-                HandleEscapeKeyPress(user);
+                HandleEscapeKeyPress(user, screening);
                 break;
             case ConsoleKey.Home:
                 Helper.ConsoleClear();
@@ -430,7 +430,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         Console.WriteLine("\b \b");
         Console.Clear();
 
-        Console.WriteLine($"Use arrow keys to move the cursor ({Colorize("X", "lavender")}), ({Colorize("SPACEBAR", "green")}) to select seat and {Colorize("ESC", "red")} to return, max reservable seats: 40");
+        Console.WriteLine($"Use arrow keys to move the cursor ({Colorize("X", "lavender")}), ({Colorize("SPACEBAR", "green")}) to select seat and {Colorize("ESC", "red")} to return, or HOME to go to main menu, max reservable seats: 40");
         if (IsSeat(auditorium, indexPos)) Console.WriteLine($"Seat: {numbertoletter[GetRowFromIndex(auditorium, indexPos) + 1]}{GetSeatNumberFromIndex(auditorium, indexPos)}");
         else Console.WriteLine();
 

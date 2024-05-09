@@ -167,7 +167,7 @@ public class UserInterfaceController
         Console.WriteLine("└──────┴──────────────────────────────────────────┴─────────────┴─────────────┴──────────────────────────────────────────────────────────────┘");
         Console.WriteLine($"Page {(currentIndex / batchSize) + 1} of {totalcount/batchSize + 1}");
         Console.ForegroundColor = ConsoleColor.Blue;
-        Console.WriteLine("ESC to go back or ENTER to select movie.");
+        Console.WriteLine("ESC to go back, HOME to return to main menu or ENTER to select movie.");
         Console.ResetColor();
     }
     public static void FilterMovies(string id, string option)
@@ -449,7 +449,7 @@ public class UserInterfaceController
         Console.WriteLine("└──────┴───────────────────────────────────┴────────────────┴─────────────────────────────────────────────────────────────────────────────────────────┘");
         Console.WriteLine($"Page {(currentIndex / batchSize) + 1} of {totalcount / batchSize + 1}");
         Console.ForegroundColor = ConsoleColor.Blue;
-        Console.WriteLine("ESC to go back or ENTER to select screening to reserve seats.");
+        Console.WriteLine("ESC to go back, HOME to go back to main menu, or ENTER to select screening to reserve seats.");
         Console.ResetColor();
     }
     private static ConsoleKeyInfo HandleUserSelectScreeningInput(ConsoleKeyInfo key)
