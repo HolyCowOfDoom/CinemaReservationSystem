@@ -281,6 +281,10 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
             case ConsoleKey.Escape:
                 HandleEscapeKeyPress(user);
                 break;
+            case ConsoleKey.Home:
+                Helper.ConsoleClear();
+                UserInterface.GeneralMenu(user.ID);
+                break;
         }
     }
 
@@ -330,11 +334,11 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         }
     }
 
-    private static void HandleEscapeKeyPress(User user)
+    private static void HandleEscapeKeyPress(User user, Screening screening)
     {
         Console.Write("\f\u001bc\x1b[3J");
-        if (user.Admin is true) AdminInterface.GeneralMenu(user.ID);
-        else UserInterface.GeneralMenu(user.ID);
+        Movie movie = UserInterfaceController.GetMovieByID(screening.ID);
+        UserInterfaceController.ScreeningSelect(movie, user.ID);
     }
 
     private static void HandleUserMovement(ConsoleKeyInfo key, ref int indexPos, int width, int maxindex, int mintopindex)

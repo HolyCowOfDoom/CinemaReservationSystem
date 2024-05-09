@@ -4,22 +4,10 @@ using System.Security.Cryptography.X509Certificates;
 public class InterfaceController
 {
     public static void ViewMovies(){
-        List<Movie> Movies = JsonHandler.Read<Movie>("Data/MovieDB.json");
-        Console.WriteLine("┌────┬──────────────────────────────────────────┬─────────────┬─────────────┬──────────────────────────────────────────────────────────────┐");
-        Console.WriteLine($"│ ID │ {"Title",-40} │ {"Age Rating",-11} │ {"Genre",-11} │ {"Description",-60} │");
-        foreach (Movie movie in Movies)
-        {
-            Console.WriteLine($"│ {Movies.IndexOf(movie) + 1, -2} │ {movie.Title,-40} │ {movie.AgeRating,-11} │ {movie.Genre, -11} │ {movie.Description,-60} │");
-        }
-        Console.WriteLine("└────┴──────────────────────────────────────────┴─────────────┴─────────────┴──────────────────────────────────────────────────────────────┘");
-        Console.WriteLine("Press x to go back to the main menu");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-        if (specificLetterInput == 'x'){
-            Interface.GeneralMenu();
-        }
+        UserInterfaceController.ViewMovies();
     }
 
-    public static void LogIn()
+    public static void LogIn(bool reservemovie=false)
     {
         string username = string.Empty, password = string.Empty;
         string EscorTaborshift;
@@ -73,7 +61,11 @@ public class InterfaceController
                         {
                             Helper.ConsoleClear();
                             if (user.Admin is true) AdminInterface.GeneralMenu(user.ID);
-                            else UserInterface.GeneralMenu(user.ID);
+                            else
+                            {
+                                if (reservemovie is true) UserInterfaceController.ViewMovies(user.ID);
+                                UserInterface.GeneralMenu(user.ID);
+                            }
                             break;
                         }
                     }

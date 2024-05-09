@@ -9,6 +9,7 @@ public class UserInterfaceController
     private const int batchSize = 20;
     private static List<Movie>? Movies;
     private static List<Screening>? Screenings;
+    private static List<Screening>? loadedScreenings;
     private static int totalcount;
     private static int currentIndex = 0;
     private static int selectedIndex = 0;
@@ -16,8 +17,10 @@ public class UserInterfaceController
         Interface.GeneralMenu();
     }
 
-    public static void ViewMovies(string id)
+    public static void ViewMovies(string id="not logged in")
     {
+        Helper.ConsoleClear();
+        Console.CursorVisible = false;
         totalcount = JsonHandler.Read<Movie>("Data/MovieDB.json").Count;
         LoadNextMovies();
 
@@ -31,7 +34,7 @@ public class UserInterfaceController
             key = HandleUserViewMovieInput(key);
 
             Helper.ConsoleClear();
-        } while (key.Key != ConsoleKey.Escape && key.Key != ConsoleKey.Enter);
+        } while (key.Key != ConsoleKey.Escape && key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Home);
         if (key.Key == ConsoleKey.Escape)
         {
             ResetFields();
@@ -39,9 +42,28 @@ public class UserInterfaceController
         }
         else if (key.Key == ConsoleKey.Enter)
         {
+            if (string.Equals(id, "not logged in"))
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                char confirm = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Not logged in",
+                                                "Login to reserve seats for a movie? Y/N");
+                Console.ResetColor();
+
+                if (confirm == 'y')
+                {
+                    ResetFields();
+                    InterfaceController.LogIn(true);
+                }
+                else ViewMovies();
+            }
             Movie movie = Movies[selectedIndex];
             ResetFields();
             ScreeningSelect(movie, id);
+        }
+        else if (key.Key == ConsoleKey.Home)
+        {
+            ResetFields();
+            UserInterface.GeneralMenu(id);
         }
     }
 
@@ -54,8 +76,8 @@ public class UserInterfaceController
                     selectedIndex--;
                 else
                 {
-                    selectedIndex = totalcount;
-                    MoviesLeftArrowPress();
+                    selectedIndex = totalcount - 1;
+                    LeftArrowPress();
                     LoadNextMovies();
                 }
                 break;
@@ -65,29 +87,31 @@ public class UserInterfaceController
                 else
                 {
                     selectedIndex = 0;
-                    MoviesRightArrowPress();
+                    RightArrowPress();
                     LoadNextMovies();
                 }
                 break;
             case ConsoleKey.LeftArrow:
-                MoviesLeftArrowPress();
+                LeftArrowPress();
                 LoadNextMovies();
                 break;
             case ConsoleKey.RightArrow:
-                MoviesRightArrowPress();
+                RightArrowPress();
                 LoadNextMovies();
                 break;
+            case ConsoleKey.Home:
+                return key;
             case ConsoleKey.Enter:
                 return key;
             case ConsoleKey.Escape:
                 return key;
         }
-        if (selectedIndex > Movies.Count)
+        if (selectedIndex >= Movies.Count)
             selectedIndex = Movies.Count - 1;
         return key;
     }
 
-    private static void MoviesLeftArrowPress()
+    private static void LeftArrowPress()
     {
         if (currentIndex > 0)
         {
@@ -101,7 +125,7 @@ public class UserInterfaceController
         }
     }
 
-    private static void MoviesRightArrowPress()
+    private static void RightArrowPress()
     {
         currentIndex += batchSize;
         if (currentIndex >= totalcount)
@@ -112,6 +136,7 @@ public class UserInterfaceController
     {
         Movies = null;
         Screenings = null;
+        loadedScreenings = null;
         currentIndex = 0;
         selectedIndex = 0;
     }
@@ -309,9 +334,9 @@ public class UserInterfaceController
         foreach (Reservation reservation in user.Reservations)
         {
             index++;
-            string movietitle = GetMovieByID(reservation.ScreeningID);
+            Movie movie = GetMovieByID(reservation.ScreeningID);
             Screening screening = GetScreeningByID(reservation.ScreeningID);
-            Console.WriteLine($"│ {index} │ Movie name: {movietitle,-40} │ Screening Date: {screening.ScreeningDateTime, -16} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
+            Console.WriteLine($"│ {index} │ Movie name: {movie.Title,-40} │ Screening Date: {screening.ScreeningDateTime, -16} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
         }
         Console.WriteLine("└───┴──────────────────────────────────────────────────────┴────────────────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
         Console.WriteLine("Press x to go back to the main menu");
@@ -321,12 +346,12 @@ public class UserInterfaceController
         }
     }
 
-    public static string? GetMovieByID(string screeningID)
+    public static Movie? GetMovieByID(string screeningID)
     {
         List<Movie> MovieList = JsonHandler.Read<Movie>("Data/MovieDB.json");
         foreach(Movie movie in MovieList)
         {
-            if (movie.ScreeningIDs.Contains(screeningID)) return movie.Title;
+            if (movie.ScreeningIDs.Contains(screeningID)) return movie;
         }
         return null;
     }
@@ -343,42 +368,63 @@ public class UserInterfaceController
 
     public static void ScreeningSelect(Movie movie, string id)
     {
-        while (true)
+        Helper.ConsoleClear();
+        Console.CursorVisible = false;
+
+        Screenings = MovieDataController.GetAllMovieScreenings(movie);
+        totalcount = Screenings.Count;
+
+        ConsoleKeyInfo key;
+        do
         {
+            LoadScreenings();
+            PrintScreenings(movie);
+
+            key = Console.ReadKey(true);
+
+            key = HandleUserSelectScreeningInput(key);
+
             Helper.ConsoleClear();
-            Screenings = MovieDataController.GetAllMovieScreenings(movie);
+        } while (key.Key != ConsoleKey.Escape && key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Home);
+        if (key.Key == ConsoleKey.Escape)
+        {
+            ResetFields();
+            ViewMovies(id);
+        }
+        else if (key.Key == ConsoleKey.Enter)
+        {
+            HandleScreeningSelectEnter(movie, id);
+        }
+        else if (key.Key == ConsoleKey.Home)
+        {
+            ResetFields();
+            UserInterface.GeneralMenu(id);
+        }     
+    }
 
-            ConsoleKeyInfo key;
-            do
+    private static void LoadScreenings()
+    {
+        loadedScreenings = Screenings.Skip(currentIndex).Take(batchSize).ToList();
+    }
+
+    private static void HandleScreeningSelectEnter(Movie movie, string id)
+    {
+        try
+        {
+            Screening? chosenScreening = null;
+            foreach (Screening screening in Screenings)
             {
-                PrintScreenings(movie);
-
-                key = Console.ReadKey(true);
-
-                key = HandleUserSelectScreeningInput(key);
-
-                Helper.ConsoleClear();
-            } while (key.Key != ConsoleKey.Escape && key.Key != ConsoleKey.Enter);
-            if (key.Key == ConsoleKey.Escape)
-            {
-                ResetFields();
-                ViewMovies(id);
-            }
-            else if (key.Key == ConsoleKey.Enter)
-            {
-                Screening? chosenScreening = null;
-                foreach (Screening screening in Screenings)
+                if (Screenings.IndexOf(screening) + 1 == selectedIndex + 1)
                 {
-                    Console.WriteLine(Screenings.IndexOf(screening));
-                    Console.WriteLine(selectedIndex);
-                    if (Screenings.IndexOf(screening) + 1 == selectedIndex + 1)
-                    {
-                        chosenScreening = screening;
-                    }
+                    chosenScreening = screening;
                 }
-                ResetFields();
-                ReserveSeats(chosenScreening, id);
             }
+            ResetFields();
+            ReserveSeats(chosenScreening, id);
+        }
+        catch (NullReferenceException)
+        {
+            ScreeningSelect(movie, id);
         }
     }
 
@@ -390,17 +436,21 @@ public class UserInterfaceController
         Console.WriteLine("┌──────────────────────────────────────────┬────────────────┬─────────────┬───────────────────────────────────────────────────────────────────────────┐");
         Console.WriteLine($"│ {movie.Title,-40} │ {"Age rating: " + movie.AgeRating,-15}│ {movie.Genre,-11} │ {movie.Description,-74}│");
         Console.WriteLine("├──────┬───────────────────────────────────┼────────────────┼─────────────┴───────────────────────────────────────────────────────────────────────────┤");
-        for (int i = 0; i < Screenings?.Count; i++)
+        for (int i = 0; i < loadedScreenings?.Count; i++)
         {
             if (i == selectedIndex)
             {
                 Console.BackgroundColor = ConsoleColor.Yellow;
                 Console.ForegroundColor = ConsoleColor.Black;
             }
-            Console.WriteLine($"│ {currentIndex + i + 1,-4} | Date and Time: {Screenings[i].ScreeningDateTime,-18:dd-MM-yyyy HH:mm} | Auditorium: {Screenings[i].AssignedAuditorium.ID, -2} | {"|", 89}");
+            Console.WriteLine($"│ {currentIndex + i + 1,-4} | Date and Time: {loadedScreenings[i].ScreeningDateTime,-18:dd-MM-yyyy HH:mm} | Auditorium: {loadedScreenings[i].AssignedAuditorium.ID, -2} | {"|", 89}");
             Console.ResetColor();
         }
         Console.WriteLine("└──────┴───────────────────────────────────┴────────────────┴─────────────────────────────────────────────────────────────────────────────────────────┘");
+        Console.WriteLine($"Page {(currentIndex / batchSize) + 1} of {totalcount / batchSize + 1}");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("ESC to go back or ENTER to select screening to reserve seats.");
+        Console.ResetColor();
     }
     private static ConsoleKeyInfo HandleUserSelectScreeningInput(ConsoleKeyInfo key)
     {
@@ -409,19 +459,43 @@ public class UserInterfaceController
             case ConsoleKey.UpArrow:
                 if (selectedIndex > 0)
                     selectedIndex--;
+                else
+                {
+                    selectedIndex = totalcount - 1;
+                    LeftArrowPress();
+                    LoadScreenings();
+                }
                 break;
             case ConsoleKey.DownArrow:
-                if (selectedIndex < Screenings.Count - 1)
+                if (selectedIndex < loadedScreenings.Count - 1)
                     selectedIndex++;
+                else
+                {
+                    selectedIndex = 0;
+                    RightArrowPress();
+                    LoadScreenings();
+                }
                 break;
+            case ConsoleKey.LeftArrow:
+                LeftArrowPress();
+                LoadScreenings();
+                break;
+            case ConsoleKey.RightArrow:
+                RightArrowPress();
+                LoadScreenings();
+                break;
+            case ConsoleKey.Home:
+                return key;
             case ConsoleKey.Enter:
                 return key;
             case ConsoleKey.Escape:
                 return key;
         }
+        if (selectedIndex >= loadedScreenings.Count)
+            selectedIndex = loadedScreenings.Count - 1;
         return key;
     }
-    
+
     public static void ReserveSeats(Screening screening, string id)
     {
         User user = UserDataController.GetUserWithValue("ID", id);
