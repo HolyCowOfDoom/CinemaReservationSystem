@@ -38,10 +38,13 @@ public class UserInterfaceController
         if (key.Key == ConsoleKey.Escape)
         {
             ResetFields();
-            UserInterface.GeneralMenu(id);
+            if (!string.Equals(id, "not logged in"))
+                UserInterface.GeneralMenu(id);
+            else Interface.GeneralMenu();
         }
         else if (key.Key == ConsoleKey.Enter)
         {
+            Movie movie = Movies[selectedIndex];
             if (string.Equals(id, "not logged in"))
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -52,11 +55,10 @@ public class UserInterfaceController
                 if (confirm == 'y')
                 {
                     ResetFields();
-                    InterfaceController.LogIn(true);
+                    InterfaceController.LogIn(true, movie);
                 }
                 else ViewMovies();
             }
-            Movie movie = Movies[selectedIndex];
             ResetFields();
             ScreeningSelect(movie, id);
         }
@@ -167,7 +169,7 @@ public class UserInterfaceController
         Console.WriteLine("└──────┴──────────────────────────────────────────┴─────────────┴─────────────┴──────────────────────────────────────────────────────────────┘");
         Console.WriteLine($"Page {(currentIndex / batchSize) + 1} of {totalcount/batchSize + 1}");
         Console.ForegroundColor = ConsoleColor.Blue;
-        Console.WriteLine("ESC to go back, HOME to return to main menu or ENTER to select movie.");
+        Console.WriteLine("ESC to go back, HOME to return to main menu, or ENTER to select movie.");
         Console.ResetColor();
     }
     public static void FilterMovies(string id, string option)
@@ -449,7 +451,7 @@ public class UserInterfaceController
         Console.WriteLine("└──────┴───────────────────────────────────┴────────────────┴─────────────────────────────────────────────────────────────────────────────────────────┘");
         Console.WriteLine($"Page {(currentIndex / batchSize) + 1} of {totalcount / batchSize + 1}");
         Console.ForegroundColor = ConsoleColor.Blue;
-        Console.WriteLine("ESC to go back, HOME to go back to main menu, or ENTER to select screening to reserve seats.");
+        Console.WriteLine("ESC to go back, HOME to return to main menu, or ENTER to select screening to reserve seats.");
         Console.ResetColor();
     }
     private static ConsoleKeyInfo HandleUserSelectScreeningInput(ConsoleKeyInfo key)

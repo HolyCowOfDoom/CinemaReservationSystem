@@ -7,7 +7,7 @@ public class InterfaceController
         UserInterfaceController.ViewMovies();
     }
 
-    public static void LogIn(bool reservemovie=false)
+    public static void LogIn(bool reservemovie=false, Movie movie = null)
     {
         string username = string.Empty, password = string.Empty;
         string EscorTaborshift;
@@ -63,7 +63,7 @@ public class InterfaceController
                             if (user.Admin is true) AdminInterface.GeneralMenu(user.ID);
                             else
                             {
-                                if (reservemovie is true) UserInterfaceController.ViewMovies(user.ID);
+                                if (reservemovie is true) UserInterfaceController.ScreeningSelect(movie ,user.ID);
                                 UserInterface.GeneralMenu(user.ID);
                             }
                             break;
@@ -75,7 +75,7 @@ public class InterfaceController
     }
 
 
-    public static void RegisterUser(string? username = null)
+    public static void RegisterUser(string? username = null, bool admin = false, string? id = null)
     {
         if (username is null) username = string.Empty;
         string birthDate = string.Empty, email = string.Empty, password = string.Empty, escapetab = string.Empty;
@@ -110,9 +110,11 @@ public class InterfaceController
                     break;
             }
         }
-        User user = new User(username, birthDate, email, password);
+        User? user;
+        if (admin is true) user = new User(username, birthDate, email, password, admin : true);
+        else user = new User(username, birthDate, email, password);
         Helper.ConsoleClear();
-        if (user.Admin is true) AdminInterface.GeneralMenu(user.ID);
+        if (user.Admin is true && id is not null) AdminInterface.GeneralMenu(id);
         else UserInterface.GeneralMenu(user.ID);
     }
 
