@@ -361,6 +361,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
     private static void HandleEnterKeyPress(Screening screening, string auditorium, List<int> listreservedindex,
                                             List<string> reservedseatIDs, ref bool reservedDone)
     {
+        if (listreservedindex.Count < 1) return;
         Console.ForegroundColor = ConsoleColor.Cyan;
         char confirm = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Confirm reservation", "Are you happy with your reservations? Y/N");
         Console.ForegroundColor = ConsoleColor.Gray;
