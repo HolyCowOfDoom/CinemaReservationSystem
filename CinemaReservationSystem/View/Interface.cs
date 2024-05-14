@@ -1,5 +1,3 @@
-using System.Collections;
-
 class Interface
 {
     public static void GeneralMenu(){

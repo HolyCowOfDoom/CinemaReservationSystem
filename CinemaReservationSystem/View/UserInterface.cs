@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 public class UserInterface
 {
     public static void GeneralMenu(string id){
@@ -10,8 +8,6 @@ public class UserInterface
             case '1':
                 UserInterfaceController.ViewMovies(id);
                 break;
-                // called overloaded versie van ViewMovies, kan dus gebruikt worden om
-                // seats te reserveren en op te slaan in de id van een employee.
             case '2':
                 char FilterOption = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4',
                 "Filter options",  "1. Filter movies by the Age Rating\n2. Filter Movies by Genre\n3. Filter Movies by both\n4. Exit Menu");
@@ -47,7 +43,6 @@ public class UserInterface
             case '4':
                 UserInterfaceController.LogOut();
                 break;
-                // Heeft geen id nodig, want called GeneralMenu zonder id.
             default:
                 GeneralMenu(id);
                 break;
