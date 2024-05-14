@@ -391,7 +391,16 @@ public class UserInterfaceController
         }
         else if (userConfirmation == 'y')
         {
-            UserInterface.GeneralMenu(id);
+            Screening screening = GetScreeningByID(reservationToCancel.ScreeningID);
+            foreach (string seatID in reservationToCancel.SeatIDs)
+            {
+                ScreeningDataController.CancelSeat(screening, seatID);
+            }
+            List<Reservation> newReservations = new List<Reservation>(user.Reservations);
+            newReservations.Remove(reservationToCancel);
+            UserDataController.UpdateUserWithValue<List<Reservation>>(user, "Reservations", newReservations);
+
+            ViewUser(id);
         }
     }
 
