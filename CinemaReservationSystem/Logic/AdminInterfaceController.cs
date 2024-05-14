@@ -7,8 +7,7 @@ public class AdminInterfaceController
         string title = Helper.GetValidInput("Please input movie title:", Helper.IsNotNull);
         string description = Helper.GetValidInput("Please add movie description:", Helper.IsNotNull);
         int ageRating = Convert.ToInt32(Helper.GetValidInput("Please add movie age rating:", Helper.IsNotNull));
-        Console.WriteLine("Please add a genre to the movie:");
-        string genre = Helper.GetValidInput("Please input movie title:", Helper.IsNotNull);
+        string genre = Helper.GetValidInput("Please add a genre to the movie:", Helper.IsNotNull);
 
         Movie addedMovie = new Movie(title, ageRating, description, genre);
 
@@ -40,42 +39,9 @@ public class AdminInterfaceController
 
     public static void RegisterAdmin(string fid)
     {
-        string username = string.Empty, birthDate = string.Empty, email = string.Empty, password = string.Empty, escapetab = string.Empty;
-        bool registercomplete = false;
-
-        Console.CursorVisible = false;
-        Helper.ConsoleClear();
-
-        // Start with the username input
-        string currentField = "username";
-
-        while (!registercomplete)
-        {
-            switch (currentField)
-            {
-                case "username":
-                    (username, escapetab) = Helper.Catchinput(27, "username", "register", username, birthDate, email, password);
-                    currentField = InterfaceController.HandleRegisterinput(currentField, username, escapetab, "birthdate", lastfield: null);
-                    break;
-                case "birthdate":
-                    (birthDate, escapetab) = Helper.Catchinput(10, "birthdate", "register", username, birthDate, email, password);
-                    currentField = InterfaceController.HandleRegisterinput(currentField, birthDate, escapetab, "email", "username");
-                    break;
-                case "email":
-                    (email, escapetab) = Helper.Catchinput(30, "email", "register", username, birthDate, email, password);
-                    currentField = InterfaceController.HandleRegisterinput(currentField, email, escapetab, "password", "birthdate");
-                    break;
-                case "password":
-                    (password, escapetab) = Helper.Catchinput(27, "password", "register", username, birthDate, email, password);
-                    currentField = InterfaceController.HandleRegisterinput(currentField, password, escapetab, nextfield: null, "email");
-                    if (string.Equals(currentField, "validated")) registercomplete = true;
-                    break;
-            }
-        }
-        User user = new User(username, birthDate, email, password, admin: true);
-        Helper.ConsoleClear();
-        AdminInterface.GeneralMenu(fid);
+        InterfaceController.RegisterUser(admin: true, id: fid);
     }
+    
     public static void LogOut(){
         Console.WriteLine("You have been succesfully logged out");
         Console.WriteLine("Press x to go back to the main menu");
@@ -97,7 +63,7 @@ public class AdminInterfaceController
         string input = AdminInputMovie(id);
         switch (input) {
             case "Select":
-                UserInterfaceController.ScreeningSelect(screenings, id);
+                UserInterfaceController.ScreeningSelect(movie, id);
                 break;
             case "Add":
                 AddScreening(movie, id);

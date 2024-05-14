@@ -4,22 +4,10 @@ using System.Security.Cryptography.X509Certificates;
 public class InterfaceController
 {
     public static void ViewMovies(){
-        List<Movie> Movies = JsonHandler.Read<Movie>("Data/MovieDB.json");
-        Console.WriteLine("┌────┬──────────────────────────────────────────┬─────────────┬─────────────┬──────────────────────────────────────────────────────────────┐");
-        Console.WriteLine($"│ ID │ {"Title",-40} │ {"Age Rating",-11} │ {"Genre",-11} │ {"Description",-60} │");
-        foreach (Movie movie in Movies)
-        {
-            Console.WriteLine($"│ {Movies.IndexOf(movie) + 1, -2} │ {movie.Title,-40} │ {movie.AgeRating,-11} │ {movie.Genre, -11} │ {movie.Description,-60} │");
-        }
-        Console.WriteLine("└────┴──────────────────────────────────────────┴─────────────┴─────────────┴──────────────────────────────────────────────────────────────┘");
-        Console.WriteLine("Press x to go back to the main menu");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-        if (specificLetterInput == 'x'){
-            Interface.GeneralMenu();
-        }
+        UserInterfaceController.ViewMovies();
     }
 
-    public static void LogIn()
+    public static void LogIn(bool reservemovie=false, Movie movie = null)
     {
         string username = string.Empty, password = string.Empty;
         string EscorTaborshift;
@@ -73,7 +61,11 @@ public class InterfaceController
                         {
                             Helper.ConsoleClear();
                             if (user.Admin is true) AdminInterface.GeneralMenu(user.ID);
-                            else UserInterface.GeneralMenu(user.ID);
+                            else
+                            {
+                                if (reservemovie is true) UserInterfaceController.ScreeningSelect(movie ,user.ID);
+                                UserInterface.GeneralMenu(user.ID);
+                            }
                             break;
                         }
                     }
@@ -83,7 +75,7 @@ public class InterfaceController
     }
 
 
-    public static void RegisterUser(string? username = null)
+    public static void RegisterUser(string? username = null, bool admin = false, string? id = null)
     {
         if (username is null) username = string.Empty;
         string birthDate = string.Empty, email = string.Empty, password = string.Empty, escapetab = string.Empty;
@@ -118,9 +110,11 @@ public class InterfaceController
                     break;
             }
         }
-        User user = new User(username, birthDate, email, password);
+        User? user;
+        if (admin is true) user = new User(username, birthDate, email, password, admin : true);
+        else user = new User(username, birthDate, email, password);
         Helper.ConsoleClear();
-        if (user.Admin is true) AdminInterface.GeneralMenu(user.ID);
+        if (user.Admin is true && id is not null) AdminInterface.GeneralMenu(id);
         else UserInterface.GeneralMenu(user.ID);
     }
 

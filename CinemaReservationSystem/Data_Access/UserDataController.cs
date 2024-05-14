@@ -20,6 +20,11 @@ public static class UserDataController
         return CsvHandler.UpdateRecordWithValue<User, J>(DBFilePath, user, header, newValue);
     }
 
+    public static bool AddValueToUser<J>(User user, string header, J addValue)
+    {
+        return CsvHandler.AddValueToRecord<User, J>(DBFilePath, user, header, addValue);
+    }
+
      // private static string EncryptPassword(string password)
     // {
     //     string encrypted = "";

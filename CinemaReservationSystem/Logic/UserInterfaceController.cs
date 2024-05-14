@@ -2,30 +2,176 @@ using System.Collections;
 using System.Globalization;
 using System.Net;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using CsvHelper.Configuration.Attributes;
 
 public class UserInterfaceController
 {
+    private const int batchSize = 20;
+    private static List<Movie>? Movies;
+    private static List<Screening>? Screenings;
+    private static List<Screening>? loadedScreenings;
+    private static int totalcount;
+    private static int currentIndex = 0;
+    private static int selectedIndex = 0;
     public static void LogOut(){
-        Console.WriteLine("You have been succesfully logged out");
-        Console.WriteLine("Press x to go back to the main menu");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-        if (specificLetterInput == 'x'){
-            Interface.GeneralMenu();
+        Interface.GeneralMenu();
+    }
+
+    public static void ViewMovies(string id="not logged in")
+    {
+        Helper.ConsoleClear();
+        Console.CursorVisible = false;
+        totalcount = JsonHandler.Read<Movie>("Data/MovieDB.json").Count;
+        LoadNextMovies();
+
+        ConsoleKeyInfo key;
+        do
+        {
+            PrintMovies();
+
+            key = Console.ReadKey(true);
+
+            key = HandleUserViewMovieInput(key);
+
+            Helper.ConsoleClear();
+        } while (key.Key != ConsoleKey.Escape && key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Home);
+        if (key.Key == ConsoleKey.Escape)
+        {
+            ResetFields();
+            if (!string.Equals(id, "not logged in"))
+                UserInterface.GeneralMenu(id);
+            else Interface.GeneralMenu();
+        }
+        else if (key.Key == ConsoleKey.Enter)
+        {
+            Movie movie = Movies[selectedIndex];
+            if (string.Equals(id, "not logged in"))
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                char confirm = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Not logged in",
+                                                "Login to reserve seats for a movie? Y/N");
+                Console.ResetColor();
+
+                if (confirm == 'y')
+                {
+                    ResetFields();
+                    InterfaceController.LogIn(true, movie);
+                }
+                else ViewMovies();
+            }
+            ResetFields();
+            ScreeningSelect(movie, id);
+        }
+        else if (key.Key == ConsoleKey.Home)
+        {
+            ResetFields();
+            Helper.HandleHomeKey(id);
         }
     }
 
-    public static void ViewMovies(string id){
-        List<Movie> Movies = JsonHandler.Read<Movie>("Data/MovieDB.json");
-        Console.WriteLine("┌────┬──────────────────────────────────────────┬─────────────┬─────────────┬──────────────────────────────────────────────────────────────┐");
-        Console.WriteLine($"│ ID │ {"Title",-40} │ {"Age Rating",-11} │ {"Genre",-11} │ {"Description",-60} │");
-        foreach (Movie movie in Movies)
+    private static ConsoleKeyInfo HandleUserViewMovieInput(ConsoleKeyInfo key)
+    {
+        switch (key.Key)
         {
-            Console.WriteLine($"│ {Movies.IndexOf(movie) + 1, -2} │ {movie.Title,-40} │ {movie.AgeRating,-11} │ {movie.Genre, -11} │ {movie.Description,-60} │");
+            case ConsoleKey.UpArrow:
+                if (selectedIndex > 0)
+                    selectedIndex--;
+                else
+                {
+                    selectedIndex = totalcount - 1;
+                    LeftArrowPress();
+                    LoadNextMovies();
+                }
+                break;
+            case ConsoleKey.DownArrow:
+                if (selectedIndex < Movies.Count - 1)
+                    selectedIndex++;
+                else
+                {
+                    selectedIndex = 0;
+                    RightArrowPress();
+                    LoadNextMovies();
+                }
+                break;
+            case ConsoleKey.LeftArrow:
+                LeftArrowPress();
+                LoadNextMovies();
+                break;
+            case ConsoleKey.RightArrow:
+                RightArrowPress();
+                LoadNextMovies();
+                break;
+            case ConsoleKey.Home:
+                return key;
+            case ConsoleKey.Enter:
+                return key;
+            case ConsoleKey.Escape:
+                return key;
         }
-        Console.WriteLine("└────┴──────────────────────────────────────────┴─────────────┴─────────────┴──────────────────────────────────────────────────────────────┘");
-        WouldYouLikeToSearch(id);
-        Console.Clear();
+        if (selectedIndex >= Movies.Count)
+            selectedIndex = Movies.Count - 1;
+        return key;
+    }
+
+    private static void LeftArrowPress()
+    {
+        if (currentIndex > 0)
+        {
+            currentIndex -= batchSize;
+            if (currentIndex < 0)
+                currentIndex = 0;
+        }
+        else
+        {
+            currentIndex = totalcount - (totalcount % batchSize);
+        }
+    }
+
+    private static void RightArrowPress()
+    {
+        currentIndex += batchSize;
+        if (currentIndex >= totalcount)
+            currentIndex = 0;
+    }
+
+    private static void ResetFields()
+    {
+        Movies = null;
+        Screenings = null;
+        loadedScreenings = null;
+        currentIndex = 0;
+        selectedIndex = 0;
+    }
+
+    private static void LoadNextMovies()
+    {
+        Movies = JsonHandler.Read<Movie>("Data/MovieDB.json").Skip(currentIndex).Take(batchSize).ToList();
+    }
+
+    private static void PrintMovies()
+    {
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("Use arrow keys to move up, down and use left, right to load the next batch of movies.");
+        Console.ResetColor();
+        Console.WriteLine("┌──────┬──────────────────────────────────────────┬─────────────┬─────────────┬──────────────────────────────────────────────────────────────┐");
+        Console.WriteLine($"│ ID   │ {"Title",-40} │ {"Age Rating",-11} │ {"Genre",-11} │ {"Description",-60} │");
+        Console.WriteLine("├──────┼──────────────────────────────────────────┼─────────────┼─────────────┼──────────────────────────────────────────────────────────────┤");
+        for (int i = 0; i < Movies.Count; i++)
+        {
+            if (i == selectedIndex)
+            {
+                Console.BackgroundColor = ConsoleColor.Yellow;
+                Console.ForegroundColor = ConsoleColor.Black;
+            }
+            Console.WriteLine($"│ {currentIndex + i + 1,-4} │ {Movies[i].Title,-40} │ {Movies[i].AgeRating,-11} │ {Movies[i].Genre,-11} │ {Movies[i].Description,-60} │");
+            Console.ResetColor();
+        }
+        Console.WriteLine("└──────┴──────────────────────────────────────────┴─────────────┴─────────────┴──────────────────────────────────────────────────────────────┘");
+        Console.WriteLine($"Page {(currentIndex / batchSize) + 1} of {totalcount/batchSize + 1}");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("ESC to go back, HOME to return to main menu, or ENTER to select movie.");
+        Console.ResetColor();
     }
     public static void FilterMovies(string id, string option)
     {
@@ -191,24 +337,79 @@ public class UserInterfaceController
         foreach (Reservation reservation in user.Reservations)
         {
             index++;
-            string movietitle = GetMovieByID(reservation.ScreeningID);
+            Movie movie = GetMovieByID(reservation.ScreeningID);
             Screening screening = GetScreeningByID(reservation.ScreeningID);
-            Console.WriteLine($"│ {index} │ Movie name: {movietitle,-40} │ Screening Date: {screening.ScreeningDateTime, -16} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
+            Console.WriteLine($"│ {index} │ Movie name: {movie.Title,-40} │ Screening Date: {screening.ScreeningDateTime, -16} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
         }
         Console.WriteLine("└───┴──────────────────────────────────────────────────────┴────────────────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
-        Console.WriteLine("Press x to go back to the main menu");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-        if (specificLetterInput == 'x'){
+        string userInput = UserMenu();
+        if (userInput == "Return"){
             UserInterface.GeneralMenu(id);
+        }
+        else if (userInput == "Cancel")
+        {
+            CancelReservation(id, user);
         }
     }
 
-    public static string? GetMovieByID(string screeningID)
+    public static string UserMenu()
+    {
+        while(true)
+        {
+            char FilterInput = Helper.ReadInput((char c) => c == '1' || c == '2',
+            "User Options",  "1. Cancel Reservation\n2. Go Back");
+            switch(FilterInput)
+            {
+                case '1':
+                    return "Cancel";
+                case '2':
+                    return "Return";
+            }
+        }
+    }
+
+    public static void CancelReservation(string id, User user)
+    {
+         int index = 0;
+        Console.WriteLine("┌───┬──────────────────────────────────────────────────────┬────────────────────────────────────┬───────────────┬───────────────────────┬───────────────────┐");
+        foreach (Reservation reservation in user.Reservations)
+        {
+            index++;
+            Movie movie = GetMovieByID(reservation.ScreeningID);
+            Screening screening = GetScreeningByID(reservation.ScreeningID);
+            Console.WriteLine($"│ {index} │ Movie name: {movie.Title,-40} │ Screening Date: {screening.ScreeningDateTime, -16} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
+        }
+        Console.WriteLine("└───┴──────────────────────────────────────────────────────┴────────────────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
+        Console.WriteLine("Please choose the reservation you'd like to cancel: ");
+        int userInput = Convert.ToInt32(Console.ReadLine());
+        Reservation reservationToCancel = user.Reservations[userInput - 1];
+        Console.Clear();
+        char userConfirmation = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Are you sure?", "Y/N");
+        if (userConfirmation == 'n')
+        {
+            ViewUser(id);
+        }
+        else if (userConfirmation == 'y')
+        {
+            Screening screening = GetScreeningByID(reservationToCancel.ScreeningID);
+            foreach (string seatID in reservationToCancel.SeatIDs)
+            {
+                ScreeningDataController.CancelSeat(screening, seatID);
+            }
+            List<Reservation> newReservations = new List<Reservation>(user.Reservations);
+            newReservations.Remove(reservationToCancel);
+            UserDataController.UpdateUserWithValue<List<Reservation>>(user, "Reservations", newReservations);
+
+            ViewUser(id);
+        }
+    }
+
+    public static Movie? GetMovieByID(string screeningID)
     {
         List<Movie> MovieList = JsonHandler.Read<Movie>("Data/MovieDB.json");
         foreach(Movie movie in MovieList)
         {
-            if (movie.ScreeningIDs.Contains(screeningID)) return movie.Title;
+            if (movie.ScreeningIDs.Contains(screeningID)) return movie;
         }
         return null;
     }
@@ -223,129 +424,134 @@ public class UserInterfaceController
         return null;
     }
 
-    private static void WouldYouLikeToSearch(string id)
+    public static void ScreeningSelect(Movie movie, string id)
     {
-        Console.WriteLine("Would you like to select a movie? Y / N");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'y' || c == 'n');
-        if (specificLetterInput == 'y'){
-            SelectMovie(id);
-        }
-        else
+        Helper.ConsoleClear();
+        Console.CursorVisible = false;
+
+        Screenings = MovieDataController.GetAllMovieScreenings(movie);
+        totalcount = Screenings.Count;
+
+        ConsoleKeyInfo key;
+        do
         {
-            User IdCheck = UserDataController.GetUserWithValue("ID", id);
-            if (IdCheck.Admin) AdminInterface.GeneralMenu(id); 
-            else UserInterface.GeneralMenu(id);
+            LoadScreenings();
+            PrintScreenings(movie);
+
+            key = Console.ReadKey(true);
+
+            key = HandleUserSelectScreeningInput(key);
+
+            Helper.ConsoleClear();
+        } while (key.Key != ConsoleKey.Escape && key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Home);
+        if (key.Key == ConsoleKey.Escape)
+        {
+            ResetFields();
+            ViewMovies(id);
         }
+        else if (key.Key == ConsoleKey.Enter)
+        {
+            HandleScreeningSelectEnter(movie, id);
+        }
+        else if (key.Key == ConsoleKey.Home)
+        {
+            ResetFields();
+            Helper.HandleHomeKey(id);
+        }     
     }
 
-    private static void SelectMovie(string id)
+    private static void LoadScreenings()
     {
-        List<Movie> movies = JsonHandler.Read<Movie>("Data/MovieDB.json");
-        Movie? movie;
-        do{
-        int movieNbr = Convert.ToInt32(Helper.GetValidInput("Please type movie number: ", Helper.IsValidInt));
+        loadedScreenings = Screenings.Skip(currentIndex).Take(batchSize).ToList();
+    }
+
+    private static void HandleScreeningSelectEnter(Movie movie, string id)
+    {
         try
         {
-            movie = movies[movieNbr - 1];
-        }
-        catch (IndexOutOfRangeException)
-        {
-            movie = null;
-        }
-        } while (movie == null);
-        User IdCheck = UserDataController.GetUserWithValue("ID", id);
-        if (IdCheck.Admin) AdminInterfaceController.AdminMovieInterface(movie, id); 
-        else MovieInterface(movie, id);
-    }
-
-    private static void MovieInterface(Movie movie, string id)
-    {
-        Console.Clear();
-        Console.WriteLine($"Title: {movie.Title,-40} | Age Rating: {movie.AgeRating,-3} | Description: {movie.Description}");
-        List<Screening> screenings = MovieDataController.GetAllMovieScreenings(movie);
-        foreach (Screening screening in screenings)
-        {
-            int screeningNbr = screenings.IndexOf(screening) + 1;
-            Console.WriteLine($"{screeningNbr, -2} | Date and Time: {screening.ScreeningDateTime, -40:dd-MM-yyyy HH:mm} | Auditorium: {screening.AssignedAuditorium.ID}");
-        }
-        string input = InputMovie(id);
-        if (input == "Select")
-        {
-            ScreeningSelect(screenings, id);
-        }
-        if (input == "Return")
-        {
-            UserInterface.GeneralMenu(id);
-        }
-    }
-
-    public static string InputMovie(string id)
-    {
-        Helper.WriteInCenter(Graphics.cinemacustom);
-        while (true) {
-        char genreFilterInput = Helper.ReadInput((char c) => c == '1' || c == '2',
-            "Movie Options", "1. Select Screening\n2. Go Back");
-
-        switch (genreFilterInput) {
-            case '1':
-                return "Select";
-            case '2':
-                return "Return";
-            }
-        }
-    }
-    
-    public static void ScreeningSelect(List<Screening> screenings, string id)
-    {
-        Console.Clear();
-
-        Screening? chosenScreening = null;
-        do{
-        string screeningIndex = Helper.GetValidInput("Please type screening number: ", Helper.IsNotNull);
-        foreach (Screening screening in screenings)
-        {
-            if (screenings.IndexOf(screening) + 1 == Convert.ToInt32(screeningIndex))
+            Screening? chosenScreening = null;
+            foreach (Screening screening in Screenings)
             {
-                chosenScreening = screening;
+                if (Screenings.IndexOf(screening) + 1 == selectedIndex + 1)
+                {
+                    chosenScreening = screening;
+                }
             }
+            ResetFields();
+            ReserveSeats(chosenScreening, id);
         }
-        } while (chosenScreening == null);
-
-        User IdCheck = UserDataController.GetUserWithValue("ID", id);
-        if (IdCheck.Admin) AdminInterfaceController.AdminScreeningInterface(chosenScreening, id); 
-        else ScreeningInterface(chosenScreening, id);
+        catch (NullReferenceException)
+        {
+            ScreeningSelect(movie, id);
+        }
     }
 
-    private static void ScreeningInterface(Screening screening, string id)
+    private static void PrintScreenings(Movie movie)
     {
-        Console.WriteLine($"Date and Time: {screening.ScreeningDateTime, -40:dd-MM-yyyy HH:mm} | Auditorium: {screening.AssignedAuditorium.ID}");
-        string input = InputScreening(id);
-        if (input == "Return")
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("Use arrow keys to move up, down and use left, right to load the next batch of screenings.");
+        Console.ResetColor();
+        Console.WriteLine("┌──────────────────────────────────────────┬────────────────┬─────────────┬───────────────────────────────────────────────────────────────────────────┐");
+        Console.WriteLine($"│ {movie.Title,-40} │ {"Age rating: " + movie.AgeRating,-15}│ {movie.Genre,-11} │ {movie.Description,-74}│");
+        Console.WriteLine("├──────┬───────────────────────────────────┼────────────────┼─────────────┴───────────────────────────────────────────────────────────────────────────┤");
+        for (int i = 0; i < loadedScreenings?.Count; i++)
         {
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-            Movie movie = JsonHandler.Get<Movie>(screening.MovieID, "Data/MovieDB.json");
-#pragma warning disable CS8604 // Possible null reference argument.
-            MovieInterface(movie, id);
-        }
-        else
-        {
-            ReserveSeats(screening, id);
-        } 
-    }
-
-    public static string InputScreening(string id)
-    {
-        while (true) {
-        char genreFilterInput = Helper.ReadInput((char c) => c == '1' || c == '2',
-            "Movie Options", "1. Reserve Seats\n2. Go Back");
-
-        switch (genreFilterInput) {
-            case '1':
-                return "Reserve";
-            case '2':
-                return "Return";
+            if (i == selectedIndex)
+            {
+                Console.BackgroundColor = ConsoleColor.Yellow;
+                Console.ForegroundColor = ConsoleColor.Black;
             }
+            Console.WriteLine($"│ {currentIndex + i + 1,-4} | Date and Time: {loadedScreenings[i].ScreeningDateTime,-18:dd-MM-yyyy HH:mm} | Auditorium: {loadedScreenings[i].AssignedAuditorium.ID, -2} | {"|", 89}");
+            Console.ResetColor();
         }
+        Console.WriteLine("└──────┴───────────────────────────────────┴────────────────┴─────────────────────────────────────────────────────────────────────────────────────────┘");
+        Console.WriteLine($"Page {(currentIndex / batchSize) + 1} of {totalcount / batchSize + 1}");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("ESC to go back, HOME to return to main menu, or ENTER to select screening to reserve seats.");
+        Console.ResetColor();
+    }
+    private static ConsoleKeyInfo HandleUserSelectScreeningInput(ConsoleKeyInfo key)
+    {
+        switch (key.Key)
+        {
+            case ConsoleKey.UpArrow:
+                if (selectedIndex > 0)
+                    selectedIndex--;
+                else
+                {
+                    selectedIndex = totalcount - 1;
+                    LeftArrowPress();
+                    LoadScreenings();
+                }
+                break;
+            case ConsoleKey.DownArrow:
+                if (selectedIndex < loadedScreenings.Count - 1)
+                    selectedIndex++;
+                else
+                {
+                    selectedIndex = 0;
+                    RightArrowPress();
+                    LoadScreenings();
+                }
+                break;
+            case ConsoleKey.LeftArrow:
+                LeftArrowPress();
+                LoadScreenings();
+                break;
+            case ConsoleKey.RightArrow:
+                RightArrowPress();
+                LoadScreenings();
+                break;
+            case ConsoleKey.Home:
+                return key;
+            case ConsoleKey.Enter:
+                return key;
+            case ConsoleKey.Escape:
+                return key;
+        }
+        if (selectedIndex >= loadedScreenings.Count)
+            selectedIndex = loadedScreenings.Count - 1;
+        return key;
     }
 
     public static void ReserveSeats(Screening screening, string id)
@@ -358,7 +564,7 @@ public class UserInterfaceController
 
         
         Reservation newReservation = new Reservation(reservedSeatIDs.ToList(), screening.ID, 20);
-        UserDataController.UpdateUserWithValue(user, "Reservations", newReservation);
+        UserDataController.AddValueToUser(user, "Reservations", newReservation);
 
         Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
@@ -366,6 +572,4 @@ public class UserInterfaceController
             UserInterface.GeneralMenu(user.ID);
         }
     }
-
-
 }

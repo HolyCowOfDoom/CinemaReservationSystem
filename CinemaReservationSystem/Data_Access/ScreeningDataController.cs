@@ -80,6 +80,21 @@ public static class ScreeningDataController
 
     }
 
+    public static bool CancelSeat(Screening screening, string seatID)
+    {
+        bool succesfullCancel = AuditoriumDataController.CancelSeat(screening.AssignedAuditorium,seatID);
+        if (succesfullCancel) {
+            UpdateScreening(screening);
+            Console.WriteLine($"Screening.cs: Seat {seatID} cancelled successfully and ScreeningDB updated.");
+            return true;
+        }
+        else{
+            Console.WriteLine($"Screening.cs: Seat {seatID} is either already cancelled or does not exist.");
+            return false;
+        }
+
+    }
+
     // updates this.screening to the database
     public static void UpdateScreening(Screening screening) => JsonHandler.Update<Screening>(screening, DBFilePath);
 }
