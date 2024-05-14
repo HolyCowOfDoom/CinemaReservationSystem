@@ -128,11 +128,13 @@ public static class CsvHandler
                
                 // Type propertyType = propertyObject.GetType();
                 // var property= Convert.ChangeType(propertyObject, propertyType);
-
-                MySetProperty(records[i], header, newValue);
-                Write(csvFile, records);
-                Console.WriteLine($"Property {header} of record changed succesfully");
-                return true;
+                else
+                {
+                    MySetProperty(records[i], header, newValue);
+                    Write(csvFile, records);
+                    Console.WriteLine($"Property {header} of record changed succesfully");
+                    return true;
+                }
                 
                 
             }

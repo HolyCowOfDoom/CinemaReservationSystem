@@ -38,6 +38,12 @@ public class Seat : ObjectHasID
         IsReserved = true;
     }
 
+    public void CancelSeat()
+    {
+        IsReserved = false;
+    }
+
+
     // public bool IsSeatReserved() //property should suffice
     // {
     //     return IsReserved;

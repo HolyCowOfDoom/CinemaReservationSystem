@@ -347,13 +347,13 @@
         {
           "Color": "Red",
           "ID": "58",
-          "IsReserved": true,
+          "IsReserved": false,
           "Price": 0.0
         },
         {
           "Color": "Red",
           "ID": "59",
-          "IsReserved": true,
+          "IsReserved": false,
           "Price": 0.0
         },
         {

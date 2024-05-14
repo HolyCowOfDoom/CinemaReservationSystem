@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Net;
 using System.Runtime.CompilerServices;
@@ -391,7 +392,16 @@ public class UserInterfaceController
         }
         else if (userConfirmation == 'y')
         {
-            UserInterface.GeneralMenu(id);
+            Screening screening = GetScreeningByID(reservationToCancel.ScreeningID);
+            foreach (string seatID in reservationToCancel.SeatIDs)
+            {
+                ScreeningDataController.CancelSeat(screening, seatID);
+            }
+            List<Reservation> newReservations = user.Reservations;
+            newReservations.Remove(reservationToCancel);
+            UserDataController.UpdateUserWithValue<List<Reservation>>(user, "Reservations", newReservations);
+
+            ViewUser(id);
         }
     }
 
