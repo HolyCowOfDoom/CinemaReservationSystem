@@ -344,6 +344,10 @@ public class UserInterfaceController
         Console.WriteLine("└───┴──────────────────────────────────────────────────────┴───────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
         string userInput = UserMenu();
         if (userInput == "Return"){
+            if(user.Admin)
+            {
+                AdminInterface.GeneralMenu(id);
+            }
             UserInterface.GeneralMenu(id);
         }
         else if (userInput == "Cancel")
