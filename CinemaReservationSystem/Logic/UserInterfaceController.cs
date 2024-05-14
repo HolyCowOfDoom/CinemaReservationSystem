@@ -380,13 +380,11 @@ public class UserInterfaceController
             Console.WriteLine($"│ {index} │ Movie name: {movie.Title,-40} │ Screening Date: {screening.ScreeningDateTime, -16} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
         }
         Console.WriteLine("└───┴──────────────────────────────────────────────────────┴────────────────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
-        Console.WriteLine("Please choose the reservation you'd like to cancel: ");
-        int userInput = 0;
-
-        while (userInput < 1 && userInput > user.Reservations.Count)
+        int userInput;
+        do
         {
             userInput = Convert.ToInt32(Helper.GetValidInput("Please choose a valid reservation: ", Helper.IsValidInt));
-        }
+        } while (userInput < 1 || userInput > user.Reservations.Count);
 
         Reservation reservationToCancel = user.Reservations[userInput - 1];
         Console.Clear();
@@ -398,6 +396,14 @@ public class UserInterfaceController
         else if (userConfirmation == 'y')
         {
             Screening screening = GetScreeningByID(reservationToCancel.ScreeningID);
+            DateTime cancelTime = DateTime.Now;
+            if ((screening.ScreeningDateTime - cancelTime).TotalDays < 1)
+            {
+                Console.WriteLine("You are not permitted to cancel reservations 24hrs prior to screening");
+                Console.WriteLine("Press x to go back.");
+                Console.ReadKey();
+                ViewUser(id);
+            }
             foreach (string seatID in reservationToCancel.SeatIDs)
             {
                 ScreeningDataController.CancelSeat(screening, seatID);

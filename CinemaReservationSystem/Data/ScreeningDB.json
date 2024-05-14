@@ -2727,7 +2727,7 @@
         {
           "Color": "Blue",
           "ID": "451",
-          "IsReserved": false,
+          "IsReserved": true,
           "Price": 0.0
         },
         {
@@ -5727,7 +5727,7 @@
       ],
       "ID": "3"
     },
-    "ScreeningDateTime": "2025-10-10T14:00:00",
+    "ScreeningDateTime": "2024-05-15T14:00:00",
     "Bundles": [],
     "MovieID": "3e9f6830-1af4-4dc7-99a4-36166f216b43",
     "ID": "5f6642f9-1d44-4604-a7ae-68ec326e5d9d"
