@@ -114,32 +114,51 @@ public static class CsvHandler
                 object propertyObject = MyGetProperty<object, T>(records[i], header); //get property of record in DB using header
                 if(propertyObject == null) break;
                 //Console.WriteLine("propertyObject: ", propertyObject);
-                if(propertyObject is ICollection) //if object associated with header is e.g. a List
-                {
-                    //https://stackoverflow.com/questions/2837063/cast-object-to-generic-list
-                    List<J> propertyList = (propertyObject as IEnumerable<J>).Cast<J>().ToList();
-                    propertyList.Add(newValue);
-                    MySetProperty(records[i], header, propertyList);
-                    Write(csvFile, records);
-                    Console.WriteLine($"{newValue} was added to list of Property {header} ");
-                    return true;
-                }
-                else
-                {
-                    // Type propertyType = propertyObject.GetType();
-                    // var property= Convert.ChangeType(propertyObject, propertyType);
+               
+                // Type propertyType = propertyObject.GetType();
+                // var property= Convert.ChangeType(propertyObject, propertyType);
 
-                    MySetProperty(records[i], header, newValue);
-                    Write(csvFile, records);
-                    Console.WriteLine($"Property {header} of record changed succesfully");
-                    return true;
-                }
+                MySetProperty(records[i], header, newValue);
+                Write(csvFile, records);
+                Console.WriteLine($"Property {header} of record changed succesfully");
+                return true;
+                
             }
         }
         Console.WriteLine($"in UpdateRecordWithValue(): No record found with property {header} matching value {newValue}");
         return false;
     }
 
+    public static bool AddValueToRecord<T, J>(string csvFile, T record, string header, J addValue)
+    {
+        List<T> records = Read<T>(csvFile);
+        for(int i = 0; i < records.Count; i++) //for each record in DB
+        {
+            if(records[i].Equals(record)) //if record in DB matches given record
+            {
+                object propertyObject = MyGetProperty<object, T>(records[i], header); //get property of record in DB using header
+                if(propertyObject == null) break;
+                //Console.WriteLine("propertyObject: ", propertyObject);
+                if(propertyObject is ICollection) //if object associated with header is e.g. a List
+                {
+                    //https://stackoverflow.com/questions/2837063/cast-object-to-generic-list
+                    List<J> propertyList = (propertyObject as IEnumerable<J>).Cast<J>().ToList();
+                    propertyList.Add(addValue);
+                    MySetProperty(records[i], header, propertyList);
+                    Write(csvFile, records);
+                    Console.WriteLine($"{addValue} was added to list of Property {header} ");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("Attempted to add a value to a non-list property!");
+                    return false;
+                }
+            }
+        }
+        Console.WriteLine($"in AddValueToRecord(): No record found with property {header} matching value {addValue}");
+        return false;
+    }
 
     private static void MySetProperty<T>(T objToChange, string propertyToChange, object newValue)
     {
