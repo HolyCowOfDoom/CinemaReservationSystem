@@ -381,7 +381,13 @@ public class UserInterfaceController
         }
         Console.WriteLine("└───┴──────────────────────────────────────────────────────┴────────────────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
         Console.WriteLine("Please choose the reservation you'd like to cancel: ");
-        int userInput = Convert.ToInt32(Console.ReadLine());
+        int userInput = 0;
+
+        while (userInput < 1 && userInput > user.Reservations.Count)
+        {
+            userInput = Convert.ToInt32(Helper.GetValidInput("Please choose a valid reservation: ", Helper.IsValidInt));
+        }
+
         Reservation reservationToCancel = user.Reservations[userInput - 1];
         Console.Clear();
         char userConfirmation = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Are you sure?", "Y/N");
