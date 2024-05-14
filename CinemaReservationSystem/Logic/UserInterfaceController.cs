@@ -2,6 +2,7 @@ using System.Collections;
 using System.Globalization;
 using System.Net;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using CsvHelper.Configuration.Attributes;
 
 public class UserInterfaceController
@@ -341,9 +342,55 @@ public class UserInterfaceController
             Console.WriteLine($"│ {index} │ Movie name: {movie.Title,-40} │ Screening Date: {screening.ScreeningDateTime, -16} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
         }
         Console.WriteLine("└───┴──────────────────────────────────────────────────────┴────────────────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
-        Console.WriteLine("Press x to go back to the main menu");
-        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-        if (specificLetterInput == 'x'){
+        string userInput = UserMenu();
+        if (userInput == "Return"){
+            UserInterface.GeneralMenu(id);
+        }
+        else if (userInput == "Cancel")
+        {
+            CancelReservation(id, user);
+        }
+    }
+
+    public static string UserMenu()
+    {
+        while(true)
+        {
+            char FilterInput = Helper.ReadInput((char c) => c == '1' || c == '2',
+            "User Options",  "1. Cancel Reservation\n2. Go Back");
+            switch(FilterInput)
+            {
+                case '1':
+                    return "Cancel";
+                case '2':
+                    return "Return";
+            }
+        }
+    }
+
+    public static void CancelReservation(string id, User user)
+    {
+         int index = 0;
+        Console.WriteLine("┌───┬──────────────────────────────────────────────────────┬────────────────────────────────────┬───────────────┬───────────────────────┬───────────────────┐");
+        foreach (Reservation reservation in user.Reservations)
+        {
+            index++;
+            Movie movie = GetMovieByID(reservation.ScreeningID);
+            Screening screening = GetScreeningByID(reservation.ScreeningID);
+            Console.WriteLine($"│ {index} │ Movie name: {movie.Title,-40} │ Screening Date: {screening.ScreeningDateTime, -16} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
+        }
+        Console.WriteLine("└───┴──────────────────────────────────────────────────────┴────────────────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
+        Console.WriteLine("Please choose the reservation you'd like to cancel: ");
+        int userInput = Convert.ToInt32(Console.ReadLine());
+        Reservation reservationToCancel = user.Reservations[userInput - 1];
+        Console.Clear();
+        char userConfirmation = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Are you sure?", "Y/N");
+        if (userConfirmation == 'n')
+        {
+            ViewUser(id);
+        }
+        else if (userConfirmation == 'y')
+        {
             UserInterface.GeneralMenu(id);
         }
     }
