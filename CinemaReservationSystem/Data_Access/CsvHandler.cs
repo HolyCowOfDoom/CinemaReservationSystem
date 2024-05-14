@@ -113,6 +113,17 @@ public static class CsvHandler
             {
                 object propertyObject = MyGetProperty<object, T>(records[i], header); //get property of record in DB using header
                 if(propertyObject == null) break;
+
+                if(propertyObject is ICollection) //if object associated with header is e.g. a List
+                {
+                    //https://stackoverflow.com/questions/2837063/cast-object-to-generic-list
+                    //List<J> propertyList = (propertyObject as IEnumerable<J>).Cast<J>().ToList();
+    
+                    MySetProperty(records[i], header, newValue);
+                    Write(csvFile, records);
+                    Console.WriteLine($"{header} was set to new list {newValue}");
+                    return true;
+                }
                 //Console.WriteLine("propertyObject: ", propertyObject);
                
                 // Type propertyType = propertyObject.GetType();
@@ -122,6 +133,7 @@ public static class CsvHandler
                 Write(csvFile, records);
                 Console.WriteLine($"Property {header} of record changed succesfully");
                 return true;
+                
                 
             }
         }
