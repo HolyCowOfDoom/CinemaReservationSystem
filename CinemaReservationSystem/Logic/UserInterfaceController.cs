@@ -397,7 +397,7 @@ public class UserInterfaceController
             {
                 ScreeningDataController.CancelSeat(screening, seatID);
             }
-            List<Reservation> newReservations = user.Reservations;
+            List<Reservation> newReservations = new List<Reservation>(user.Reservations);
             newReservations.Remove(reservationToCancel);
             UserDataController.UpdateUserWithValue<List<Reservation>>(user, "Reservations", newReservations);
 
