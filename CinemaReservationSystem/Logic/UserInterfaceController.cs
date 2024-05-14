@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Specialized;
 using System.Globalization;
 using System.Net;
 using System.Runtime.CompilerServices;
@@ -392,16 +391,7 @@ public class UserInterfaceController
         }
         else if (userConfirmation == 'y')
         {
-            Screening screening = GetScreeningByID(reservationToCancel.ScreeningID);
-            foreach (string seatID in reservationToCancel.SeatIDs)
-            {
-                ScreeningDataController.CancelSeat(screening, seatID);
-            }
-            List<Reservation> newReservations = user.Reservations;
-            newReservations.Remove(reservationToCancel);
-            UserDataController.UpdateUserWithValue<List<Reservation>>(user, "Reservations", newReservations);
-
-            ViewUser(id);
+            UserInterface.GeneralMenu(id);
         }
     }
 
@@ -565,7 +555,7 @@ public class UserInterfaceController
 
         
         Reservation newReservation = new Reservation(reservedSeatIDs.ToList(), screening.ID, 20);
-        UserDataController.UpdateUserWithValue(user, "Reservations", newReservation);
+        UserDataController.AddValueToUser(user, "Reservations", newReservation);
 
         Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
