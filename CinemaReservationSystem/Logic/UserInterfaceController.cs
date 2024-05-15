@@ -331,9 +331,10 @@ public class UserInterfaceController
         Console.WriteLine("┌────────────────────────────────┬───────────────────────────────────────┬────────────────────────┬─────────┐");
         Console.WriteLine($"│ Username: {user.Name,-20} │ Email: {user.Email,-30} │ Birth date: {user.BirthDate} │ Age: {Helper.GetUserAge(user),-2} │");
         Console.WriteLine("└────────────────────────────────┴───────────────────────────────────────┴────────────────────────┴─────────┘");
+        
         Console.WriteLine("ALL RESERVATIONS");
         int index = 0;
-        Console.WriteLine("┌───┬──────────────────────────────────────────────────────┬───────────────────────────┬───────────────┬───────────────────────┬───────────────────┐");
+        Console.WriteLine("┌───┬──────────────────────────────────────────────────────┬────────────────────────────┬───────────────┬───────────────────────┬───────────────────┐");
         foreach (Reservation reservation in user.Reservations)
         {
             index++;
@@ -341,7 +342,7 @@ public class UserInterfaceController
             Screening screening = GetScreeningByID(reservation.ScreeningID);
             Console.WriteLine($"│ {index} │ Movie name: {movie.Title,-40} │ Date: {screening.ScreeningDateTime, -16} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
         }
-        Console.WriteLine("└───┴──────────────────────────────────────────────────────┴───────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
+        Console.WriteLine("└───┴──────────────────────────────────────────────────────┴────────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
         string userInput = UserMenu();
         if (userInput == "Return"){
             if(user.Admin)
@@ -374,16 +375,16 @@ public class UserInterfaceController
 
     public static void CancelReservation(string id, User user)
     {
-         int index = 0;
-        Console.WriteLine("┌───┬──────────────────────────────────────────────────────┬────────────────────────────────────┬───────────────┬───────────────────────┬───────────────────┐");
+        int index = 0;
+        Console.WriteLine("┌───┬──────────────────────────────────────────────────────┬────────────────────────────┬───────────────┬───────────────────────┬───────────────────┐");
         foreach (Reservation reservation in user.Reservations)
         {
             index++;
             Movie movie = GetMovieByID(reservation.ScreeningID);
             Screening screening = GetScreeningByID(reservation.ScreeningID);
-            Console.WriteLine($"│ {index} │ Movie name: {movie.Title,-40} │ Screening Date: {screening.ScreeningDateTime, -16} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
+            Console.WriteLine($"│ {index} │ Movie name: {movie.Title,-40} │ Date: {screening.ScreeningDateTime, -16} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
         }
-        Console.WriteLine("└───┴──────────────────────────────────────────────────────┴────────────────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
+        Console.WriteLine("└───┴──────────────────────────────────────────────────────┴────────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
         int userInput;
         do
         {
@@ -406,6 +407,7 @@ public class UserInterfaceController
                 Console.WriteLine("You are not permitted to cancel reservations 24hrs prior to screening");
                 Console.WriteLine("Press x to go back.");
                 Console.ReadKey();
+                Console.Clear();
                 ViewUser(id);
             }
             foreach (string seatID in reservationToCancel.SeatIDs)
