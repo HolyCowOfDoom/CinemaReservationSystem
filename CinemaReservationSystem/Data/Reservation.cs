@@ -6,9 +6,9 @@ using CsvHelper.TypeConversion;
 
 public class Reservation : IEquatable<Reservation>
 {
-    public List<string> SeatIDs;
-    public readonly string ScreeningID;
-    public readonly int TotalPrice;
+    public List<string> SeatIDs {get; set;}
+    public string ScreeningID {get;}
+    public int TotalPrice{get;}
     public Reservation(List<string> seatIDs, string screeningID, int totalPrice)
     {
         SeatIDs = seatIDs;

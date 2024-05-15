@@ -49,7 +49,11 @@ public static class CsvHandler
     //T specifies return type!
     public static T GetRecordWithValue<T>(string csvFile, string header, object hasValue) 
     {
-         var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
+        if(hasValue is null){
+            Console.WriteLine("hasValue was null, it can't be null!");
+            return default;
+        }
+        var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
         {
             PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
             //https://stackoverflow.com/questions/49521193/csvhelper-ignore-case-for-header-names
@@ -85,7 +89,32 @@ public static class CsvHandler
                 return record; //will never be null due to if statement
             }
         }
-        Console.WriteLine($"Couldn't get record with {header} matching {hasValue}, ");
+        Console.WriteLine($"in GetRecordWithValue(): Couldn't find record with property {header} matching value {hasValue} in {csvFile}.");
+        if(hasValue is ICollection) 
+        {
+            //reverse of //https://stackoverflow.com/questions/2837063/cast-object-to-generic-list
+            //casts generic (Reservation) list to object list, value is object
+            List<object> valueList = (hasValue as IEnumerable<object>).Cast<object>().ToList();
+            
+            string data = "";
+            for(int i = 0; i < valueList.Count; i++)
+            {
+                PropertyInfo[] propertyInfo = valueList[i].GetType().GetProperties();
+                //Console.WriteLine($"valueList[i].GetType(): {valueList[i].GetType()}");
+                //Console.WriteLine($"propertyInfo: {propertyInfo}");
+                List<(string, object)> propertydata = new();
+                for(int j = 0; j < propertyInfo.Length; j++)
+                {
+                    Console.WriteLine($"property {propertyInfo[j]} has value {propertyInfo[j].GetValue(valueList[i])}");
+                    propertydata.Add((propertyInfo[j].Name, propertyInfo[j].GetValue(valueList[i])));
+                }
+                data += $"\n {valueList[i].GetType()}: {(string.Join(", ", propertydata))}";
+                //valueList[i].GetType().GetProperties()
+                //data += valueList[i].ToString() ;
+            }
+            //Console.WriteLine($"{hasValue} is a collection containing: {string.Join(",", data)}");
+            Console.WriteLine($"{hasValue} is a collection containing: {data}");
+        }
         return default;
     }
 
@@ -111,35 +140,45 @@ public static class CsvHandler
            // Console.WriteLine(record);
             if(records[i].Equals(record)) //if record in DB matches given record
             {
-                object propertyObject = MyGetProperty<object, T>(records[i], header); //get property of record in DB using header
-                if(propertyObject == null) break;
+                object propertyValue = MyGetProperty<object, T>(records[i], header); //get property of record in DB using header
+                if(propertyValue == null) 
+                {
+                    Console.WriteLine($"A record matching {record} was found in the database, but it has no property named {header}");
+                    return false; //each record SHOULD be unique, so there's no point in continuing search if a match is already found.
+                    //break; 
+                }
 
-                if(propertyObject is ICollection) //if object associated with header is e.g. a List
+                //we don't HAVE to check if it's an ICollection (List) anymore, as it's now set the same way as a regular variable now
+                //but it's better to keep them seperate to allow for more detailed debugging
+                if(propertyValue is ICollection || newValue is ICollection) //if object associated with header is e.g. a List
                 {
-                    //https://stackoverflow.com/questions/2837063/cast-object-to-generic-list
-                    //List<J> propertyList = (propertyObject as IEnumerable<J>).Cast<J>().ToList();
-    
+                    if(propertyValue is ICollection && newValue is ICollection)
+                    {
+                        MySetProperty(records[i], header, newValue);
+                        Write(csvFile, records);
+                        Console.WriteLine($"Property {header} of record {record} was set to new ICollection (probably a list): {newValue}");
+                        return true;
+                    }
+                    else if(propertyValue is not ICollection){
+                        Console.WriteLine("Attempting to set a non-ICollection property to an ICollection value");
+                        return false;
+                    }
+                    else if(newValue is not ICollection){
+                        Console.WriteLine("Attempting to set an ICollection property to a non-ICollection value");
+                        return false;
+                    }
+                    
+                }
+                else //if value of property is not an ICollection, continue setting it regularly
+                {
                     MySetProperty(records[i], header, newValue);
                     Write(csvFile, records);
-                    Console.WriteLine($"{header} was set to new list {newValue}");
+                    Console.WriteLine($"Property {header} of record {record} changed succesfully to {newValue}");
                     return true;
                 }
-                //Console.WriteLine("propertyObject: ", propertyObject);
-               
-                // Type propertyType = propertyObject.GetType();
-                // var property= Convert.ChangeType(propertyObject, propertyType);
-                else
-                {
-                    MySetProperty(records[i], header, newValue);
-                    Write(csvFile, records);
-                    Console.WriteLine($"Property {header} of record changed succesfully");
-                    return true;
-                }
-                
-                
             }
         }
-        Console.WriteLine($"in UpdateRecordWithValue(): No record found with property {header} matching value {newValue}");
+        Console.WriteLine($"in UpdateRecordWithValue(): No record found in db matching {record}");
         return false;
     }
 
@@ -187,7 +226,7 @@ public static class CsvHandler
         PropertyInfo? propertyInfo = typeof(T).GetProperty(propertyToGet);
         if(propertyInfo != null)
             {
-            J property = (J)propertyInfo.GetValue(record); //even with no reservations. this should not be returning null, but it is!!1
+            J property = (J)propertyInfo.GetValue(record);
             Console.WriteLine($"property {propertyToGet} was found! it is {property}");
             if(property != null) return property;
             else

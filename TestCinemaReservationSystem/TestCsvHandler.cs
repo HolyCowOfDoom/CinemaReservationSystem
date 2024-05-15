@@ -7,7 +7,8 @@ public class TestCsvHandler
 {
     public void CreateTestFile(string fileName)
     {
-       using var file = File.Create(fileName); //overwrites file with same name, to avoid duplicates
+        Directory.CreateDirectory("TestFiles");
+        using var file = File.Create(fileName); //overwrites file with same name, to avoid duplicates
     }
 
     public List<User> CreateTestUsers(int count, bool addReservations)
@@ -25,7 +26,7 @@ public class TestCsvHandler
     [TestMethod]
     public void TestRead()
     {
-        string fileName = "CSvHandler_TestRead.csv";
+        string fileName = "TestFiles/CSvHandler_TestRead.csv";
         CreateTestFile(fileName);
         List<User> testUsers = CreateTestUsers(10, true);
         CsvHandler.Write(fileName, testUsers);
@@ -39,7 +40,7 @@ public class TestCsvHandler
     [TestMethod]
     public void TestWrite()
     {
-        string fileName = "CSvHandler_TestWrite.csv";
+        string fileName = "TestFiles/CSvHandler_TestWrite.csv";
         CreateTestFile(fileName);
         List<User> testUsers = CreateTestUsers(10, false); //no reservations
         //the comma delimiter of reservations messes with the tests below
@@ -74,7 +75,7 @@ public class TestCsvHandler
     [TestMethod]
     public void TestAppend()
     {
-        string fileName = "CSvHandler_TestAppend.csv";
+        string fileName = "TestFiles/CSvHandler_TestAppend.csv";
         CreateTestFile(fileName);
         List<User> testUsers = CreateTestUsers(2, true);
         CsvHandler.Write(fileName, testUsers);
@@ -98,11 +99,11 @@ public class TestCsvHandler
     [TestMethod]
     public void TestGetRecordWithValue()
     {
-        string fileName = "CSvHandler_TestGetRecordWithValue.csv";
+        string fileName = "TestFiles/CSvHandler_TestGetRecordWithValue.csv";
         CreateTestFile(fileName);
         List<User> testUsers = CreateTestUsers(5, true);
         CsvHandler.Write(fileName, testUsers);
-        for(int i = 0; i <= 4; i++)
+        for(int i = 0; i < testUsers.Count; i++)
         {
             User foundUser0 = CsvHandler.GetRecordWithValue<User>(fileName, "Name", testUsers[i].Name);
             User foundUser1 = CsvHandler.GetRecordWithValue<User>(fileName, "ID", testUsers[i].ID);
@@ -124,29 +125,39 @@ public class TestCsvHandler
     [TestMethod]
     public void TestUpdateRecordWithValue()
     {
-        string fileName = "CSvHandler_TestUpdateRecordWithValue.csv";
+        string fileName = "TestFiles/CSvHandler_TestUpdateRecordWithValue.csv";
         CreateTestFile(fileName);
         List<User> testUsers = CreateTestUsers(5, true);
-        CsvHandler.Write(fileName, new List<User>() {new User($"testUser{-1}", "01-01-2000", $"test.user{-1}@gmail.com", $"testPassword{-1}")});
+        //CsvHandler.Write(fileName, new List<User>() {new User($"testUser{-1}", "01-01-2000", $"test.user{-1}@gmail.com", $"testPassword{-1}")});
         CsvHandler.Write(fileName, testUsers);
-        // for(int i = 0; i <= 4; i++)
-        // {
-        //     List<Reservation> testReservations = new() {new Reservation(new List<string>() {$"new{i}"}, $"new{i}", i * 30)};
-        //     CsvHandler.UpdateRecordWithValue(fileName, testUsers[i], "Name", "NewName" + testUsers[i].Name);
-        //     CsvHandler.UpdateRecordWithValue(fileName, testUsers[i], "ID", "NewID" + testUsers[i].ID);
-        //     CsvHandler.UpdateRecordWithValue(fileName, testUsers[i], "BirthDate", "NewBirthDate" + testUsers[i].BirthDate);
-        //     CsvHandler.UpdateRecordWithValue(fileName, testUsers[i], "Email", "NewEmail" + testUsers[i].Email);
-        //     CsvHandler.UpdateRecordWithValue(fileName, testUsers[i], "Password", "NewPassword" + testUsers[i].Password);
-        //     CsvHandler.UpdateRecordWithValue(fileName, testUsers[i], "Reservations", testReservations[0]);
+        for(int i = 0; i <= 4; i++)
+        {
+            User startUser = new User(testUsers[i]); //keep start value for later comparison
 
-        //     User newUser = new User("NewID" + testUsers[i].ID, "NewName" + testUsers[i].Name, 
-        //     "NewBirthDate" + testUsers[i].BirthDate, "NewEmail" + testUsers[i].Email, 
-        //     "NewPassword" + testUsers[i].Password, false, testReservations);
-        //     newUser.Reservations.InsertRange(0, testUsers[i].Reservations); //make sure old Reservations are in the new User to compare too
-        //     User foundUser = CsvHandler.GetRecordWithValue<User>(fileName, "Name", "NewName" + testUsers[i].Name);
-        //     //Assert.AreEqual(foundUser, newUser);
-        //     Assert.IsTrue(foundUser == newUser);
-        // }
+            //update testUsers after every change, as the User in DB becomes different from the one in memory (testUsers[i])
+            List<Reservation> testReservations = new() {new Reservation(new List<string>() {$"new{i}"}, $"new{i}", i * 30)};
+            CsvHandler.UpdateRecordWithValue(fileName, testUsers[i], "Name", "NewName" + testUsers[i].Name);
+            testUsers = CsvHandler.Read<User>(fileName);
+            CsvHandler.UpdateRecordWithValue(fileName, testUsers[i], "ID", "NewID" + testUsers[i].ID);
+            testUsers = CsvHandler.Read<User>(fileName);
+            CsvHandler.UpdateRecordWithValue(fileName, testUsers[i], "BirthDate", "NewBirthDate" + testUsers[i].BirthDate);
+            testUsers = CsvHandler.Read<User>(fileName);
+            CsvHandler.UpdateRecordWithValue(fileName, testUsers[i], "Email", "NewEmail" + testUsers[i].Email);
+            testUsers = CsvHandler.Read<User>(fileName);
+            CsvHandler.UpdateRecordWithValue(fileName, testUsers[i], "Password", "NewPassword" + testUsers[i].Password);
+            testUsers = CsvHandler.Read<User>(fileName);
+            CsvHandler.UpdateRecordWithValue(fileName, testUsers[i], "Reservations", testReservations);
+            testUsers = CsvHandler.Read<User>(fileName);
+
+            //applies all changes to a new User in memory based on start values of user
+            User newUser = new User("NewID" + startUser.ID, "NewName" + startUser.Name, 
+            "NewBirthDate" + startUser.BirthDate, "NewEmail" + startUser.Email, 
+            "NewPassword" + startUser.Password, false, testReservations);
+            //newUser.Reservations.InsertRange(0, testUsers[i].Reservations); //make sure old Reservations are in the new User to compare too
+            User foundUser = CsvHandler.GetRecordWithValue<User>(fileName, "Name", testUsers[i].Name);
+            Assert.AreEqual(foundUser, newUser);
+            //Assert.IsTrue(foundUser == newUser);
+        }
         
     }
 
