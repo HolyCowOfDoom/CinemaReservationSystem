@@ -512,13 +512,13 @@ public class Helper
     {
         if (!string.Equals(id, "not logged in"))
         {
-            ConsoleClear();
-            UserInterface.GeneralMenu(id);
+            User user = UserDataController.GetUserWithValue( "ID", id);
+            if(user.Admin)
+            {
+                AdminInterface.GeneralMenu(id);
+            }
+            else UserInterface.GeneralMenu(id);
         }
-        else
-        {
-            ConsoleClear();
-            Interface.GeneralMenu();
-        }
+        else Interface.GeneralMenu();
     }
 }
