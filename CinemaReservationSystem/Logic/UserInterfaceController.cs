@@ -61,7 +61,9 @@ public class UserInterfaceController
                 else ViewMovies();
             }
             ResetFields();
-            ScreeningSelect(movie, id);
+            User? user = UserDataController.GetUserWithValue("ID", id);
+            if (user.Admin is true) AdminInterfaceController.AddScreening(movie, id);
+            else ScreeningSelect(movie, id);
         }
         else if (key.Key == ConsoleKey.Home)
         {
