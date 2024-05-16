@@ -107,6 +107,11 @@ public class User : IEquatable<User>
         // {
         //     return false; //if any of them contains a null reference
         // }
+        //some debugging:
+        // Console.WriteLine($"In User.Equals(): {Reservations.SequenceEqual(other.Reservations)}");
+        // for(int i = 0; i < Reservations.Count; i++) Console.WriteLine($"{Reservations[i].ScreeningID}, {Reservations[i].TotalPrice}");
+        // Console.WriteLine("////");
+        // for(int i = 0; i < other.Reservations.Count; i++) Console.WriteLine($"{other.Reservations[i].ScreeningID}, {other.Reservations[i].TotalPrice}");
 
         //if neither is/has null then compare as usual
         bool returnValue = Name == other.Name 

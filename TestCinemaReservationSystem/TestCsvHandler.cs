@@ -16,7 +16,7 @@ public class TestCsvHandler
         List<User> testUsers = new();
         for(int i = 1; i <= count; i++ )
         {
-            User newUser = new User($"testUser{i}", "01-01-2000", $"test.user{i}@gmail.com", $"testPassword{1}");
+            User newUser = new User($"testUser{i}", $"0{i}-01-2000", $"test.user{i}@gmail.com", $"testPassword{i}");
             if (addReservations) newUser.Reservations.Add(new Reservation(new List<string>() {$"{i}"}, $"{i}", i*20));
             testUsers.Add(newUser);
         }
@@ -112,13 +112,24 @@ public class TestCsvHandler
             User foundUser4 = CsvHandler.GetRecordWithValue<User>(fileName, "Password", testUsers[i].Password);
             User foundUser5 = CsvHandler.GetRecordWithValue<User>(fileName, "Reservations", testUsers[i].Reservations);
             User foundUser6 = CsvHandler.GetRecordWithValue<User>(fileName, "Reservations", testUsers[i].Reservations[0]);
+            // Console.WriteLine(testUsers[i].BirthDate);
+            // Console.WriteLine(foundUser2.BirthDate);
+            // Console.WriteLine(testUsers[i].Name);
+            // Console.WriteLine(foundUser2.Name);
+            // Console.WriteLine(testUsers[i].ID);
+            // Console.WriteLine(foundUser2.ID);
+            // Console.WriteLine(testUsers[i].Password);
+            // Console.WriteLine(foundUser2.Password);
+            // Console.WriteLine(testUsers[i].Equals(foundUser2));
+            //Console.WriteLine(CsvHandler.ListInfo(testUsers[i].Reservations) );
+            //Console.WriteLine(foundUser2.BirthDate);
             Assert.AreEqual(testUsers[i], foundUser0);
             Assert.AreEqual(testUsers[i], foundUser1);
             Assert.AreEqual(testUsers[i], foundUser2);
             Assert.AreEqual(testUsers[i], foundUser3);
             Assert.AreEqual(testUsers[i], foundUser4);
-            Assert.AreEqual(testUsers[i], foundUser5); //searching for an entire list doesn't work!, leave this for now to show failure
-            Assert.AreEqual(testUsers[i], foundUser6);
+            Assert.AreEqual(testUsers[i], foundUser5); //searching for an entire list works now,
+            Assert.AreEqual(testUsers[i], foundUser6); // searching item in list now doesn't! - fixed now
         }
     }
 

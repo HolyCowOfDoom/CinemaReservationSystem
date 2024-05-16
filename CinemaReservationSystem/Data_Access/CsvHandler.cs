@@ -65,56 +65,84 @@ public static class CsvHandler
         
         csvReader.Read();
         csvReader.ReadHeader();
+        object csvField = null;
         while (csvReader.Read())
         {
-            object csvField = csvReader.GetField(hasValue.GetType(), header); 
-            if(csvField is ICollection)
+            csvField = csvReader.GetField(hasValue.GetType(), header); 
+            if(csvField is ICollection && hasValue is not ICollection) //for example searching specific Reservation object in Reservations List
             {
                 //reverse of //https://stackoverflow.com/questions/2837063/cast-object-to-generic-list
                 //casts generic (Reservation) list to object list, value is object
                 List<object> propertyList = (csvField as IEnumerable<object>).Cast<object>().ToList();
+                //dynamic propertyList = Convert.ChangeType(csvField, csvField.GetType());
                 for(int i = 0; i < propertyList.Count; i++)
                 {
                     if(hasValue.Equals(propertyList[i])) 
                     //if (propertyList[i].Equals((object)value))
                     {
+                        Console.WriteLine($"found record with property {header} containing value {hasValue}");
                         T record = csvReader.GetRecord<T>();
                         return record; //will never be null due to if statement
                     }
                 }
             }
+            //some debugging information
+            // if(csvField is ICollection)
+            // {
+            //     List<object> valueList = (csvField as IEnumerable<object>).Cast<object>().ToList();
+            //     Console.WriteLine($"csvfield {csvField} is a collection containing: {ListInfo(valueList)}");
+            // }
+            // else Console.WriteLine($"csvfield: {csvField}");
+            // if(hasValue is ICollection) 
+            // {
+            //     //reverse of //https://stackoverflow.com/questions/2837063/cast-object-to-generic-list
+            //     //casts generic (Reservation) list to object list, value is object
+            //     List<object> valueList = (hasValue as IEnumerable<object>).Cast<object>().ToList();
+            //     Console.WriteLine($"searched value {hasValue} is a collection containing: {ListInfo(valueList)}");
+            // }
+            //else Console.WriteLine($"searched value: {hasValue}");
+            if(csvField is ICollection && hasValue is ICollection) //if they're Lists, Equals() wont work, SequenceEqual will
+            {
+                //https://stackoverflow.com/questions/972636/casting-a-variable-using-a-type-variable
+                //basically converts csvField (which is just 'object') back to it's actual type (List<Reservation>)
+                //List<Reservation> csvFieldList would defeat the purpose of using generics
+                //var csvFieldList doesn't work with SequenceEqual() below
+                //dynamic DOES work with SequenceEqual() below
+                dynamic csvFieldList = Convert.ChangeType(csvField, csvField.GetType());
+                dynamic hasValueList = Convert.ChangeType(hasValue, csvField.GetType());
+                //ICollection inherits from IEnumerable, we only want to call one method from Enumerable so it's safe.
+                //"public interface ICollection<T> : System.Collections.Generic.IEnumerable<T>"
+                Console.WriteLine($"csvFieldList: {csvFieldList.ToString()}");
+                Console.WriteLine($"hasValueList: {hasValueList.ToString()}");
+                if(Enumerable.SequenceEqual(csvFieldList, hasValueList)) //SequenceEqual needs the objects to be Enumerable, so cast to List will do
+                {
+                    Console.WriteLine("the lists are equal");
+                    T record = csvReader.GetRecord<T>();
+                    return record; //will never be null due to if statement
+                }
+            }
             else if(csvField.Equals(hasValue))
             {
+                Console.WriteLine($"found record with property value ({csvField}) matching searched value ({hasValue})");
                 T record = csvReader.GetRecord<T>();
                 return record; //will never be null due to if statement
             }
         }
         Console.WriteLine($"in GetRecordWithValue(): Couldn't find record with property {header} matching value {hasValue} in {csvFile}.");
-        if(hasValue is ICollection) 
-        {
-            //reverse of //https://stackoverflow.com/questions/2837063/cast-object-to-generic-list
-            //casts generic (Reservation) list to object list, value is object
-            List<object> valueList = (hasValue as IEnumerable<object>).Cast<object>().ToList();
-            
-            string data = "";
-            for(int i = 0; i < valueList.Count; i++)
-            {
-                PropertyInfo[] propertyInfo = valueList[i].GetType().GetProperties();
-                //Console.WriteLine($"valueList[i].GetType(): {valueList[i].GetType()}");
-                //Console.WriteLine($"propertyInfo: {propertyInfo}");
-                List<(string, object)> propertydata = new();
-                for(int j = 0; j < propertyInfo.Length; j++)
-                {
-                    Console.WriteLine($"property {propertyInfo[j]} has value {propertyInfo[j].GetValue(valueList[i])}");
-                    propertydata.Add((propertyInfo[j].Name, propertyInfo[j].GetValue(valueList[i])));
-                }
-                data += $"\n {valueList[i].GetType()}: {(string.Join(", ", propertydata))}";
-                //valueList[i].GetType().GetProperties()
-                //data += valueList[i].ToString() ;
-            }
-            //Console.WriteLine($"{hasValue} is a collection containing: {string.Join(",", data)}");
-            Console.WriteLine($"{hasValue} is a collection containing: {data}");
-        }
+        // if(csvField is ICollection)
+        // {
+        //     List<object> valueList = (csvField as IEnumerable<object>).Cast<object>().ToList();
+        //     Console.WriteLine($"csvfield {csvField} is a collection containing: {ListInfo(valueList)}");
+        // }
+        // else Console.WriteLine($"csvfield: {csvField}");
+        // if(hasValue is ICollection) 
+        // {
+        //     //reverse of //https://stackoverflow.com/questions/2837063/cast-object-to-generic-list
+        //     //casts generic (Reservation) list to object list, value is object
+        //     List<object> valueList = (hasValue as IEnumerable<object>).Cast<object>().ToList();
+        //     Console.WriteLine($"searched value {hasValue} is a collection containing: {ListInfo(valueList)}");
+        // }
+        // else Console.WriteLine($"searched value: {hasValue}");
         return default;
     }
 
@@ -242,7 +270,45 @@ public static class CsvHandler
         }
     }
 
+    public static string ListInfo(List<object> aList)
+    {
+        string data = "{";
+        for(int i = 0; i < aList.Count; i++) //for each object in the list
+        {
+            //if type is user-defined
+            //https://stackoverflow.com/questions/23793845/how-do-i-determine-if-a-property-is-a-user-defined-type-in-c/23794004#23794004
+            if(aList[i].GetType().Assembly.GetName().Name != "System.Private.CoreLib") {
+                PropertyInfo[] propertyInfo = aList[i].GetType().GetProperties(); //get all the objects properties
+                List<(string, object)> propertydata = new(); //designate tuple list for structure (property Name, property value)
+                for(int j = 0; j < propertyInfo.Length; j++) //for each property
+                {
+                    int indexedparamsCount = propertyInfo[j].GetIndexParameters().Length;
+                    var propertyValue = propertyInfo[j].GetValue(aList[i]);
+                    
+                    //if property is a list, recursively get data from that list too //cast 
+                    if(propertyValue is IList)
+                    {
+                        List<object> castvalues = (propertyValue as IEnumerable<object>).Cast<object>().ToList();
+                        propertydata.Add((propertyInfo[j].Name, ListInfo(castvalues)));
+                    }
+                    //propertyInfo does not contain a value, just attributes and metadata about the property,
+                    //we can get the value of the property in a certain object using GetValue()
+                    //Console.WriteLine($"property {propertyInfo[j]} has value {propertyValue}");
 
+                    else propertydata.Add((propertyInfo[j].Name, propertyValue)); //adds tuple(property Name, property value) to data list
+                    
+                }
+                data += $"\n {aList[i].GetType()}: {(string.Join(", ", propertydata))}";
+            }
+            //if type is NOT user-defined
+            else{
+                data += $"{aList[i].GetType()}: {aList[i]}";
+            }
+        }
+        data += "}";
+        return data;
+    }
+    
     // public static void CreateTestFile(string fileName)
     // {
     //     StreamReader reader = new(fileName);
