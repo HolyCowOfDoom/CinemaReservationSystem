@@ -1,42 +1,62 @@
 [
   {
-    "Title": "The Matrix",
-    "AgeRating": 15,
-    "Description": "A mind-bending sci-fi classic",
-    "Genre": "Action",
-    "ScreeningIDs": [],
+    "Title": "Finding Nemo",
+    "AgeRating": 6,
+    "Description": "An adventurous clownfish searches for his son.",
+    "Genre": "Drama",
+    "ScreeningIDs": [
+      "147da5ec-c3a8-4584-beb5-deb4f12d93c8",
+      "5a56c067-5c82-4741-89eb-b59b37f77383",
+      "f823c350-d28d-47dc-858d-e527c790ed9e"
+    ],
     "ID": "1"
   },
   {
-    "Title": "Inception",
-    "AgeRating": 13,
-    "Description": "Explore the depths of the human mind",
-    "Genre": "Action",
-    "ScreeningIDs": [],
+    "Title": "Toy Story",
+    "AgeRating": 6,
+    "Description": "Toys come to life and embark on an adventure.",
+    "Genre": "Comedy",
+    "ScreeningIDs": [
+      "17cab973-f653-4449-9d2f-b76c5e071ee2",
+      "fc5b39a8-18c7-4729-9aa5-c970edc301f6",
+      "f36a9af3-84d7-421f-bbb6-0787543995d8"
+    ],
     "ID": "2"
   },
   {
-    "Title": "The Shawshank Redemption",
-    "AgeRating": 18,
-    "Description": "A tale of hope and redemption",
+    "Title": "The Lion King",
+    "AgeRating": 6,
+    "Description": "A young lion cub's journey to become king.",
     "Genre": "Drama",
-    "ScreeningIDs": [],
+    "ScreeningIDs": [
+      "10d3c019-fff8-4b17-8f51-2aed75561ea2",
+      "786d18ad-ad15-476f-8ccd-dee920e7b680",
+      "528deb81-353c-4a3b-9e4e-6f67fdd34b5a"
+    ],
     "ID": "3"
   },
   {
-    "Title": "The Godfather",
-    "AgeRating": 18,
-    "Description": "An epic saga of crime and family",
-    "Genre": "Drama",
-    "ScreeningIDs": [],
+    "Title": "Frozen",
+    "AgeRating": 6,
+    "Description": "Two sisters navigate through an icy adventure.",
+    "Genre": "Adventure",
+    "ScreeningIDs": [
+      "bae3febc-2135-4b36-b527-23965644af32",
+      "472dc550-18f8-449e-ba0b-1e464ecab512",
+      "1f724614-b59a-4dcc-bc5d-0bf000bfb411"
+    ],
     "ID": "4"
   },
   {
-    "Title": "Pulp Fiction",
-    "AgeRating": 18,
-    "Description": "A stylish journey through the criminal underworld",
-    "Genre": "Drama",
-    "ScreeningIDs": [],
+    "Title": "Harry Potter and the Philosopher's Stone",
+    "AgeRating": 9,
+    "Description": "A young wizard begins his magical education.",
+    "Genre": "Adventure",
+    "ScreeningIDs": [
+      "80714192-ce6b-47cf-a587-ff1b515f655c",
+      "7b99bc0a-859c-4340-925f-f271a1cc1f92",
+      "38748966-f3c0-4058-930f-254981830f61"
+    ],
     "ID": "5"
   },
   {
@@ -44,7 +64,11 @@
     "AgeRating": 18,
     "Description": "An intense exploration of masculinity and identity",
     "Genre": "Drama",
-    "ScreeningIDs": [],
+    "ScreeningIDs": [
+      "ddb1207d-6277-41a6-abb7-5f359ce3710f",
+      "580ba1cc-75a2-48db-9242-2db99d4207dc",
+      "19ea89c6-8fa1-4264-af89-b0d23b922ebf"
+    ],
     "ID": "6"
   },
   {
@@ -52,7 +76,11 @@
     "AgeRating": 13,
     "Description": "Life is like a box of chocolates",
     "Genre": "Drama",
-    "ScreeningIDs": [],
+    "ScreeningIDs": [
+      "cbdfa30f-4f88-4a14-9556-5997b463bd03",
+      "676cbbf5-5b22-40e7-a5b2-8d33b0e1283b",
+      "5f90edb2-a142-4ef3-bee2-c7ffb02b1d28"
+    ],
     "ID": "7"
   },
   {
@@ -60,7 +88,11 @@
     "AgeRating": 13,
     "Description": "The legendary battle between Batman and Joker",
     "Genre": "Action",
-    "ScreeningIDs": [],
+    "ScreeningIDs": [
+      "99256cb6-900c-4b97-88be-5ee3f61b5db3",
+      "655014d9-6fc2-41d7-9f5e-3e2cf32bbac6",
+      "cc943ffc-a062-4be3-b1f5-f5ab46655e77"
+    ],
     "ID": "8"
   },
   {
@@ -68,7 +100,11 @@
     "AgeRating": 13,
     "Description": "Embark on an epic adventure",
     "Genre": "Adventure",
-    "ScreeningIDs": [],
+    "ScreeningIDs": [
+      "3fa8a395-8a0e-453b-ac3e-303312947680",
+      "a10a85eb-7bb7-4098-9c97-74a4a30faa19",
+      "e1cf2842-812d-4d2b-8477-4b23a98a84ae"
+    ],
     "ID": "9"
   },
   {
@@ -76,7 +112,11 @@
     "AgeRating": 18,
     "Description": "A powerful true story of one man's fight against evil",
     "Genre": "Drama",
-    "ScreeningIDs": [],
+    "ScreeningIDs": [
+      "1955af13-d79e-4ed2-9bd6-887eecf19db4",
+      "36a5c0a8-e061-4983-a6bf-0eec12a12952",
+      "f42c79e5-64d4-4104-847d-fed672c1e227"
+    ],
     "ID": "10"
   },
   {
@@ -84,7 +124,11 @@
     "AgeRating": 18,
     "Description": "A riveting courtroom drama",
     "Genre": "Drama",
-    "ScreeningIDs": [],
+    "ScreeningIDs": [
+      "72021471-c728-44ce-8489-5e6dd36e4f96",
+      "8eddb0e5-b0b7-4db4-94ad-62dd4a244bc3",
+      "1b15412a-bcb0-4d18-9f2b-71452a9393d3"
+    ],
     "ID": "11"
   },
   {
@@ -92,7 +136,11 @@
     "AgeRating": 6,
     "Description": "Join Ash and Pikachu on an adventure",
     "Genre": "Adventure",
-    "ScreeningIDs": [],
+    "ScreeningIDs": [
+      "2d20eee7-c860-4c8c-ba26-4f9f7aa3a7fe",
+      "b9be7616-2bfc-4478-8ed4-d1c96ce08d54",
+      "54e3491d-6469-404e-b93c-60672ca32d67"
+    ],
     "ID": "13"
   },
   {
@@ -100,7 +148,11 @@
     "AgeRating": 18,
     "Description": "A family encounters supernatural forces in their new home",
     "Genre": "Horror",
-    "ScreeningIDs": [],
+    "ScreeningIDs": [
+      "8df35f68-0c5f-4440-a7e2-33d7937b1747",
+      "75fa3246-825c-475a-8573-37f38cbe4ee3",
+      "cc81d5cb-8ac1-4321-993d-eb8da892df24"
+    ],
     "ID": "14"
   },
   {
@@ -108,7 +160,11 @@
     "AgeRating": 18,
     "Description": "A family uncovers dark secrets about their ancestry",
     "Genre": "Horror",
-    "ScreeningIDs": [],
+    "ScreeningIDs": [
+      "936c93c2-570d-466f-be4a-71e73fc70e02",
+      "0c1fb944-6eec-477a-be45-eb8f4aa39c74",
+      "0192c89e-b790-438f-bc94-a42abef547a2"
+    ],
     "ID": "15"
   },
   {
@@ -116,7 +172,11 @@
     "AgeRating": 18,
     "Description": "A chilling thriller about racism and social dynamics",
     "Genre": "Horror",
-    "ScreeningIDs": [],
+    "ScreeningIDs": [
+      "fb116a81-e25b-43dd-9478-eaa0c3a8addd",
+      "68742583-b1d2-4230-9a10-d1768ff2cd02",
+      "97ae1bdb-4c70-4cb2-8ef4-eac6430b7568"
+    ],
     "ID": "16"
   },
   {
@@ -124,7 +184,11 @@
     "AgeRating": 15,
     "Description": "A wild adventure of two high school friends",
     "Genre": "Comedy",
-    "ScreeningIDs": [],
+    "ScreeningIDs": [
+      "e854a003-95ec-4f35-ac6b-223f055c1211",
+      "6979968e-6e3a-4aec-aefb-bc1802c92259",
+      "b0c3382a-3e31-436e-a22f-92bc20a2eab4"
+    ],
     "ID": "17"
   },
   {
@@ -132,7 +196,11 @@
     "AgeRating": 18,
     "Description": "A bachelor party gone wild in Las Vegas",
     "Genre": "Comedy",
-    "ScreeningIDs": [],
+    "ScreeningIDs": [
+      "113f835d-79b2-410d-a0d8-16a72bbbc86d",
+      "ace205e1-8c35-4681-af76-ab40b0df4d1f",
+      "d030afba-19c1-4291-8e01-7778a8bc2fbf"
+    ],
     "ID": "18"
   },
   {
@@ -140,7 +208,11 @@
     "AgeRating": 15,
     "Description": "The misadventures of a clueless news anchor",
     "Genre": "Comedy",
-    "ScreeningIDs": [],
+    "ScreeningIDs": [
+      "2ddb92e2-7a60-41c6-8b70-5c6cdc3f73a9",
+      "6c1ae0bc-94c7-4394-b0c1-14188b884d85",
+      "ac559a1a-bf47-424a-a351-7ecb7a50398d"
+    ],
     "ID": "19"
   },
   {
@@ -192,7 +264,10 @@
       "1d6aaf83-f200-4263-9c4c-211bbbb39c9e",
       "9d4e57d6-1db8-4274-ba81-b0ca650dc364",
       "5f6642f9-1d44-4604-a7ae-68ec326e5d9d",
-      "2f7b3615-7a57-42cf-b8e7-2ddd781926d2"
+      "2f7b3615-7a57-42cf-b8e7-2ddd781926d2",
+      "441e1bb7-3dc3-4129-ab09-21d4f5281dd6",
+      "1ade9902-5468-4040-ba68-c33bbc55fd91",
+      "832e286f-8618-46e8-822a-dc007bf15be2"
     ],
     "ID": "3e9f6830-1af4-4dc7-99a4-36166f216b43"
   },
@@ -201,7 +276,11 @@
     "AgeRating": 8,
     "Description": "a movie for demo purposes",
     "Genre": "Action",
-    "ScreeningIDs": [],
+    "ScreeningIDs": [
+      "d413901a-4c9b-464e-a258-0f25e9855cd5",
+      "315104da-65aa-46ba-89a2-d199c1902fc3",
+      "fe82153a-6c72-4190-be12-812605693fc2"
+    ],
     "ID": "22433604-0831-418a-82ca-0eb9f64f5689"
   }
 ]
