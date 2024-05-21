@@ -39,8 +39,11 @@ public class UserInterfaceController
         if (key.Key == ConsoleKey.Escape)
         {
             ResetFields();
-            if (!string.Equals(id, "not logged in"))
-                UserInterface.GeneralMenu(id);
+            if (!string.Equals(id, "not logged in")){
+                User user = UserDataController.GetUserWithValue("ID", id);
+                if(user.Admin) AdminInterface.GeneralMenu(id);
+                else UserInterface.GeneralMenu(id);
+                }
             else Interface.GeneralMenu();
         }
         else if (key.Key == ConsoleKey.Enter)
@@ -336,7 +339,7 @@ public class UserInterfaceController
         
         Console.WriteLine("ALL RESERVATIONS");
         int index = 0;
-        Console.WriteLine("┌───┬──────────────────────────────────────────────────────┬────────────────────────────┬───────────────┬───────────────────────┬───────────────────┐");
+        Console.WriteLine("┌───┬──────────────────────────────────────────────────────┬──────────────────────────┬───────────────┬───────────────────────┬───────────────────┐");
         foreach (Reservation reservation in user.Reservations)
         {
             index++;
@@ -344,7 +347,7 @@ public class UserInterfaceController
             Screening screening = GetScreeningByID(reservation.ScreeningID);
             Console.WriteLine($"│ {index} │ Movie name: {movie.Title,-40} │ Date: {screening.ScreeningDateTime, -16} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
         }
-        Console.WriteLine("└───┴──────────────────────────────────────────────────────┴────────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
+        Console.WriteLine("└───┴──────────────────────────────────────────────────────┴──────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
         string userInput = UserMenu();
         if (userInput == "Return"){
             if(user.Admin)
