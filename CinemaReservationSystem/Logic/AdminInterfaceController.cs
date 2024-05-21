@@ -48,7 +48,7 @@ public class AdminInterfaceController
         User newuser = UserDataController.GetUserWithValue("ID", nid);
         while(true){
         char FilterInput = Helper.ReadInput((char c) => c == '1' || c == '2',
-        "What account do you want to use?",  $"1. {firstuser.Name} (G)\n2. {newuser.Name}");
+        "What account do you want to use?",  $"1. {firstuser.Name} (Current user)\n2. {newuser.Name} (New user)");
         switch(FilterInput)
             {
                 case '1':
