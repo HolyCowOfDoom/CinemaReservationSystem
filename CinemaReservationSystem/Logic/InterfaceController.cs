@@ -114,7 +114,7 @@ public class InterfaceController
         if (admin is true) user = new User(username, birthDate, email, password, admin : true);
         else user = new User(username, birthDate, email, password);
         Helper.ConsoleClear();
-        if (user.Admin is true && id is not null) AdminInterface.GeneralMenu(id);
+        if (user.Admin is true && id is not null) AdminInterfaceController.HandleAdminSwitch(id, user.ID);
         else UserInterface.GeneralMenu(user.ID);
     }
 

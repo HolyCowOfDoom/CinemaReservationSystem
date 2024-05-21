@@ -41,6 +41,25 @@ public class AdminInterfaceController
     {
         InterfaceController.RegisterUser(admin: true, id: fid);
     }
+
+    public static void HandleAdminSwitch(string fid, string nid)
+    {
+        User firstuser = UserDataController.GetUserWithValue("ID", fid);
+        User newuser = UserDataController.GetUserWithValue("ID", nid);
+        while(true){
+        char FilterInput = Helper.ReadInput((char c) => c == '1' || c == '2',
+        "What account do you want to use?",  $"1. {firstuser.Name} (G)\n2. {newuser.Name}");
+        switch(FilterInput)
+            {
+                case '1':
+                    AdminInterface.GeneralMenu(fid);
+                    break;
+                case '2':
+                    AdminInterface.GeneralMenu(nid);
+                    break;
+            }
+        }
+    }
     
     public static void LogOut(){
         Console.WriteLine("You have been succesfully logged out");
