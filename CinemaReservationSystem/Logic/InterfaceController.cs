@@ -63,6 +63,25 @@ public class InterfaceController
                             if (user.Admin is true) AdminInterface.GeneralMenu(user.ID);
                             else
                             {
+
+                                List<Reservation> userReservations = user.Reservations;
+                                List<Reservation> reservationsToRemove = new List<Reservation>();
+                                List<Reservation> newReservations = new List<Reservation>(user.Reservations);
+                                for (int i = 0; i < userReservations.Count; i++)
+                                {
+                                    Reservation currentReservation = userReservations[i];
+                                    if (JsonHandler.Get<Screening>(currentReservation.ScreeningID, "Data/ScreeningDB.json") == null)
+                                    {
+                                        reservationsToRemove.Add(currentReservation);
+                                    }
+
+                                }
+                                foreach(Reservation reservation in reservationsToRemove)
+                                {
+                                    newReservations.Remove(reservation);
+                                }
+                                UserDataController.UpdateUserWithValue<List<Reservation>>(user, "Reservations", newReservations);
+
                                 if (reservemovie is true) UserInterfaceController.ScreeningSelect(movie ,user.ID);
                                 UserInterface.GeneralMenu(user.ID);
                             }
