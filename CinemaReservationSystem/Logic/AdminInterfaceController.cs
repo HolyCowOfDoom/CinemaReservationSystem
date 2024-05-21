@@ -20,6 +20,15 @@ public class AdminInterfaceController
 
     public static void AddScreening(Movie movie, string id)
     {
+        Console.WriteLine("press a to automatically add screenings or c to continue");
+        char autoInput = Helper.ReadInput((char c) => c == 'a' || c == 'c');
+        if (autoInput == 'a')
+        {
+            Console.WriteLine("Enter amount of screenings to add per movie");
+            int amountpermovie = Convert.ToInt32(Console.ReadLine());
+            AddScreeningsAuto(amountpermovie);
+            AdminInterface.GeneralMenu(id);
+        }
         Auditorium? screeningAud;
         do
         {
@@ -36,29 +45,60 @@ public class AdminInterfaceController
             AdminInterface.GeneralMenu(id);
         }
     }
+    public static void AddScreeningsAuto(int amountpermovie)
+    {
+        List<Movie> movies = JsonHandler.Read<Movie>("Data/MovieDB.json");
+        Random rand = new Random();
+
+        foreach (Movie movie in movies)
+        {
+            for (int i = 0; i < amountpermovie; i++)
+            {
+                List<Screening>? allScreenings = JsonHandler.Read<Screening>("Data/ScreeningDB.json");
+                string auditoriumID = rand.Next(1, 4).ToString();
+                Auditorium screeningAud = JsonHandler.Get<Auditorium>(auditoriumID, "Data/AuditoriumDB.json");
+                DateTime randomDateTime = GetRandomDateTime(rand);
+                while (allScreenings.Any(s => s.ScreeningDateTime.Date == randomDateTime.Date &&
+                                            s.ScreeningDateTime.Hour == randomDateTime.Hour &&
+                                            s.AssignedAuditorium.ID == auditoriumID))
+                {
+                    randomDateTime = randomDateTime.AddHours(3);
+
+                    // If it goes beyond the allowed time (midnight), adjust it to the next day at 08:00
+                    if (randomDateTime.Hour >= 24)
+                    {
+                        randomDateTime = randomDateTime.Date.AddDays(1).AddHours(8);
+                    }
+                }
+
+                MovieDataController.AddScreening(movie, screeningAud, randomDateTime);
+            }
+        }
+    }
+
+    public static DateTime GetRandomDateTime(Random random)
+    {
+        DateTime now = DateTime.Now;
+        DateTime twoMonthsFromNow = now.AddMonths(2);
+
+        int totalDaysRange = (twoMonthsFromNow - now).Days;
+
+        int randomDaysOffset = random.Next(0, totalDaysRange + 1);
+        DateTime randomDate = now.AddDays(randomDaysOffset);
+
+        // Ensure the time is between 08:00 and 23:59
+        int startHour = 8;
+        int endHour = 23;
+        int hour = random.Next(startHour, endHour + 1);
+
+        DateTime randomDateTime = new DateTime(randomDate.Year, randomDate.Month, randomDate.Day, hour, 0, 0);
+
+        return randomDateTime;
+    }
 
     public static void RegisterAdmin(string fid)
     {
         InterfaceController.RegisterUser(admin: true, id: fid);
-    }
-
-    public static void HandleAdminSwitch(string fid, string nid)
-    {
-        User firstuser = UserDataController.GetUserWithValue("ID", fid);
-        User newuser = UserDataController.GetUserWithValue("ID", nid);
-        while(true){
-        char FilterInput = Helper.ReadInput((char c) => c == '1' || c == '2',
-        "What account do you want to use?",  $"1. {firstuser.Name} (Current user)\n2. {newuser.Name} (New user)");
-        switch(FilterInput)
-            {
-                case '1':
-                    AdminInterface.GeneralMenu(fid);
-                    break;
-                case '2':
-                    AdminInterface.GeneralMenu(nid);
-                    break;
-            }
-        }
     }
     
     public static void LogOut(){
@@ -92,6 +132,8 @@ public class AdminInterfaceController
                 break;
             }
     }
+
+
 
     public static string AdminInputMovie(string id)
     {

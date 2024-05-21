@@ -460,8 +460,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
                 foreach (string seatid in item.SeatIDs)
                 {
                     int offsetseatid = GetIndexFromSeat(auditorium, Int32.Parse(seatid) - GetAuditoriumOffset(Int32.Parse(screening.AssignedAuditorium.ID)));
-                    listreservedindex.Add(offsetseatid);
-                    selectedseats.Add($"{numbertoletter[GetRowFromIndex(auditorium, offsetseatid) + 1]}{GetSeatNumberFromIndex(auditorium, offsetseatid)}");
+                    reservedbyotheruser.Add(offsetseatid);
                 }
             }
         }
