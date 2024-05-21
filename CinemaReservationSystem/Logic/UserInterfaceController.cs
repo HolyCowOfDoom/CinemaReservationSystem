@@ -336,7 +336,7 @@ public class UserInterfaceController
         Console.WriteLine("┌────────────────────────────────┬───────────────────────────────────────┬────────────────────────┬─────────┐");
         Console.WriteLine($"│ Username: {user.Name,-20} │ Email: {user.Email,-30} │ Birth date: {user.BirthDate} │ Age: {Helper.GetUserAge(user),-2} │");
         Console.WriteLine("└────────────────────────────────┴───────────────────────────────────────┴────────────────────────┴─────────┘");
-        
+        if (!user.Admin){
         Console.WriteLine("ALL RESERVATIONS");
         int index = 0;
         Console.WriteLine("┌───┬──────────────────────────────────────────────────────┬──────────────────────────┬───────────────┬───────────────────────┬───────────────────┐");
@@ -359,6 +359,15 @@ public class UserInterfaceController
         else if (userInput == "Cancel")
         {
             CancelReservation(id, user);
+        }
+        }
+        else
+        {
+        char userConfirmation = Helper.ReadInput((char c) => c == 'y', "Press y to go back", "---");
+            if (userConfirmation == 'y')
+            {
+                AdminInterface.GeneralMenu(id);
+            }
         }
     }
 
