@@ -5731,5 +5731,1816 @@
     "Bundles": [],
     "MovieID": "3e9f6830-1af4-4dc7-99a4-36166f216b43",
     "ID": "5f6642f9-1d44-4604-a7ae-68ec326e5d9d"
+  },
+  {
+    "AssignedAuditorium": {
+      "Seats": [
+        {
+          "Color": "Blue",
+          "ID": "151",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "152",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "153",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "154",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "155",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "156",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "157",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "158",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "159",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "160",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "161",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "162",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "163",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "164",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "165",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "166",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "167",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "168",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "169",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "170",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "171",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "172",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "173",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "174",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "175",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "176",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "177",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "178",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "179",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "180",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "181",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "182",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "183",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "184",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "185",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "186",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "187",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "188",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "189",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "190",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "191",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "192",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "193",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "194",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "195",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "196",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "197",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "198",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "199",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "200",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "201",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "202",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "203",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "204",
+          "IsReserved": true,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "205",
+          "IsReserved": true,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "206",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "207",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "208",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "209",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "210",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "211",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "212",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "213",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "214",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "215",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "216",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "217",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "218",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "219",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "220",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "221",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "222",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "223",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "224",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "225",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "226",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "227",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "228",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "229",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "230",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "231",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "232",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "233",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "234",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "235",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "236",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "237",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "238",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "239",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "240",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "241",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "242",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "243",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "244",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "245",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "246",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "247",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "248",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "249",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "250",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "251",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "252",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "253",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "254",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "255",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "256",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "257",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "258",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "259",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "260",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "261",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "262",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "263",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "264",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "265",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "266",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "267",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "268",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "269",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "270",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "271",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "272",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "273",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "274",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "275",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "276",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "277",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "278",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "279",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "280",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "281",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "282",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "283",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "284",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "285",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "286",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "287",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "288",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "289",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "290",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "291",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "292",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "293",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "294",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "295",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "296",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "297",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "298",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "299",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "300",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "301",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "302",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "303",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "304",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "305",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "306",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "307",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "308",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "309",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "310",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "311",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "312",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "313",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "314",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "315",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "316",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "317",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "318",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "319",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "320",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "321",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "322",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "323",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "324",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "325",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "326",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "327",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "328",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "329",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "330",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "331",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "332",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "333",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "334",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "335",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "336",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "337",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "338",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "339",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "340",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "341",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "342",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "343",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "344",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "345",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "346",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "347",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "348",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "349",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "350",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "351",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "352",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "353",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "354",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "355",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "356",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "357",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "358",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "359",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "360",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "361",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "362",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Red",
+          "ID": "363",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "364",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "365",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "366",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "367",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "368",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "369",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "370",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "371",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "372",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "373",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "374",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "375",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "376",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "377",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "378",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "379",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "380",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "381",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "382",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "383",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "384",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "385",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "386",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "387",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "388",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "389",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "390",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "391",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "392",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "393",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "394",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "395",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "396",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "397",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "398",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "399",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "400",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "401",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "402",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "403",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "404",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "405",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "406",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "407",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "408",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "409",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "410",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "411",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "412",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "413",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "414",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "415",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "416",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "417",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "418",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "419",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "420",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "421",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "422",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "423",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "424",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "425",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "426",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "427",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "428",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Yellow",
+          "ID": "429",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "430",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "431",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "432",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "433",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "434",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "435",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "436",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "437",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "438",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "439",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "440",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "441",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "442",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "443",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "444",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "445",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "446",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "447",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "448",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "449",
+          "IsReserved": false,
+          "Price": 0.0
+        },
+        {
+          "Color": "Blue",
+          "ID": "450",
+          "IsReserved": false,
+          "Price": 0.0
+        }
+      ],
+      "ID": "2"
+    },
+    "ScreeningDateTime": "2025-05-21T16:00:00",
+    "Bundles": [],
+    "MovieID": "3e9f6830-1af4-4dc7-99a4-36166f216b43",
+    "ID": "2f7b3615-7a57-42cf-b8e7-2ddd781926d2"
   }
 ]
