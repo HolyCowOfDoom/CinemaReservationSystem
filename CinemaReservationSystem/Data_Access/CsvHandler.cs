@@ -80,7 +80,7 @@ public static class CsvHandler
                     if(hasValue.Equals(propertyList[i])) 
                     //if (propertyList[i].Equals((object)value))
                     {
-                        Console.WriteLine($"found record with property {header} containing value {hasValue}");
+                        //Console.WriteLine($"found record with property {header} containing value {hasValue}");
                         T record = csvReader.GetRecord<T>();
                         return record; //will never be null due to if statement
                     }
@@ -112,18 +112,18 @@ public static class CsvHandler
                 dynamic hasValueList = Convert.ChangeType(hasValue, csvField.GetType());
                 //ICollection inherits from IEnumerable, we only want to call one method from Enumerable so it's safe.
                 //"public interface ICollection<T> : System.Collections.Generic.IEnumerable<T>"
-                Console.WriteLine($"csvFieldList: {csvFieldList.ToString()}");
-                Console.WriteLine($"hasValueList: {hasValueList.ToString()}");
+               // Console.WriteLine($"csvFieldList: {csvFieldList.ToString()}");
+                //Console.WriteLine($"hasValueList: {hasValueList.ToString()}");
                 if(Enumerable.SequenceEqual(csvFieldList, hasValueList)) //SequenceEqual needs the objects to be Enumerable, so cast to List will do
                 {
-                    Console.WriteLine("the lists are equal");
+                    //Console.WriteLine("the lists are equal");
                     T record = csvReader.GetRecord<T>();
                     return record; //will never be null due to if statement
                 }
             }
             else if(csvField.Equals(hasValue))
             {
-                Console.WriteLine($"found record with property value ({csvField}) matching searched value ({hasValue})");
+                //Console.WriteLine($"found record with property value ({csvField}) matching searched value ({hasValue})");
                 T record = csvReader.GetRecord<T>();
                 return record; //will never be null due to if statement
             }
@@ -171,7 +171,7 @@ public static class CsvHandler
                 object propertyValue = MyGetProperty<object, T>(records[i], header); //get property of record in DB using header
                 if(propertyValue == null) 
                 {
-                    Console.WriteLine($"A record matching {record} was found in the database, but it has no property named {header}");
+                    //Console.WriteLine($"A record matching {record} was found in the database, but it has no property named {header}");
                     return false; //each record SHOULD be unique, so there's no point in continuing search if a match is already found.
                     //break; 
                 }
@@ -184,15 +184,15 @@ public static class CsvHandler
                     {
                         MySetProperty(records[i], header, newValue);
                         Write(csvFile, records);
-                        Console.WriteLine($"Property {header} of record {record} was set to new ICollection (probably a list): {newValue}");
+                        //Console.WriteLine($"Property {header} of record {record} was set to new ICollection (probably a list): {newValue}");
                         return true;
                     }
                     else if(propertyValue is not ICollection){
-                        Console.WriteLine("Attempting to set a non-ICollection property to an ICollection value");
+                        //Console.WriteLine("Attempting to set a non-ICollection property to an ICollection value");
                         return false;
                     }
                     else if(newValue is not ICollection){
-                        Console.WriteLine("Attempting to set an ICollection property to a non-ICollection value");
+                       // Console.WriteLine("Attempting to set an ICollection property to a non-ICollection value");
                         return false;
                     }
                     
@@ -201,7 +201,7 @@ public static class CsvHandler
                 {
                     MySetProperty(records[i], header, newValue);
                     Write(csvFile, records);
-                    Console.WriteLine($"Property {header} of record {record} changed succesfully to {newValue}");
+                   // Console.WriteLine($"Property {header} of record {record} changed succesfully to {newValue}");
                     return true;
                 }
             }
@@ -227,12 +227,12 @@ public static class CsvHandler
                     propertyList.Add(addValue);
                     MySetProperty(records[i], header, propertyList);
                     Write(csvFile, records);
-                    Console.WriteLine($"{addValue} was added to list of Property {header} ");
+                    //Console.WriteLine($"{addValue} was added to list of Property {header} ");
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine("Attempted to add a value to a non-list property!");
+                    //Console.WriteLine("Attempted to add a value to a non-list property!");
                     return false;
                 }
             }
@@ -245,7 +245,7 @@ public static class CsvHandler
     {
         PropertyInfo? property = typeof(T).GetProperty(propertyToChange);
         if(property != null) property.SetValue(objToChange, newValue);
-        else Console.WriteLine($"property {propertyToChange} remains unchanged");
+        //else Console.WriteLine($"property {propertyToChange} remains unchanged");
     } 
 
     //must specify return type J in call because compiler can't figure out return type
@@ -255,7 +255,7 @@ public static class CsvHandler
         if(propertyInfo != null)
             {
             J property = (J)propertyInfo.GetValue(record);
-            Console.WriteLine($"property {propertyToGet} was found! it is {property}");
+           // Console.WriteLine($"property {propertyToGet} was found! it is {property}");
             if(property != null) return property;
             else
             {
