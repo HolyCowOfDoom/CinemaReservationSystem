@@ -87,6 +87,7 @@ public class InterfaceController
                             }
                             break;
                         }
+                        else Helper.WriteErrorMessage("Invalid password........");
                     }
                     break;
             }  
