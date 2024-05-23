@@ -216,7 +216,7 @@
     "ID": "2d5ab1ad-0e20-4b0f-bc29-fc1626c29c8b"
   },
   {
-    "Title": "Finding Nemo",
+    "Title": "Finding Dory",
     "AgeRating": 6,
     "Description": "An adventurous clownfish searches for his son.",
     "Genre": "Drama",
@@ -224,7 +224,7 @@
     "ID": "071cdf24-1f95-4b57-9d35-52f45bd6862b"
   },
   {
-    "Title": "Toy Story",
+    "Title": "Toy Story 2",
     "AgeRating": 6,
     "Description": "Toys come to life and embark on an adventure.",
     "Genre": "Comedy",
@@ -232,7 +232,7 @@
     "ID": "b3cef876-3717-457a-aa89-bc89684e347a"
   },
   {
-    "Title": "The Lion King",
+    "Title": "The Lion King 2",
     "AgeRating": 6,
     "Description": "A young lion cub's journey to become king.",
     "Genre": "Drama",
@@ -240,7 +240,7 @@
     "ID": "366c9cb5-f2f1-4449-9c80-8a6cdf04a8ab"
   },
   {
-    "Title": "Frozen",
+    "Title": "Frozen 2",
     "AgeRating": 6,
     "Description": "Two sisters navigate through an icy adventure.",
     "Genre": "Adventure",
@@ -248,7 +248,7 @@
     "ID": "e866b1bf-4d53-453d-9d83-70ca56a586c6"
   },
   {
-    "Title": "Harry Potter and the Philosopher's Stone",
+    "Title": "Harry Potter and the Chamber of Secrets",
     "AgeRating": 9,
     "Description": "A young wizard begins his magical education.",
     "Genre": "Adventure",
