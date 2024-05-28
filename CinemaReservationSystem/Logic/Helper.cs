@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.RegularExpressions;
 public interface ObjectHasID
 {
     string ID { get; }
@@ -264,21 +265,22 @@ public class Helper
                 else return true;
                 break;
             case "password":
-                if (!IsValidPassword(input) && string.Equals(Case, "password") || !IsValidPassword(input) && string.Equals(Case, "register"))
-                {
-                    WriteErrorMessage("Invalid password. Must be atleast 6 chars long and contain a digit.");
-                }
-                else if (!IsValidPassword(input) && string.Equals(Case, "loginpassword"))
+                if (!IsValidPassword(input) && string.Equals(Case, "loginpassword"))
                 {
                     WriteErrorMessage("Invalid password........");
                 }
+                else if (!IsValidPassword(input) && string.Equals(Case, "password") || !IsValidPassword(input) && string.Equals(Case, "register"))
+                {
+                    WriteErrorMessage("Invalid password. Must be atleast 6 chars long and contain a digit.");
+                }
+
                 else return true;
                 break;
         }
         return false;
     }
 
-    private static void WriteErrorMessage(string error)
+    public static void WriteErrorMessage(string error)
     {
         int cursortop;
         
@@ -299,13 +301,11 @@ public class Helper
         else if (char.IsLetterOrDigit(keyChar) || char.IsSymbol(keyChar) || char.IsPunctuation(keyChar))
         {
             ConsoleClear();
+            if (string.Equals(Case, "register") && string.Equals(type, "birthdate"))
             {
-                if (string.Equals(Case, "register") && string.Equals(type, "birthdate"))
-                {
-                    if (input.Length == 2 || input.Length == 5) input += "-";
-                }
-                input += keyChar;
+                if (input.Length == 2 || input.Length == 5) input += "-";
             }
+            input += keyChar;
         }
     }
     private static string GetInputString(string type, string username, string birthdate, string email, string password)
@@ -448,13 +448,8 @@ public class Helper
         // test op lege string of string onder de 6 chars.
         if (!string.IsNullOrWhiteSpace(input) && input.Length >= 6)
         {
-            foreach (char c in input)
-            {
-                if (char.IsDigit(c))
-                {
-                    return true;
-                }
-            }
+            bool containsDigit = Regex.IsMatch(input, @"\d");
+            if (containsDigit) return true;
         }
         return false;
     }
