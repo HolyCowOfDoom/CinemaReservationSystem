@@ -20,7 +20,7 @@ public class AdminInterfaceController
 
     public static void AddScreening(Movie movie, string id)
     {
-        Console.WriteLine("press a to automatically add screenings or c to continue");
+        Console.WriteLine("press a to automatically add screenings or c to continue (max 10)");
         char autoInput = Helper.ReadInput((char c) => c == 'a' || c == 'c');
         if (autoInput == 'a')
         {
@@ -47,6 +47,7 @@ public class AdminInterfaceController
     }
     public static void AddScreeningsAuto(int amountpermovie)
     {
+        if (amountpermovie > 10) amountpermovie = 10;
         List<Movie> movies = JsonHandler.Read<Movie>("Data/MovieDB.json");
         Random rand = new Random();
 
