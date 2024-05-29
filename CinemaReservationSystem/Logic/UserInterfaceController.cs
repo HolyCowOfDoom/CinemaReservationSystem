@@ -107,13 +107,14 @@ public class UserInterfaceController
             Console.WriteLine($"{movie.Title}");
         }
 
-        Console.Write("Enter movie Title to add to favorites: ");
+        Console.Write("\nEnter movie Title to add movie to favorites: ");
         var movieTitleInput = Console.ReadLine();
         var movieToAdd = movies.FirstOrDefault(m => m.Title == movieTitleInput);
         if (movieToAdd != null)
         {
+            user.FavMovies.Add(movieToAdd);
             UserDataController.AddFavoriteMovie(user, movieToAdd);
-            Console.WriteLine("Movie added to favorites!");
+            Console.WriteLine($"{movieToAdd.Title} added to favorites");
         }
         else
         {
@@ -131,7 +132,16 @@ public class UserInterfaceController
             Console.WriteLine($"{movie.Title}");
         }
 
-        Console.WriteLine("Press any key to go back...");
+        foreach (var movie in user.FavMovies)
+        {
+            Console.WriteLine($"Title: {movie.Title}");
+            Console.WriteLine($"Age Rating: {movie.AgeRating}");
+            Console.WriteLine($"Genre: {movie.Genre}");
+            Console.WriteLine($"Description: {movie.Description}");
+            Console.WriteLine();
+        }
+
+        Console.WriteLine("\nPress any key to go back...");
         Console.ReadKey();
         FavoriteMoviesMenu(user.ID);
     }

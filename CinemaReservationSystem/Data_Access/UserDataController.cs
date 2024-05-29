@@ -27,7 +27,6 @@ public static class UserDataController
 
     public static bool AddFavoriteMovie(User user, Movie movie)
     {
-        user.FavMovies.Add(movie);
         return CsvHandler.UpdateRecordWithValue<User, List<Movie>>(DBFilePath, user, "FavMovies", user.FavMovies);
     }
 
