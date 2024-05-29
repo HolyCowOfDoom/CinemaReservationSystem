@@ -29,6 +29,9 @@ public class User : IEquatable<User>
     [Name("Reservations"), Optional]
     public List<Reservation> Reservations {get; set;}// = new();
 
+    [Name("FavMovies"), Optional]
+    public List<Movie> FavMovies { get; set; } = new List<Movie>();
+
     public User(string name, string birthDate, string email, string password, bool admin = false, List<Reservation> reservations = null)
     {
         Directory.CreateDirectory("Data");

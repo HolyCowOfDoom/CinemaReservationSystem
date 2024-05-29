@@ -75,6 +75,67 @@ public class UserInterfaceController
         }
     }
 
+    public static void FavoriteMoviesMenu(string id)
+    {
+        User user = UserDataController.GetUserWithValue("ID", id);
+
+        char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3',
+        "Favorite Movies Menu", "1. Select Favorite Movies\n2. View Favorite Movies\n3. Go Back");
+        switch (DigitInput)
+        {
+            case '1':
+                SelectFavoriteMovies(user);
+                break;
+            case '2':
+                ViewFavoriteMovies(user);
+                break;
+            case '3':
+                UserInterface.GeneralMenu(id);
+                break;
+            default:
+                FavoriteMoviesMenu(id);
+                break;
+        }
+    }
+
+    private static void SelectFavoriteMovies(User user)
+    {
+        Console.WriteLine("Available movies:");
+        var movies = JsonHandler.Read<Movie>("Data/MovieDB.json");
+        foreach (var movie in movies)
+        {
+            Console.WriteLine($"{movie.Title}");
+        }
+
+        Console.Write("Enter movie Title to add to favorites: ");
+        var movieTitleInput = Console.ReadLine();
+        var movieToAdd = movies.FirstOrDefault(m => m.Title == movieTitleInput);
+        if (movieToAdd != null)
+        {
+            UserDataController.AddFavoriteMovie(user, movieToAdd);
+            Console.WriteLine("Movie added to favorites!");
+        }
+        else
+        {
+            Console.WriteLine("Invalid movie ID.");
+        }
+
+        FavoriteMoviesMenu(user.ID);
+    }
+
+    private static void ViewFavoriteMovies(User user)
+    {
+        Console.WriteLine("Your favorite movies:");
+        foreach (var movie in user.FavMovies)
+        {
+            Console.WriteLine($"{movie.Title}");
+        }
+
+        Console.WriteLine("Press any key to go back...");
+        Console.ReadKey();
+        FavoriteMoviesMenu(user.ID);
+    }
+
     private static ConsoleKeyInfo HandleUserViewMovieInput(ConsoleKeyInfo key)
     {
         switch (key.Key)

@@ -25,6 +25,12 @@ public static class UserDataController
         return CsvHandler.AddValueToRecord<User, J>(DBFilePath, user, header, addValue);
     }
 
+    public static bool AddFavoriteMovie(User user, Movie movie)
+    {
+        user.FavMovies.Add(movie);
+        return CsvHandler.UpdateRecordWithValue<User, List<Movie>>(DBFilePath, user, "FavMovies", user.FavMovies);
+    }
+
      // private static string EncryptPassword(string password)
     // {
     //     string encrypted = "";
