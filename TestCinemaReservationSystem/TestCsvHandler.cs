@@ -3,30 +3,12 @@ using System.Text;
 
 namespace TestCinemaReservationSystem;
 [TestClass]
-public class TestCsvHandler
+public class TestCsvHandler : TestHelperMethods //TestMethods has general methods used for testing
 {
-    public void CreateTestFile(string fileName)
-    {
-        Directory.CreateDirectory("TestFiles");
-        using var file = File.Create(fileName); //overwrites file with same name, to avoid duplicates
-    }
-
-    public List<User> CreateTestUsers(int count, bool addReservations)
-    {
-        List<User> testUsers = new();
-        for(int i = 1; i <= count; i++ )
-        {
-            User newUser = new User($"testUser{i}", $"0{i}-01-2000", $"test.user{i}@gmail.com", $"testPassword{i}");
-            if (addReservations) newUser.Reservations.Add(new Reservation(new List<string>() {$"{i}"}, $"{i}", i*20));
-            testUsers.Add(newUser);
-        }
-        return testUsers;
-    }
-
     [TestMethod]
-    public void TestRead()
+    public void TestRead() //equivalance class testing. tests if method works with User, assumes equivalence with other classes
     {
-        string fileName = "TestFiles/CSvHandler_TestRead.csv";
+        string fileName = "TestFiles/TestCSvHandler_TestRead.csv";
         CreateTestFile(fileName);
         List<User> testUsers = CreateTestUsers(10, true);
         CsvHandler.Write(fileName, testUsers);
@@ -38,9 +20,9 @@ public class TestCsvHandler
     }
 
     [TestMethod]
-    public void TestWrite()
+    public void TestWrite() //equivalance class testing. tests if method works with User, assumes equivalence with other classes
     {
-        string fileName = "TestFiles/CSvHandler_TestWrite.csv";
+        string fileName = "TestFiles/TestCSvHandler_TestWrite.csv";
         CreateTestFile(fileName);
         List<User> testUsers = CreateTestUsers(10, false); //no reservations
         //the comma delimiter of reservations messes with the tests below
@@ -73,11 +55,13 @@ public class TestCsvHandler
     }
 
     [TestMethod]
-    public void TestAppend()
+    public void TestAppend() //equivalance class testing. tests if method works with User, assumes equivalence with other classes
     {
-        string fileName = "TestFiles/CSvHandler_TestAppend.csv";
+        string fileName = "TestFiles/TestCSvHandler_TestAppend.csv";
         CreateTestFile(fileName);
         List<User> testUsers = CreateTestUsers(2, true);
+        List<User> testUsersAppend = CreateTestUsers(2, true);
+        CsvHandler.Append(fileName, testUsersAppend);
         CsvHandler.Write(fileName, testUsers);
         List<User> readUsers = CsvHandler.Read<User>(fileName);
         for(int i = 0; i <= testUsers.Count -1; i++)
@@ -97,9 +81,9 @@ public class TestCsvHandler
     }
 
     [TestMethod]
-    public void TestGetRecordWithValue()
+    public void TestGetRecordWithValue() //equivalance class testing. tests if method works with User, assumes equivalence with other classes
     {
-        string fileName = "TestFiles/CSvHandler_TestGetRecordWithValue.csv";
+        string fileName = "TestFiles/TestCSvHandler_TestGetRecordWithValue.csv";
         CreateTestFile(fileName);
         List<User> testUsers = CreateTestUsers(5, true);
         CsvHandler.Write(fileName, testUsers);
@@ -134,9 +118,9 @@ public class TestCsvHandler
     }
 
     [TestMethod]
-    public void TestUpdateRecordWithValue()
+    public void TestUpdateRecordWithValue() //equivalance class testing. tests if method works with User, assumes equivalence with other classes
     {
-        string fileName = "TestFiles/CSvHandler_TestUpdateRecordWithValue.csv";
+        string fileName = "TestFiles/TestCSvHandler_TestUpdateRecordWithValue.csv";
         CreateTestFile(fileName);
         List<User> testUsers = CreateTestUsers(5, true);
         //CsvHandler.Write(fileName, new List<User>() {new User($"testUser{-1}", "01-01-2000", $"test.user{-1}@gmail.com", $"testPassword{-1}")});

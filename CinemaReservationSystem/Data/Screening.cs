@@ -10,7 +10,7 @@ public class Screening : ObjectHasID
     public string ID { get; }
 
     // only intance this class via the addscreening method in movie (anything else will mess the DB up)
-    public Screening(Auditorium assignedAuditorium, DateTime? screeningDateTime, string movieID, string? id = null)
+    public Screening(Auditorium assignedAuditorium, DateTime? screeningDateTime, string movieID, string? id = null, string altFilePath = "")
     {
         AssignedAuditorium = assignedAuditorium;
         ScreeningDateTime = (DateTime)(screeningDateTime ?? new DateTime(2000, 1, 1, 0, 0, 0));
@@ -23,7 +23,7 @@ public class Screening : ObjectHasID
             // int lastID = screeningList.Count > 0 ? screeningList[screeningList.Count -1 ].ID : 0;
             // ID = lastID + 1;
             ID = Guid.NewGuid().ToString();
-            ScreeningDataController.UpdateScreening(this);
+            ScreeningDataController.UpdateScreening(this, altFilePath);
         }
         else ID = (string)id;
     }
