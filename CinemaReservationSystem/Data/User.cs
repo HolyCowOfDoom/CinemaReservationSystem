@@ -29,7 +29,7 @@ public class User : IEquatable<User>
     [Name("Reservations"), Optional]
     public List<Reservation> Reservations {get; set;}// = new();
 
-    public User(string name, string birthDate, string email, string password, bool admin = false, List<Reservation> reservations = null, string altFilePath = "")
+    public User(string name, string birthDate, string email, string password, bool admin = false, List<Reservation> reservations = null)
     {
         Directory.CreateDirectory("Data");
         using (StreamWriter w = File.AppendText("Data/UserDB.csv")) //create file if it doesn't already exist
@@ -41,7 +41,7 @@ public class User : IEquatable<User>
         Admin = admin;
         if(reservations != null) Reservations = reservations;
         else Reservations = new(); //
-        UserDataController.AddUser(this, altFilePath);
+        UserDataController.AddUser(this);
     }
     //for use by CsVHandler.Read(), copies ID rather than generating a new one
     public User(string id, string name, string birthDate, string email,string password, bool admin, List<Reservation> reservations)//, string reservations)

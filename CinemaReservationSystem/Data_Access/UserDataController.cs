@@ -1,31 +1,28 @@
 public static class UserDataController
 {
     private static string DBFilePath = "Data/UserDB.csv";
-    //optional altFilePath parameters added solely to allow testing 
-    public static bool AddUser(User user, string altFilePath = "")
+    public static bool AddUser(User user)
     {
-        if(altFilePath == "") CsvHandler.Append(DBFilePath, new List<object>{user});
-        else CsvHandler.Append(altFilePath, new List<object>{user});
+        //List<object> records = new()
+        CsvHandler.Append(DBFilePath, new List<object>{user});
+        //CsvHandler.Write(UserDBFilePath);
         return true;
     }
 
-    public static User GetUserWithValue(string header, object hasValue, string altFilePath = "")
+    public static User GetUserWithValue(string header, object hasValue)
     {
-        if(altFilePath == "") return CsvHandler.GetRecordWithValue<User>(DBFilePath, header, hasValue);
-        else return CsvHandler.GetRecordWithValue<User>(altFilePath, header, hasValue);
+        return CsvHandler.GetRecordWithValue<User>(DBFilePath, header, hasValue);
     }
 
     //"J" can't be replaced with "object", as MySetProperty in UpdateRecordWithValue needs List<J> rather than List<object>
-    public static bool UpdateUserWithValue<J>(User user, string header, J newValue, string altFilePath = "")
+    public static bool UpdateUserWithValue<J>(User user, string header, J newValue)
     {
-        if(altFilePath == "") return CsvHandler.UpdateRecordWithValue<User, J>(DBFilePath, user, header, newValue);
-        else return CsvHandler.UpdateRecordWithValue<User, J>(altFilePath, user, header, newValue);
+        return CsvHandler.UpdateRecordWithValue<User, J>(DBFilePath, user, header, newValue);
     }
 
-    public static bool AddValueToUser<J>(User user, string header, J addValue, string altFilePath = "")
+    public static bool AddValueToUser<J>(User user, string header, J addValue)
     {
-        if(altFilePath == "") return CsvHandler.AddValueToRecord<User, J>(DBFilePath, user, header, addValue);
-        else return CsvHandler.AddValueToRecord<User, J>(altFilePath, user, header, addValue);
+        return CsvHandler.AddValueToRecord<User, J>(DBFilePath, user, header, addValue);
     }
 
      // private static string EncryptPassword(string password)
