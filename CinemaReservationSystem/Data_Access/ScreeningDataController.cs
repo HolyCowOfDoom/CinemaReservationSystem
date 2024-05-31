@@ -2,22 +2,20 @@ using System.Globalization;
 public static class ScreeningDataController
 {
     public static string DBFilePath = "Data/ScreeningDB.json";
-    //NOTE: altFilePath is checked on emptiness in UpdateScreening() only, 
-
      // Adjust the datetime based on a datetime string with the format : dd-MM-yyyy HH:mm
-    public static void AdjustDateTime(Screening screening, string dateTime, string altFilePath = "")
+    public static void AdjustDateTime(Screening screening, string dateTime)
     {
         try
         {
             screening.ScreeningDateTime = DateTime.ParseExact(dateTime, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
-            UpdateScreening(screening, altFilePath);
+            UpdateScreening(screening);
         }
         catch (FormatException)
         {
             Console.WriteLine("Format error. Please use [dd-MM-yyyy HH:mm]");
         }
     }
-    public static void AdjustTime(Screening screening, string time, string altFilePath = "")
+    public static void AdjustTime(Screening screening, string time)
     // Adjust screening time based on a datetime string format : HH:mmWS    public static void AdjustTime(Screening screening, string time)
     {
         try
@@ -33,7 +31,7 @@ public static class ScreeningDataController
     }
 
     // Adjust date of screening based on datetime string with format : dd-MM-yyyy
-    public static void AdjustDate(Screening screening, string date, string altFilePath = "")
+    public static void AdjustDate(Screening screening, string date)
     {
         try
         {
@@ -47,27 +45,27 @@ public static class ScreeningDataController
     }
 
     // change screening auditorium (resets seat reservations)
-    public static void AdjustAuditorium(Screening screening, Auditorium newAuditorium, string altFilePath = "")
+    public static void AdjustAuditorium(Screening screening, Auditorium newAuditorium)
     {
         screening.AssignedAuditorium = newAuditorium;
         UpdateScreening(screening);
     }
 
     // adds bundles based on bundle fields
-    public static void AddBundle(Screening screening, string bundleCode, string bundleDescription, int price, string altFilePath = "")
+    public static void AddBundle(Screening screening, string bundleCode, string bundleDescription, int price)
     {
         screening.Bundles.Add(new Bundle(bundleCode, bundleDescription, price));
         UpdateScreening(screening);
     }
 
     // adds given bundle object to the bundle list
-    public static void AddBundle(Screening screening, Bundle bundle, string altFilePath = "")
+    public static void AddBundle(Screening screening, Bundle bundle)
     {
         screening.Bundles.Add(bundle);
         UpdateScreening(screening);
     }
 
-    public static bool ReserveSeat(Screening screening, string seatID, string altFilePath = "")
+    public static bool ReserveSeat(Screening screening, string seatID)
     {
         bool succesfullReserve = AuditoriumDataController.ReserveSeat(screening.AssignedAuditorium,seatID);
         if (succesfullReserve) {
@@ -82,7 +80,7 @@ public static class ScreeningDataController
 
     }
 
-    public static bool CancelSeat(Screening screening, string seatID, string altFilePath = "")
+    public static bool CancelSeat(Screening screening, string seatID)
     {
         bool succesfullCancel = AuditoriumDataController.CancelSeat(screening.AssignedAuditorium,seatID);
         if (succesfullCancel) {
@@ -98,9 +96,5 @@ public static class ScreeningDataController
     }
 
     // updates this.screening to the database
-    public static void UpdateScreening(Screening screening, string altFilePath = "") 
-    {
-        if(altFilePath == "") JsonHandler.Update<Screening>(screening, DBFilePath);
-        else JsonHandler.Update<Screening>(screening, altFilePath);
-    }
+    public static void UpdateScreening(Screening screening) => JsonHandler.Update<Screening>(screening, DBFilePath);
 }
