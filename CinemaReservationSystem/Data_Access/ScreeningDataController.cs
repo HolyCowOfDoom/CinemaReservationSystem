@@ -24,7 +24,7 @@ public static class ScreeningDataController
         {
             TimeSpan newTime = TimeSpan.Parse(time);
             screening.ScreeningDateTime = screening.ScreeningDateTime.Date + newTime;
-            UpdateScreening(screening);
+            UpdateScreening(screening, altFilePath);
         }
         catch (FormatException)
         {
@@ -38,7 +38,7 @@ public static class ScreeningDataController
         try
         {
             screening.ScreeningDateTime = DateTime.ParseExact(date, "dd-MM-yyyy", CultureInfo.InvariantCulture) + screening.ScreeningDateTime.TimeOfDay;
-            UpdateScreening(screening);
+            UpdateScreening(screening, altFilePath);
         }
         catch (FormatException)
         {
@@ -50,28 +50,28 @@ public static class ScreeningDataController
     public static void AdjustAuditorium(Screening screening, Auditorium newAuditorium, string altFilePath = "")
     {
         screening.AssignedAuditorium = newAuditorium;
-        UpdateScreening(screening);
+        UpdateScreening(screening, altFilePath);
     }
 
     // adds bundles based on bundle fields
     public static void AddBundle(Screening screening, string bundleCode, string bundleDescription, int price, string altFilePath = "")
     {
         screening.Bundles.Add(new Bundle(bundleCode, bundleDescription, price));
-        UpdateScreening(screening);
+        UpdateScreening(screening, altFilePath);
     }
 
     // adds given bundle object to the bundle list
     public static void AddBundle(Screening screening, Bundle bundle, string altFilePath = "")
     {
         screening.Bundles.Add(bundle);
-        UpdateScreening(screening);
+        UpdateScreening(screening, altFilePath);
     }
 
     public static bool ReserveSeat(Screening screening, string seatID, string altFilePath = "")
     {
         bool succesfullReserve = AuditoriumDataController.ReserveSeat(screening.AssignedAuditorium,seatID);
         if (succesfullReserve) {
-            UpdateScreening(screening);
+            UpdateScreening(screening, altFilePath);
             Console.WriteLine($"Screening.cs: Seat {seatID} reserved successfully and ScreeningDB updated.");
             return true;
         }
@@ -86,7 +86,7 @@ public static class ScreeningDataController
     {
         bool succesfullCancel = AuditoriumDataController.CancelSeat(screening.AssignedAuditorium,seatID);
         if (succesfullCancel) {
-            UpdateScreening(screening);
+            UpdateScreening(screening, altFilePath);
             Console.WriteLine($"Screening.cs: Seat {seatID} cancelled successfully and ScreeningDB updated.");
             return true;
         }
