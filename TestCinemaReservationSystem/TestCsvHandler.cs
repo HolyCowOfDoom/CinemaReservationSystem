@@ -59,8 +59,8 @@ public class TestCsvHandler : TestHelperMethods //TestMethods has general method
     {
         string fileName = "TestFiles/TestCSvHandler_TestAppend.csv";
         CreateTestFile(fileName);
-        List<User> testUsers = CreateTestUsers(2, true);
-        List<User> testUsersAppend = CreateTestUsers(2, true);
+        List<User> testUsers = CreateTestUsers(2, true, fileName);
+        List<User> testUsersAppend = CreateTestUsers(2, true, fileName);
         CsvHandler.Append(fileName, testUsersAppend);
         CsvHandler.Write(fileName, testUsers);
         List<User> readUsers = CsvHandler.Read<User>(fileName);
@@ -68,7 +68,7 @@ public class TestCsvHandler : TestHelperMethods //TestMethods has general method
         {
             Assert.IsTrue(testUsers[i] == readUsers[i]);
         }
-        List<User> testUsers2 = CreateTestUsers(2, true);
+        List<User> testUsers2 = CreateTestUsers(2, true, fileName);
         int testUsersCount = testUsers.Count;
         CsvHandler.Append<User>(fileName, testUsers2);
         testUsers.AddRange(testUsers2);
@@ -85,7 +85,7 @@ public class TestCsvHandler : TestHelperMethods //TestMethods has general method
     {
         string fileName = "TestFiles/TestCSvHandler_TestGetRecordWithValue.csv";
         CreateTestFile(fileName);
-        List<User> testUsers = CreateTestUsers(5, true);
+        List<User> testUsers = CreateTestUsers(5, true, fileName);
         CsvHandler.Write(fileName, testUsers);
         for(int i = 0; i < testUsers.Count; i++)
         {
@@ -122,7 +122,7 @@ public class TestCsvHandler : TestHelperMethods //TestMethods has general method
     {
         string fileName = "TestFiles/TestCSvHandler_TestUpdateRecordWithValue.csv";
         CreateTestFile(fileName);
-        List<User> testUsers = CreateTestUsers(5, true);
+        List<User> testUsers = CreateTestUsers(5, true, fileName);
         //CsvHandler.Write(fileName, new List<User>() {new User($"testUser{-1}", "01-01-2000", $"test.user{-1}@gmail.com", $"testPassword{-1}")});
         CsvHandler.Write(fileName, testUsers);
         for(int i = 0; i <= 4; i++)
@@ -156,15 +156,15 @@ public class TestCsvHandler : TestHelperMethods //TestMethods has general method
         
     }
 
-    [TestMethod]
-    public void MySetProperty()
-    {
+    // [TestMethod]
+    // public void TestMySetProperty<T>(T objToChange, string propertyToChange, object newValue)
+    // {
+    //     CsvHandler.MySetProperty<T>
+    // }
 
-    }
+    // [TestMethod]
+    // public void TestMyGetProperty()
+    // {
 
-    [TestMethod]
-    public void MyGetProperty()
-    {
-
-    }
+    // }
 }

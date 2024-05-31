@@ -19,7 +19,7 @@ public class TestHelperMethods
         }
         return testUsers;
     }
-    public List<Auditorium> CreateTestAuditoriums(int count) //fileName necessary as constructor adds itself to a file
+    public List<Auditorium> CreateTestAuditoriums(int count) //might require fileName
     {
         List<Seat> testSeats = new() {new Seat("blue", 5), new Seat("blue", 5), new Seat("Red", 10)};
         List<Auditorium> testAuditoriums = new();
@@ -30,7 +30,7 @@ public class TestHelperMethods
         return testAuditoriums;
     }
 
-    public List<Screening> CreateTestScreenings(int count, string fileName)
+    public List<Screening> CreateTestScreenings(int count, string fileName) //fileName necessary as constructor adds itself to a file
     {
         List<Auditorium> testAuditoriums = CreateTestAuditoriums(count);
         DateTime dateTime = new DateTime(2000, 1, 1, 0, 0, 0);
