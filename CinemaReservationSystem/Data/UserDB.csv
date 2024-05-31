@@ -1,6 +1,6 @@
 ID,Name,BirthDate,Email,Admin,Password,Reservations
 admin-c0c761c4-79cf-4438-9257-a461f5e09bbe,Utku,08-04-2000,ut.ozyurt@gmail.com,True,password12345,
-c8513156-ebd8-4ff8-86da-b7abad2cd1fc,Julian,20-03-2004,juliankreugel@gmail.com,False,password12345,"{SeatIDs: [451]; ScreeningID: 5f6642f9-1d44-4604-a7ae-68ec326e5d9d; TotalPrice: 20}&{SeatIDs: [204,205]; ScreeningID: 2f7b3615-7a57-42cf-b8e7-2ddd781926d2; TotalPrice: 20}"
+c8513156-ebd8-4ff8-86da-b7abad2cd1fc,Julian,20-03-2004,juliankreugel@gmail.com,False,password12345,"{SeatIDs: [204,205]; ScreeningID: 2f7b3615-7a57-42cf-b8e7-2ddd781926d2; TotalPrice: 20}"
 362a4103-957a-48c7-93d4-2cab833b96e3,JulianAdmin,20-02-2004,juliankreugel@gmail.com,True,admin12345,
 20be951e-1b3c-45cb-8ef7-65a1a922d1e3,Mathijs,15-06-2006,mathijs@cinema.nl,False,password12345,
 2b0ebf5a-d3a9-4816-9293-82d5253aaff7,Utku2,08-04-1800,utku2@gmail.com,False,password12345,
