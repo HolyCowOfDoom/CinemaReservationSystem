@@ -1,3 +1,8 @@
+//for Reservation converter
+using CsvHelper;
+using CsvHelper.Configuration;
+using CsvHelper.TypeConversion;
+
 public class Movie : ObjectHasID
 {
     public string Title;
@@ -28,3 +33,4 @@ public class Movie : ObjectHasID
 
 
 }
+

@@ -47,7 +47,7 @@ public class User : IEquatable<User>
         UserDataController.AddUser(this);
     }
     //for use by CsVHandler.Read(), copies ID rather than generating a new one
-    public User(string id, string name, string birthDate, string email,string password, bool admin, List<Reservation> reservations)//, string reservations)
+    public User(string id, string name, string birthDate, string email,string password, bool admin, List<Reservation> reservations, List<Movie> favMovies)//, string reservations)
     {
         ID = id;
         Name = name;
@@ -56,6 +56,7 @@ public class User : IEquatable<User>
         _password = password;
         Admin = admin;
         Reservations = reservations;
+        FavMovies = favMovies;
         // if(reservations != null) Reservations = reservations;
         // else Reservations = new();
         //Reservations = new() {new Reservation(new List<string>{"1","2", "3"}, "1", 30)};
