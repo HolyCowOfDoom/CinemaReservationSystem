@@ -29,10 +29,13 @@ public class User : IEquatable<User>
     [Name("Reservations"), Optional]
     public List<Reservation> Reservations {get; set;}// = new();
 
-    public User(string name, string birthDate, string email, string password, bool admin = false, List<Reservation> reservations = null, string altFilePath = "")
+//[CsvHelper.Configuration.Attributes.Ignore] fixes csvHelper expecting the parameter to match a header in the database
+    public User(string name, string birthDate, string email, string password, bool admin = false, List<Reservation> reservations = null, [CsvHelper.Configuration.Attributes.Ignore]string altFilePath = "") //, string altFilePath = ""
     {
+        
         Directory.CreateDirectory("Data");
         using (StreamWriter w = File.AppendText("Data/UserDB.csv")) //create file if it doesn't already exist
+        
         ID = Guid.NewGuid().ToString();
         Name = name;
         BirthDate = birthDate;
@@ -41,10 +44,11 @@ public class User : IEquatable<User>
         Admin = admin;
         if(reservations != null) Reservations = reservations;
         else Reservations = new(); //
-        UserDataController.AddUser(this, altFilePath);
+        UserDataController.AddUser(this);
     }
     //for use by CsVHandler.Read(), copies ID rather than generating a new one
-    public User(string id, string name, string birthDate, string email,string password, bool admin, List<Reservation> reservations)//, string reservations)
+    //CsvHelper uses the constructor with the most parameters, so this constructor also needs the altFilePath parameter even if we don't use it here, because we wan't csvHelper to use THIS constructor!
+    public User(string id, string name, string birthDate, string email,string password, bool admin, List<Reservation> reservations, [CsvHelper.Configuration.Attributes.Ignore]string altFilePath = "")//, string reservations)
     {
         ID = id;
         Name = name;

@@ -10,7 +10,7 @@ public class TestCsvHandler : TestHelperMethods //TestMethods has general method
     {
         string fileName = "TestFiles/TestCSvHandler_TestRead.csv";
         CreateTestFile(fileName);
-        List<User> testUsers = CreateTestUsers(10, true);
+        List<User> testUsers = CreateTestUsers(10, true, fileName);
         CsvHandler.Write(fileName, testUsers);
         List<User> readUsers = CsvHandler.Read<User>(fileName);
         for(int i = 0; i <= readUsers.Count - 1; i++)
@@ -24,7 +24,7 @@ public class TestCsvHandler : TestHelperMethods //TestMethods has general method
     {
         string fileName = "TestFiles/TestCSvHandler_TestWrite.csv";
         CreateTestFile(fileName);
-        List<User> testUsers = CreateTestUsers(10, false); //no reservations
+        List<User> testUsers = CreateTestUsers(10, false, fileName); //no reservations
         //the comma delimiter of reservations messes with the tests below
         //so maybe make a seperate test for that using CsvHelper, testing the Reservation TypeConverter as well
         CsvHandler.Write(fileName, testUsers);

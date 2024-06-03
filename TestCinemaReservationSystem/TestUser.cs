@@ -18,13 +18,13 @@ public class TestUser : TestHelperMethods
     {
         string fileName = "TestFiles/TestUser_TestAddUser.csv";
         CreateTestFile(fileName);
-        List<User> testUsers = CreateTestUsers(3, true);
+        List<User> testUsers = CreateTestUsers(3, true, fileName);
         for(int i = 0; i > testUsers.Count; i++) UserDataController.AddUser(testUsers[i], fileName);
         List<User> readUsers = new();
         for(int i = 0; i < testUsers.Count; i++)
         {
             //maybe change to using StreamReader so we don't have dependency on GetUserWithValue() here
-            readUsers.Add(UserDataController.GetUserWithValue("ID", testUsers[i].ID, fileName)); 
+            readUsers.Add(UserDataController.GetUserWithValue("ID", testUsers[i].ID, fileName));
             
             Assert.AreEqual(testUsers[i], readUsers[i]);
         }
@@ -35,7 +35,7 @@ public class TestUser : TestHelperMethods
     {
         string fileName = "TestFiles/TestUser_TestGetUserWithValue.csv";
         CreateTestFile(fileName);
-        List<User> testUsers = CreateTestUsers(3, true);
+        List<User> testUsers = CreateTestUsers(3, true, fileName);
         for(int i = 0; i > testUsers.Count; i++) UserDataController.AddUser(testUsers[i], fileName);
         List<User> readUsers = new();
         for(int i = 0; i < testUsers.Count; i++)
@@ -53,7 +53,7 @@ public class TestUser : TestHelperMethods
         //first part same as above, assert that Users have given values
         string fileName = "TestFiles/TestUser_TestUpdateUserWithValue.csv";
         CreateTestFile(fileName);
-        List<User> testUsers = CreateTestUsers(3, true);
+        List<User> testUsers = CreateTestUsers(3, true, fileName);
         for(int i = 0; i > testUsers.Count; i++) UserDataController.AddUser(testUsers[i], fileName);
         List<User> readUsers = new();
         for(int i = 0; i < testUsers.Count; i++)
@@ -72,7 +72,6 @@ public class TestUser : TestHelperMethods
             //readUsers list still contains original version, so we can use those as a base for comparison
             Assert.AreEqual(newReadUsers[i].ID, "new" + readUsers[i].ID);
         }
-
     }
 
     [TestMethod]
@@ -81,7 +80,7 @@ public class TestUser : TestHelperMethods
         //first part same as above, assert that Users have given values
         string fileName = "TestFiles/TestUser_TestUpdateUserWithValue.csv";
         CreateTestFile(fileName);
-        List<User> testUsers = CreateTestUsers(3, true);
+        List<User> testUsers = CreateTestUsers(3, true, fileName);
         for(int i = 0; i > testUsers.Count; i++) UserDataController.AddUser(testUsers[i], fileName);
         List<User> readUsers = new();
         for(int i = 0; i < testUsers.Count; i++)

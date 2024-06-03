@@ -414,9 +414,11 @@ public class Helper
         return 0;
     }
     
-    public static int IsValidUsernameLog(string input)
+    public static int IsValidUsernameLog(string input, string altFilePath = "")
     {
-        List<User> users = CsvHandler.Read<User>("Data/UserDB.csv");
+        List<User> users;
+        if(altFilePath == "") users = CsvHandler.Read<User>("Data/UserDB.csv");
+        else users = CsvHandler.Read<User>(altFilePath);
  
         if(!string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 28)
         {
@@ -428,9 +430,11 @@ public class Helper
         }
         return -1;
     }
-    public static bool IsValidEmail(string input)
+    public static bool IsValidEmail(string input, string altFilePath = "")
     {
-        List<User> users = CsvHandler.Read<User>("Data/UserDB.csv");
+        List<User> users;
+        if(altFilePath == "") users = CsvHandler.Read<User>("Data/UserDB.csv");
+        else users = CsvHandler.Read<User>(altFilePath);
 
         if(!string.IsNullOrWhiteSpace(input) && input.Contains('@') && input.Contains('.') && input.Length < 31)
         {
