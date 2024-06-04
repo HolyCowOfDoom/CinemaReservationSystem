@@ -14,7 +14,11 @@ public static class ScreeningDataController
         }
         catch (FormatException)
         {
-            Console.WriteLine("Format error. Please use [dd-MM-yyyy HH:mm]");
+            Console.WriteLine($"Format error with {dateTime}. Please use [dd-MM-yyyy HH:mm]");
+        }
+        catch
+        {
+            Console.WriteLine($"caught other unexpected error with {dateTime} ");
         }
     }
     public static void AdjustTime(Screening screening, string time, string altFilePath = "")

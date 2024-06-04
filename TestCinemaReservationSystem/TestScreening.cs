@@ -25,10 +25,10 @@ public class TestScreening : TestHelperMethods
         List<Screening> testScreenings = CreateTestScreenings(3, fileName);
         for(int i = 0; i < 3; i++)
         {
-            string dateTimeString = $"0{i}-01-2000 0{i}:0{i}";
+            string dateTimeString = $"0{i+1}-01-2000 0{i+1}:0{i+1}";
             ScreeningDataController.AdjustDateTime(testScreenings[i], dateTimeString);
 
-            DateTime dateTime = new DateTime(2000, 1, i, i, i, 0); //should match string above
+            DateTime dateTime = new DateTime(2000, 1, i+1, i+1, i+1, 0); //should match string above
             Assert.AreEqual(testScreenings[i].ScreeningDateTime, dateTime); //test if instance in memory is changed succesfully
             //test instance in ScreeningDB.json. Can test against instance in memory if previous test is succesful.
             Screening readScreening = JsonHandler.Get<Screening>(testScreenings[i].ID, fileName);
@@ -46,10 +46,10 @@ public class TestScreening : TestHelperMethods
 
         for(int i = 0; i < 3; i++)
         {
-            string timeString = $"0{i}:0{i}";
+            string timeString = $"0{i+1}:0{i+1}";
             ScreeningDataController.AdjustTime(testScreenings[i], timeString);
             
-            TimeSpan time = new TimeSpan(i, i, 0); //should match string above
+            TimeSpan time = new TimeSpan(i+1, i+1, 0); //should match string above
             Assert.AreEqual(testScreenings[i].ScreeningDateTime.TimeOfDay, time); //test if instance in memory is changed succesfully
             //test instance in ScreeningDB.json. Can test against instance in memory if previous test is succesful.
             Screening readScreening = JsonHandler.Get<Screening>(testScreenings[i].ID, fileName);
@@ -66,10 +66,10 @@ public class TestScreening : TestHelperMethods
 
         for(int i = 0; i < 3; i++)
         {
-            string dateString = $"0{i}-01-2000";
+            string dateString = $"0{i+1}-01-2000";
             ScreeningDataController.AdjustDate(testScreenings[i], dateString);
             
-            DateTime date = new DateTime(2000, 1, i); //should match string above
+            DateTime date = new DateTime(2000, 1, i+1); //should match string above
             Assert.AreEqual(testScreenings[i].ScreeningDateTime.Date, date); //test if instance in memory is changed succesfully
             //test instance in ScreeningDB.json. Can test against instance in memory if previous test is succesful.
             Screening readScreening = JsonHandler.Get<Screening>(testScreenings[i].ID, fileName);

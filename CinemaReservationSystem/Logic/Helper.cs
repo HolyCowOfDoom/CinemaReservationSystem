@@ -301,11 +301,12 @@ public class Helper
         else if (char.IsLetterOrDigit(keyChar) || char.IsSymbol(keyChar) || char.IsPunctuation(keyChar))
         {
             ConsoleClear();
+            input += keyChar;
             if (string.Equals(Case, "register") && string.Equals(type, "birthdate"))
             {
                 if (input.Length == 2 || input.Length == 5) input += "-";
             }
-            input += keyChar;
+            
         }
     }
     private static string GetInputString(string type, string username, string birthdate, string email, string password)

@@ -5,6 +5,8 @@ public class Auditorium : ObjectHasID
 
     public Auditorium(string id, List<Seat>? seats = null)
     {
+        Directory.CreateDirectory("Data");
+        using (StreamWriter w = File.AppendText("Data/AuditoriumDDB.json")) //create file if it doesn't already exist
         ID = id;
         if (seats != null)
         {
