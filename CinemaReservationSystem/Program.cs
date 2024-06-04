@@ -11,6 +11,7 @@ using (StreamWriter w = File.AppendText("Data/AuditoriumDDB.json"));
  using (StreamWriter w = File.AppendText("Data/UserDB.csv"));
 
 List<Screening> screenings = JsonHandler.Read<Screening>("Data/ScreeningDB.json");
+List<Movie> MovieList = JsonHandler.Read<Movie>("Data/MovieDB.json");
 List<Screening> screeningsToRemove = new List<Screening>();
 for (int i = 0; i < screenings.Count; i++)
 {
@@ -21,10 +22,15 @@ for (int i = 0; i < screenings.Count; i++)
     }
 }
 foreach(Screening screening in screeningsToRemove)
-{
+{ 
+    foreach(Movie movie in MovieList)
+    {
+        if (movie.ScreeningIDs.Contains(screening.ID)) movie.ScreeningIDs.Remove(screening.ID);
+    }
     screenings.Remove(screening);
 }
 JsonHandler.Write<Screening>(screenings, "Data/ScreeningDB.json");
+JsonHandler.Write<Movie>(MovieList, "Data/MovieDB.json");
 
 // Start actual program
 Interface.GeneralMenu();

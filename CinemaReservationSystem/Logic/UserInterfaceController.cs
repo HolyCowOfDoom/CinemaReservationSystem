@@ -339,15 +339,15 @@ public class UserInterfaceController
         if (!user.Admin){
         Console.WriteLine("ALL RESERVATIONS");
         int index = 0;
-        Console.WriteLine("┌───┬──────────────────────────────────────────────────────┬───────────────────────────┬───────────────┬───────────────────────┬───────────────────┐");
+        Console.WriteLine("┌───┬──────────────────────────────────────────────────────┬────────────────────────────┬───────────────┬───────────────────────┬───────────────────┐");
         foreach (Reservation reservation in user.Reservations)
         {
             index++;
             Movie movie = GetMovieByID(reservation.ScreeningID);
             Screening screening = GetScreeningByID(reservation.ScreeningID);
-            Console.WriteLine($"│ {index} │ Movie name: {movie.Title,-40} │ Date: {screening.ScreeningDateTime, -17} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
+            Console.WriteLine($"│ {index} │ Movie name: {movie.Title,-40} │ Date: {screening.ScreeningDateTime, -20} │ Auditorium: {screening.AssignedAuditorium.ID} │ Reservation Price: {reservation.TotalPrice} │ Seats: {string.Join(" ", reservation.SeatIDs), -10} │");
         }
-        Console.WriteLine("└───┴──────────────────────────────────────────────────────┴───────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
+        Console.WriteLine("└───┴──────────────────────────────────────────────────────┴────────────────────────────┴───────────────┴───────────────────────┴───────────────────┘");
         string userInput = UserMenu();
         if (userInput == "Return"){
             if(user.Admin)
@@ -495,6 +495,7 @@ public class UserInterfaceController
     private static void LoadScreenings()
     {
         loadedScreenings = Screenings.Skip(currentIndex).Take(batchSize).ToList();
+        loadedScreenings.Sort((x, y) => x.ScreeningDateTime.CompareTo(y.ScreeningDateTime));
     }
 
     private static void HandleScreeningSelectEnter(Movie movie, string id)
