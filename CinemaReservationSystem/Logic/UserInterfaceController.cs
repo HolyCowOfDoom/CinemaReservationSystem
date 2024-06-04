@@ -495,6 +495,7 @@ public class UserInterfaceController
     private static void LoadScreenings()
     {
         loadedScreenings = Screenings.Skip(currentIndex).Take(batchSize).ToList();
+        loadedScreenings.Sort((x, y) => x.ScreeningDateTime.CompareTo(y.ScreeningDateTime));
     }
 
     private static void HandleScreeningSelectEnter(Movie movie, string id)
