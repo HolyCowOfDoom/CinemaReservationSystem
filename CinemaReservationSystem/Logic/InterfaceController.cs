@@ -163,10 +163,13 @@ public class InterfaceController
                 {
                     return "validated";
                 }
+                else if (yorn == 'n')
+                {
+                    return currentField;
+                }
             }
-            currentField = nextfield;
         }
+        currentField = nextfield;
         return currentField;
     }
-
 }
