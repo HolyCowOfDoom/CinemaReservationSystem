@@ -13,8 +13,8 @@ public class Screening : ObjectHasID
     public Screening(Auditorium assignedAuditorium, DateTime? screeningDateTime, string movieID, string? id = null, string altFilePath = "")
     {
 
-        Directory.CreateDirectory("Data");
-        using (StreamWriter w = File.AppendText("Data/ScreeningDB.json")) //create file if it doesn't already exist
+        //Directory.CreateDirectory("Data");
+        //using (StreamWriter w = File.AppendText("Data/ScreeningDB.json")); //create file if it doesn't already exist
 
         AssignedAuditorium = assignedAuditorium;
         ScreeningDateTime = (DateTime)(screeningDateTime ?? new DateTime(2000, 1, 1, 0, 0, 0));

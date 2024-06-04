@@ -9,8 +9,8 @@ public class Movie : ObjectHasID
     public Movie(string title, int ageRating, string description, string genre, List<string>? screenings = null, string? id = null)
     {
 
-        Directory.CreateDirectory("Data");
-        using (StreamWriter w = File.AppendText("Data/MovieDB.json")) //create file if it doesn't already exist
+        //Directory.CreateDirectory("Data");
+       // using (StreamWriter w = File.AppendText("Data/MovieDB.json")); //create file if it doesn't already exist
         Title = title;
         AgeRating = ageRating;
         Description = description;
