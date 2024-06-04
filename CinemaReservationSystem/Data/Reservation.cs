@@ -50,8 +50,4 @@ public class Reservation : IEquatable<Reservation>
 
 }
 
-//should look like:         //requires custom delimiters for each nesting, which is really dumb
-//",Password, Reservations"
-//"password123, {seatIDs:[1,2,3;4];screeningID:1;totalPrice:30}&{seatIDs..."
-//alternatively I could make the headers: Reservation:SeatIDs, Reservation:ScreeningID, Reservation:TotalPrice"
-//but I'm not sure how to map that
+
