@@ -178,6 +178,12 @@ public class UserInterfaceController
                 RightArrowPress();
                 LoadNextMovies();
                 break;
+            case ConsoleKey.F:
+                Movie movie = Movies[selectedIndex];
+
+
+                
+                break;
             case ConsoleKey.Home:
                 return key;
             case ConsoleKey.Enter:
