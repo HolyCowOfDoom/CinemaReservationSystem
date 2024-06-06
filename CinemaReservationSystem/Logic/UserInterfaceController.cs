@@ -184,7 +184,7 @@ public class UserInterfaceController
         List<Movie> Movies = JsonHandler.Read<Movie>("Data/MovieDB.json");
         User user = UserDataController.GetUserWithValue("ID", id);
         int age = Helper.GetUserAge(user);
-        List<Movie> sortedMovies = Movies.OrderBy(movie => movie.AgeRating).ToList(); // kan ook in de JsonHandler.cs
+        List<Movie> sortedMovies = Movies.OrderBy(movie => movie.AgeRating).ToList();
         int rating = 0;
         string genre = "";
         if(option == "Age")
@@ -193,22 +193,19 @@ public class UserInterfaceController
             if(age >= rating)
             {
                 FilterMoviesAge(rating, sortedMovies);
+                XToGoBack(id);
             }
             else
             {
-                Console.WriteLine("You are too young too see these movies. Press X to go back.");
-                char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-                if (specificLetterInput == 'x'){
-                    User IdCheck = UserDataController.GetUserWithValue("ID", id);
-                    if (IdCheck.Admin) AdminInterface.GeneralMenu(id); 
-                    else UserInterface.GeneralMenu(id);   
-                }
+                Console.WriteLine("You are too young too see these movies. Press X to go back.");   
+                XToGoBack(id);
             }
         }
         if(option == "Genre")
         {
             genre = InputGenre();
             FilterMoviesGenre(genre, sortedMovies, age);
+            XToGoBack(id);
         }
         if(option == "Both")
         {
@@ -217,16 +214,12 @@ public class UserInterfaceController
             {
                 genre = InputGenre();
                 FilterMoviesAgeAndGenre(genre, rating, sortedMovies);
+                XToGoBack(id);
             }
             else
             {
                 Console.WriteLine("You are too young too see these movies. Press X to go back.");
-                char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
-                if (specificLetterInput == 'x'){
-                    User IdCheck = UserDataController.GetUserWithValue("ID", id);
-                    if (IdCheck.Admin) AdminInterface.GeneralMenu(id); 
-                    else UserInterface.GeneralMenu(id);   
-                }   
+                XToGoBack(id);
             }
         }
     }
@@ -328,6 +321,15 @@ public class UserInterfaceController
             Console.WriteLine($"│ Title: {movie.Title,-40} │ Age Rating: {movie.AgeRating,-3} │ Genre: {movie.Genre,-10} │ Description: {movie.Description}");
         }
     }
+    }
+
+    public static void XToGoBack(string id){
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+                if (specificLetterInput == 'x'){
+                User IdCheck = UserDataController.GetUserWithValue("ID", id);
+                if (IdCheck.Admin) AdminInterface.GeneralMenu(id); 
+                else UserInterface.GeneralMenu(id);
+        }
     }
 
 

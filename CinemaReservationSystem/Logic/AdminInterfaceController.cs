@@ -6,7 +6,7 @@ public class AdminInterfaceController
     {
         string title = Helper.GetValidInput("Please input movie title:", Helper.IsNotNull);
         string description = Helper.GetValidInput("Please add movie description:", Helper.IsNotNull);
-        int ageRating = Convert.ToInt32(Helper.GetValidInput("Please add movie age rating:", Helper.IsNotNull));
+        int ageRating = Convert.ToInt32(Helper.GetValidInput("Please add movie age rating:", Helper.IsValidAgeRating));
         string genre = Helper.GetValidInput("Please add a genre to the movie:", Helper.IsNotNull);
 
         Movie addedMovie = new Movie(title, ageRating, description, genre);

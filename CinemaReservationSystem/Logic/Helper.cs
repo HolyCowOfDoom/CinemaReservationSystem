@@ -400,6 +400,19 @@ public class Helper
     }
     public static bool IsNotNull(string input) => !string.IsNullOrWhiteSpace(input);
     public static bool IsValidInt(string input) => input.All(char.IsDigit);
+    public static bool IsValidAgeRating(string input)
+    {
+        HashSet<int> validNumbers = new HashSet<int> { 6, 9, 13, 15, 18 };
+
+        if (int.TryParse(input, out int number))
+        {
+            return validNumbers.Contains(number);
+        }
+        else
+        {
+            return false;
+        }
+    }
     public static int IsValidUsername(string input)
     {
         List<User> users = CsvHandler.Read<User>("Data/UserDB.csv");
