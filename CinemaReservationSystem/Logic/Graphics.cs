@@ -256,7 +256,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
 
         Console.SetCursorPosition(0, 0);
         Console.ForegroundColor = ConsoleColor.Blue;
-        Helper.WriteInCenter("Register or press ESC to go to back to menu.");
+        Helper.WriteInCenter("Register or press ESC to go to back to menu. Use TAB and SHIFT + TAB to navigate, all fields need to be completed.");
         Console.ResetColor();
         
         Console.SetCursorPosition((Console.WindowWidth - 50) / 2, 8);
@@ -293,16 +293,16 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
             switch (activefield)
             {
                 case "username":
-                    offsetusername = 17;
+                    offsetusername = 18;
                     break;
                 case "birthdate":
                     offsetbirthdate = 18;
                     break;
                 case "email":
-                    offsetemail = 17;
+                    offsetemail = 18;
                     break;
                 case "password":
-                    offsetpassword = 17;
+                    offsetpassword = 18;
                     break;
             }
             return (type) switch
@@ -320,16 +320,16 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
             switch (activefield)
             {
                 case "username":
-                    offsetusername = 28;
+                    offsetusername = 29;
                     break;
                 case "birthdate":
                     offsetbirthdate = 30;
                     break;
                 case "email":
-                    offsetemail = 25;
+                    offsetemail = 26;
                     break;
                 case "password":
-                    offsetpassword = 28;
+                    offsetpassword = 29;
                     break;
             }
             return (type) switch

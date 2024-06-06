@@ -99,7 +99,7 @@ public class InterfaceController
     {
         if (username is null) username = string.Empty;
         string birthDate = string.Empty, email = string.Empty, password = string.Empty, escapetab = string.Empty;
-        bool registercomplete = false;
+        bool registercomplete = false, allfields = false;
 
         Console.CursorVisible = false;
         Helper.ConsoleClear();
@@ -125,7 +125,9 @@ public class InterfaceController
                     break;
                 case "password":
                     (password, escapetab) = Helper.Catchinput(27, "password", "register", username, birthDate, email, password);
-                    currentField = HandleRegisterinput(currentField, password, escapetab, nextfield: null, "email");
+                    if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(birthDate) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password)) allfields = true;
+                    else allfields = false;
+                    currentField = HandleRegisterinput(currentField, password, escapetab, nextfield: null, "email", allfields);
                     if (string.Equals(currentField, "validated")) registercomplete = true;
                     break;
             }
@@ -138,7 +140,7 @@ public class InterfaceController
         else UserInterface.GeneralMenu(user.ID);
     }
 
-    public static string HandleRegisterinput(string currentField, string userinfo, string escapetab, string nextfield, string lastfield)
+    public static string HandleRegisterinput(string currentField, string userinfo, string escapetab, string nextfield, string lastfield, bool allfields = false)
     {
         switch (escapetab)
         {
@@ -153,9 +155,9 @@ public class InterfaceController
                 if (lastfield is not null) currentField = lastfield;
                 return currentField;
         }
-        if (!string.IsNullOrEmpty(userinfo))
+        if (string.Equals(currentField, "password"))
         {
-            if (string.Equals(currentField, "password"))
+            if (allfields is true)
             {
                 char yorn = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Complete registration",
                                              "Are you happy to register with current details? Y/N");
@@ -163,11 +165,8 @@ public class InterfaceController
                 {
                     return "validated";
                 }
-                else if (yorn == 'n')
-                {
-                    return currentField;
-                }
             }
+            return currentField;
         }
         currentField = nextfield;
         return currentField;
