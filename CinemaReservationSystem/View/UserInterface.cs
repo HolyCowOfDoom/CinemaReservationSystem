@@ -1,8 +1,8 @@
 public class UserInterface
 {
     public static void GeneralMenu(string id){
-        char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4',
-        "General Menu",  "1. View all movies / Reserve seats\n2. Filter Movies\n3. See profile\n4. Log out");
+        char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4' || c == '5',
+        "General Menu",  "1. View all movies / Reserve seats\n2. Filter Movies\n3. See profile\n4. Magnetar\n5. Log out");
         switch(DigitInput) 
         {
             case '1':
@@ -41,6 +41,12 @@ public class UserInterface
                 UserInterfaceController.ViewUser(id);
                 break;
             case '4':
+                Magnetar game = new Magnetar(100);
+                game.Play();
+                Helper.ConsoleClear();
+                GeneralMenu(id);
+                break;
+            case '5':
                 UserInterfaceController.LogOut();
                 break;
             default:

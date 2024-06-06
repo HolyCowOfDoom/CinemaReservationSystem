@@ -97,6 +97,24 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
 |    |    |    |    |    |    |
 ||~~~~~||~~~~~||~~~~~||~~~~~~|| 
 `'     `'     `'     `'      `'";
+    public static readonly string ziggurat = @"
+                      ,.__.,
+                     /,',.`.\
+                 ____|:|db|:|____
+             ___//""""""|:|88|:|""""""\\___
+       _____//"":=_=_=_=|--|=_=_=_=:""\\_____
+    __/.-._//__|L_L_L_L|--|L_L_L_L|__\\_.-.\__
+   //""||m|:.-. .-. .-.,.__.,.-. .-. .-.:|m||""\\
+  //  ||8||: : L_L_L_/.',.`.\_L_L_L : :||8||  \\
+ /'=======""L.='.::'`:|:|db|:|:'`::.`=.L""=======`\
+ | .---. .--. |_:==' |:|88|:| `==:_| .--. .---. |
+ | |   : |_.='/=======|:--:|=======\`=._| :   | |
+ | |  _,='   ||==.=.==|:--:|==.=.==||   `=._  | |
+ |_:='_______|| || || |:--:| || || ||_______`=:_|
+             || || || |:--:| || || ||
+             ''-------|:--:|-------''
+                      ':==:'
+";
     public static void BoxText(string text, string header = "")
     {
 
@@ -142,6 +160,67 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         }
 
         Helper.WriteInCenter(bottomBorder);
+    }
+
+    public static void DrawLoadingBar(int progress, int total)
+    {
+        string[] imagelines = ziggurat.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+        int imageheight = imagelines.Length;
+
+
+        for (int i = 0; i < imageheight; i++)
+        {
+            if (i < (double)progress / total * imageheight)
+            {
+                Console.SetCursorPosition((Console.WindowWidth - 50) / 2, i);
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine(imagelines[i]);
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.WriteLine(new string(' ', Console.WindowWidth));
+            }
+        }
+        Console.SetCursorPosition((Console.WindowWidth - 100) / 2, 16);
+
+        var message = progress switch
+        {
+            int p when p < total*0.25 => LoadingBarMessage("start"),
+            int p when p >= total * 0.25 && p <= total * 0.50 => LoadingBarMessage("logic"),
+            int p when p > total * 0.50 && p <= total * 0.75 => LoadingBarMessage("visual"),
+            int p when p > total * 0.75 && p <= total * 0.98 => LoadingBarMessage("expectation"),
+            int p when p > total * 0.98 => LoadingBarMessage(""),
+            _ => throw new ArgumentOutOfRangeException(nameof(progress), "Invalid progress value")
+        };
+
+        Console.Write(message);
+        Console.SetCursorPosition((Console.WindowWidth - 100) / 2, 17);
+        Console.Write("[");
+
+        int windowWidth = 100;
+        int progressBarLength = (int)((double)progress / total * (windowWidth - 2));
+
+        Console.BackgroundColor = ConsoleColor.DarkCyan;
+        Console.Write(new string(' ', progressBarLength));
+
+        Console.ResetColor();
+        Console.Write(new string(' ', windowWidth - 2 - progressBarLength));
+
+        Console.Write("] ");
+        Console.Write($"{progress * 100 / total}%");
+    }
+
+    private static string LoadingBarMessage(string message)
+    {
+        return message switch
+        {
+            "start" => "Loading data...",
+            "logic" => "Fetching coffee....",
+            "visual" => "Drawing auditorium...",
+            "expectation" => "Raising expectations.",
+            _ => "                                  "
+        };
     }
 
     public static void DrawLogin(string username = "", string password = "")

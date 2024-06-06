@@ -47,6 +47,7 @@ public class AdminInterfaceController
     }
     public static void AddScreeningsAuto(int amountpermovie)
     {
+        int progress = 0;
         if (amountpermovie > 10) amountpermovie = 10;
         List<Movie> movies = JsonHandler.Read<Movie>("Data/MovieDB.json");
         Random rand = new Random();
@@ -73,8 +74,13 @@ public class AdminInterfaceController
                 }
 
                 MovieDataController.AddScreening(movie, screeningAud, randomDateTime);
-            }
+                
+            }    
+            progress++;
+            Graphics.DrawLoadingBar(progress, movies.Count);
         }
+        Thread.Sleep(1000);
+        Helper.ConsoleClear();
     }
 
     public static DateTime GetRandomDateTime(Random random)
