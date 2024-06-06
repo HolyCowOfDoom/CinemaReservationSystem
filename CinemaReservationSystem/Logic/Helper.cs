@@ -217,7 +217,7 @@ public class Helper
             if (validated is true) return (input, taboresc);
         }
     }
-    private static bool ValidateUserInput(string Case, string type, string input)
+    public static bool ValidateUserInput(string Case, string type, string input)
     {
         switch (type)
         {

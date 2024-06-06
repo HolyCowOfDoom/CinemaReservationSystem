@@ -125,7 +125,9 @@ public class InterfaceController
                     break;
                 case "password":
                     (password, escapetab) = Helper.Catchinput(27, "password", "register", username, birthDate, email, password);
-                    if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(birthDate) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password)) allfields = true;
+                    if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(birthDate) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password) && 
+                        Helper.ValidateUserInput("register", "username", username) && Helper.ValidateUserInput("register", "birthdate", birthDate) &&
+                        Helper.ValidateUserInput("register", "email", email) && Helper.ValidateUserInput("register", "password", password)) allfields = true;
                     else allfields = false;
                     currentField = HandleRegisterinput(currentField, password, escapetab, nextfield: null, "email", allfields);
                     if (string.Equals(currentField, "validated")) registercomplete = true;
