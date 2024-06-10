@@ -64,9 +64,10 @@ public class UserInterfaceController
                 else ViewMovies();
             }
             ResetFields();
-            User? user = UserDataController.GetUserWithValue("ID", id);
-            if (user.Admin is true) AdminInterfaceController.AddScreening(movie, id);
-            else ScreeningSelect(movie, id);
+            //User? user = UserDataController.GetUserWithValue("ID", id);
+            //ScreeningSelect(movie, id);
+            //if (user.Admin is true) AdminInterfaceController.AddScreening(movie, id); //now checks this in ScreeningSelect before the do-while loop
+            ScreeningSelect(movie, id);
         }
         else if (key.Key == ConsoleKey.Home)
         {
@@ -467,6 +468,14 @@ public class UserInterfaceController
         totalcount = Screenings.Count;
 
         ConsoleKeyInfo key;
+        User? user = UserDataController.GetUserWithValue("ID", id);
+        if(user.Admin is true) {
+            LoadScreenings();
+            PrintScreenings(movie);
+            AdminInterfaceController.AddScreening(movie, id);
+                //ManageScreenings();
+                ResetFields();
+        }
         do
         {
             LoadScreenings();
@@ -512,8 +521,18 @@ public class UserInterfaceController
                     chosenScreening = screening;
                 }
             }
-            ResetFields();
-            ReserveSeats(chosenScreening, id);
+            
+            //User? user = UserDataController.GetUserWithValue("ID", id);
+            // if(user.Admin is true) {
+            //     ManageScreenings();
+            //     ResetFields();
+            // }
+            // else 
+            // {
+            //     ResetFields(); //original order from Vincent
+            //     ReserveSeats(chosenScreening, id);
+            // }
+            
         }
         catch (NullReferenceException)
         {
