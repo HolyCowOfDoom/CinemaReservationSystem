@@ -60,7 +60,14 @@ public class AdminInterfaceController
         string dateTimeString = Helper.GetValidInput("Please input screening date: <DD-MM-YYYY HH:MM>", Helper.IsValidDT);
         DateTime screeningDT = DateTime.ParseExact(dateTimeString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
         MovieDataController.AddScreening(movie, screeningAud, screeningDT);
-
+        string addToBundle = Helper.GetValidInput("Would you like to add the screening to a bundle? (y/n)", (c) => c == "y" || c == "n");
+        if(addToBundle == "y")
+        {
+            Console.WriteLine("We've no implemented bundles yet!");
+            //print bundles
+            //allow selecting from bundles
+            //add to selected bundle
+        }
         Console.WriteLine("Press x to go back to the main menu");
         char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
         if (specificLetterInput == 'x'){
