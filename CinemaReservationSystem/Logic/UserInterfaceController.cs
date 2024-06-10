@@ -14,14 +14,16 @@ public class UserInterfaceController
     private static int totalcount;
     private static int currentIndex = 0;
     private static int selectedIndex = 0;
+    private static User CurrentUser;
     public static void LogOut(){
         Interface.GeneralMenu();
     }
 
-    public static void ViewMovies(string id="not logged in")
+    public static void ViewMovies(string id = "not logged in")
     {
         Helper.ConsoleClear();
         Console.CursorVisible = false;
+        CurrentUser = id != "not logged in" ? UserDataController.GetUserWithValue("ID", id) : null;
         totalcount = JsonHandler.Read<Movie>("Data/MovieDB.json").Count;
         LoadNextMovies();
 
@@ -39,17 +41,17 @@ public class UserInterfaceController
         if (key.Key == ConsoleKey.Escape)
         {
             ResetFields();
-            if (!string.Equals(id, "not logged in")){
-                User user = UserDataController.GetUserWithValue("ID", id);
-                if(user.Admin) AdminInterface.GeneralMenu(id);
+            if (CurrentUser != null)
+            {
+                if (CurrentUser.Admin) AdminInterface.GeneralMenu(id);
                 else UserInterface.GeneralMenu(id);
-                }
+            }
             else Interface.GeneralMenu();
         }
         else if (key.Key == ConsoleKey.Enter)
         {
             Movie movie = Movies[selectedIndex];
-            if (string.Equals(id, "not logged in"))
+            if (CurrentUser == null)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 char confirm = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Not logged in",
@@ -63,11 +65,12 @@ public class UserInterfaceController
                 }
                 else ViewMovies();
             }
-            ResetFields();
-            //User? user = UserDataController.GetUserWithValue("ID", id);
-            //ScreeningSelect(movie, id);
-            //if (user.Admin is true) AdminInterfaceController.AddScreening(movie, id); //now checks this in ScreeningSelect before the do-while loop
-            ScreeningSelect(movie, id);
+            else
+            {
+                ResetFields();
+                if (CurrentUser.Admin) AdminInterfaceController.AddScreening(movie, id);
+                else ScreeningSelect(movie, id);
+            }
         }
         else if (key.Key == ConsoleKey.Home)
         {
@@ -108,16 +111,37 @@ public class UserInterfaceController
                 RightArrowPress();
                 LoadNextMovies();
                 break;
+            case ConsoleKey.F:
+                HandleFavoriteToggle();
+                break;
             case ConsoleKey.Home:
-                return key;
             case ConsoleKey.Enter:
-                return key;
             case ConsoleKey.Escape:
                 return key;
         }
         if (selectedIndex >= Movies.Count)
             selectedIndex = Movies.Count - 1;
         return key;
+    }
+
+    private static void HandleFavoriteToggle()
+    {
+        if (CurrentUser != null)
+        {
+            var selectedMovie = Movies[selectedIndex];
+            if (CurrentUser.FavMovies.Contains(selectedMovie))
+            {
+                CurrentUser.FavMovies.Remove(selectedMovie);
+                UserDataController.RemoveFavoriteMovie(CurrentUser, selectedMovie);
+                Console.WriteLine($"{selectedMovie.Title} removed from favorites");
+            }
+            else
+            {
+                CurrentUser.FavMovies.Add(selectedMovie);
+                UserDataController.AddFavoriteMovie(CurrentUser, selectedMovie);
+                Console.WriteLine($"{selectedMovie.Title} added to favorites");
+            }
+        }
     }
 
     private static void LeftArrowPress()
@@ -170,58 +194,74 @@ public class UserInterfaceController
                 Console.BackgroundColor = ConsoleColor.Yellow;
                 Console.ForegroundColor = ConsoleColor.Black;
             }
-            Console.WriteLine($"│ {currentIndex + i + 1,-4} │ {Movies[i].Title,-40} │ {Movies[i].AgeRating,-11} │ {Movies[i].Genre,-11} │ {Movies[i].Description,-60} │");
+            var favoriteMarker = CurrentUser != null && CurrentUser.FavMovies.Contains(Movies[i]) ? "*" : "";
+            if (Movies[i].Title == "Fight Club" && favoriteMarker == "*")
+            {
+                favoriteMarker = "same";
+            }
+            Console.WriteLine($"│ {currentIndex + i + 1,-4} │ {Movies[i].Title,-40} │ {Movies[i].AgeRating,-11} │ {Movies[i].Genre,-11} │ {Movies[i].Description,-60} │ {favoriteMarker}");
             Console.ResetColor();
         }
         Console.WriteLine("└──────┴──────────────────────────────────────────┴─────────────┴─────────────┴──────────────────────────────────────────────────────────────┘");
-        Console.WriteLine($"Page {(currentIndex / batchSize) + 1} of {totalcount/batchSize + 1}");
+        Console.WriteLine($"Page {(currentIndex / batchSize) + 1} of {totalcount / batchSize + 1}");
         Console.ForegroundColor = ConsoleColor.Blue;
-        Console.WriteLine("ESC to go back, HOME to return to main menu, or ENTER to select movie.");
+        Console.WriteLine("ESC to go back, HOME to return to main menu, ENTER to select movie, f to select favorite movies.");
         Console.ResetColor();
     }
     public static void FilterMovies(string id, string option)
     {
-        // char genreFilterInput;
-        List<Movie> Movies = JsonHandler.Read<Movie>("Data/MovieDB.json");
+        List<Movie> movies = JsonHandler.Read<Movie>("Data/MovieDB.json");
         User user = UserDataController.GetUserWithValue("ID", id);
         int age = Helper.GetUserAge(user);
-        List<Movie> sortedMovies = Movies.OrderBy(movie => movie.AgeRating).ToList();
+        List<Movie> sortedMovies = movies.OrderBy(movie => movie.AgeRating).ToList();
         int rating = 0;
         string genre = "";
-        if(option == "Age")
+        if (option == "Age")
         {
             rating = InputAge();
-            if(age >= rating)
+            if (age >= rating)
             {
                 FilterMoviesAge(rating, sortedMovies);
-                XToGoBack(id);
             }
             else
             {
-                Console.WriteLine("You are too young too see these movies. Press X to go back.");   
-                XToGoBack(id);
+                Console.WriteLine("You are too young to see these movies. Press X to go back.");
+                char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+                if (specificLetterInput == 'x')
+                {
+                    if (user.Admin) AdminInterface.GeneralMenu(id);
+                    else UserInterface.GeneralMenu(id);
+                }
             }
         }
-        if(option == "Genre")
+        if (option == "Genre")
         {
             genre = InputGenre();
             FilterMoviesGenre(genre, sortedMovies, age);
-            XToGoBack(id);
         }
-        if(option == "Both")
+        if (option == "Both")
         {
             rating = InputAge();
-            if(age >= rating)
+            if (age >= rating)
             {
                 genre = InputGenre();
                 FilterMoviesAgeAndGenre(genre, rating, sortedMovies);
-                XToGoBack(id);
             }
             else
             {
-                Console.WriteLine("You are too young too see these movies. Press X to go back.");
-                XToGoBack(id);
+                Console.WriteLine("You are too young to see these movies. Press X to go back.");
+                char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+                if (specificLetterInput == 'x')
+                {
+                    if (user.Admin) AdminInterface.GeneralMenu(id);
+                    else UserInterface.GeneralMenu(id);
+                }
             }
+        }
+        if (option == "Favorites" && user != null)
+        {
+            Movies = user.FavMovies;
+            PrintMovies();
         }
     }
 
