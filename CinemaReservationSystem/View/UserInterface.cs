@@ -9,32 +9,39 @@ public class UserInterface
                 UserInterfaceController.ViewMovies(id);
                 break;
             case '2':
-                char FilterOption = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4',
-                "Filter options",  "1. Filter movies by the Age Rating\n2. Filter Movies by Genre\n3. Filter Movies by both\n4. Exit Menu");
-                if(FilterOption == '1')
+                char FilterOption = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4' || c == '5',
+                "Filter options", "1. Filter movies by the Age Rating\n2. Filter Movies by Genre\n3. Filter Movies by both\n4. Filter Movies by Favorites\n5. Exit Menu");
+                if (FilterOption == '1')
                 {
-                    string option = "Age"; 
+                    string option = "Age";
                     UserInterfaceController.FilterMovies(id, option);
-                    break; 
+                    break;
                 }
-                else if(FilterOption == '2')
+                else if (FilterOption == '2')
                 {
                     string option = "Genre";
                     UserInterfaceController.FilterMovies(id, option);
                     break;
                 }
-                else if(FilterOption == '3')
+                else if (FilterOption == '3')
                 {
                     string option = "Both";
                     UserInterfaceController.FilterMovies(id, option);
                     break;
                 }
-                else if(FilterOption == '4') 
+                else if (FilterOption == '4')
+                {
+                    string option = "Favorites";
+                    UserInterfaceController.FilterMovies(id, option);
+                    break;
+                }
+                else if (FilterOption == '5')
                 {
                     GeneralMenu(id);
                     break;
                 }
-                else{
+                else
+                {
                     break;
                 }
             case '3':

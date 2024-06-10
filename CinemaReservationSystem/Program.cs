@@ -14,4 +14,3 @@ using System.Security.AccessControl;
 Helper.DataBaseCleanup();
 // Start actual program
 Interface.GeneralMenu();
-
