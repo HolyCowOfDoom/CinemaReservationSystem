@@ -21,14 +21,36 @@ public class AdminInterfaceController
     public static void AddScreening(Movie movie, string id)
     {
         Console.WriteLine("press a to automatically add screenings or c to continue (max 10)");
-        char autoInput = Helper.ReadInput((char c) => c == 'a' || c == 'c');
-        if (autoInput == 'a')
+        ConsoleKeyInfo key = Console.ReadKey();
+        switch (key.Key)
         {
+            case ConsoleKey.A:
             Console.WriteLine("Enter amount of screenings to add per movie");
             int amountpermovie = Convert.ToInt32(Console.ReadLine());
             AddScreeningsAuto(amountpermovie);
             AdminInterface.GeneralMenu(id);
+            break;
+            case ConsoleKey.Escape:
+            Helper.ConsoleClear();
+            AdminInterface.GeneralMenu(id);
+            break;
+            case ConsoleKey.Home:
+            Helper.HandleHomeKey(id);
+            break;
+            case ConsoleKey:
+            Helper.ConsoleClear();
+            UserInterfaceController.PrintScreeningsAdmin(movie);
+            AddScreening(movie, id);
+            break; 
         }
+        // char autoInput = Helper.ReadInput((char c) => c == 'a' || c == 'c' || c);
+        // if (autoInput == 'a')
+        // {
+        //     Console.WriteLine("Enter amount of screenings to add per movie");
+        //     int amountpermovie = Convert.ToInt32(Console.ReadLine());
+        //     AddScreeningsAuto(amountpermovie);
+        //     AdminInterface.GeneralMenu(id);
+        // }
         Auditorium? screeningAud;
         do
         {
@@ -187,4 +209,6 @@ public class AdminInterfaceController
             AdminInterface.GeneralMenu(id);
         }
     }
+
+    
 }

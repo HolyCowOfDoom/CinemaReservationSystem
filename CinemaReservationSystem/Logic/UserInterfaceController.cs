@@ -471,7 +471,7 @@ public class UserInterfaceController
         User? user = UserDataController.GetUserWithValue("ID", id);
         if(user.Admin is true) {
             LoadScreenings();
-            PrintScreenings(movie);
+            PrintScreeningsAdmin(movie);
             AdminInterfaceController.AddScreening(movie, id);
                 //ManageScreenings();
                 ResetFields();
@@ -562,6 +562,22 @@ public class UserInterfaceController
         Console.WriteLine($"Page {(currentIndex / batchSize) + 1} of {totalcount / batchSize + 1}");
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("ESC to go back, HOME to return to main menu, or ENTER to select screening to reserve seats.");
+        Console.ResetColor();
+    }
+
+    public static void PrintScreeningsAdmin(Movie movie)
+    {
+        Console.WriteLine("┌──────────────────────────────────────────┬────────────────┬─────────────┬───────────────────────────────────────────────────────────────────────────┐");
+        Console.WriteLine($"│ {movie.Title,-40} │ {"Age rating: " + movie.AgeRating,-15}│ {movie.Genre,-11} │ {movie.Description,-74}│");
+        Console.WriteLine("├──────┬───────────────────────────────────┼────────────────┼─────────────┴───────────────────────────────────────────────────────────────────────────┤");
+        for (int i = 0; i < loadedScreenings?.Count; i++)
+        {
+            Console.WriteLine($"│ {currentIndex + i + 1,-4} | Date and Time: {loadedScreenings[i].ScreeningDateTime,-18:dd-MM-yyyy HH:mm} | Auditorium: {loadedScreenings[i].AssignedAuditorium.ID, -2} | {"|", 89}");
+        }
+        Console.WriteLine("└──────┴───────────────────────────────────┴────────────────┴─────────────────────────────────────────────────────────────────────────────────────────┘");
+        Console.WriteLine($"Page {(currentIndex / batchSize) + 1} of {totalcount / batchSize + 1}");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("ESC to go back, HOME to return to main menu");
         Console.ResetColor();
     }
     private static ConsoleKeyInfo HandleUserSelectScreeningInput(ConsoleKeyInfo key)
