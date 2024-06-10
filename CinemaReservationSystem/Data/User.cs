@@ -29,6 +29,9 @@ public class User : IEquatable<User>
     [Name("Reservations"), Optional]
     public List<Reservation> Reservations {get; set;}// = new();
 
+    [Name("FavMovies"), Optional]
+    public List<Movie> FavMovies { get; set; } = new List<Movie>();
+
 //[CsvHelper.Configuration.Attributes.Ignore] fixes csvHelper expecting the parameter to match a header in the database
     public User(string name, string birthDate, string email, string password, bool admin = false, List<Reservation> reservations = null, [CsvHelper.Configuration.Attributes.Ignore]string altFilePath = "") //, string altFilePath = ""
     {
