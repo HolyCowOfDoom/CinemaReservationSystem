@@ -28,6 +28,18 @@ public static class UserDataController
         else return CsvHandler.AddValueToRecord<User, J>(altFilePath, user, header, addValue);
     }
 
+    public static void AddFavoriteMovie(User user, Movie movie)
+    {
+        user.FavMovies.Add(movie);
+        // Code to update user data in the database
+    }
+
+    public static void RemoveFavoriteMovie(User user, Movie movie)
+    {
+        user.FavMovies.Remove(movie);
+        // Code to update user data in the database
+    }
+
      // private static string EncryptPassword(string password)
     // {
     //     string encrypted = "";
