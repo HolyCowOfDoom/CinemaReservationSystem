@@ -31,13 +31,15 @@ public static class UserDataController
     public static void AddFavoriteMovie(User user, Movie movie)
     {
         user.FavMovies.Add(movie);
-        // Code to update user data in the database
+        UserDataController.AddValueToUser(user, "FavMovies", movie);
+        // Code om user database te updaten
     }
 
     public static void RemoveFavoriteMovie(User user, Movie movie)
     {
         user.FavMovies.Remove(movie);
-        // Code to update user data in the database
+        UserDataController.UpdateUserWithValue(user, "FavMovies", user.FavMovies);
+        // Code om user database te updaten
     }
 
      // private static string EncryptPassword(string password)
