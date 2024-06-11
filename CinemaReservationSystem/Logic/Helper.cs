@@ -284,7 +284,7 @@ public class Helper
             case "email":
                 if (!IsValidEmail(input))
                 {
-                    WriteErrorMessage("""Invalid email. Must contain "@" and ".". Or email is already taken""");
+                    WriteErrorMessage("""Invalid email. Must contain 1 "@" and 1 ".". Or email is already taken""");
                 }
                 else return true;
                 break;
@@ -439,7 +439,7 @@ public class Helper
     }
     public static int IsValidUsername(string input)
     {
-        string invalidsymbols = "~`!@#$%^&*()_-+={}[]|\\:;<>?/\"\'";
+        string invalidsymbols = ",~`!@#$%^&*()_-+={}[]|\\:;<>?/\"\'";
         foreach(char c in invalidsymbols) if (input.Contains(c)) return 0;
 
         List<User> users = CsvHandler.Read<User>("Data/UserDB.csv");
@@ -473,6 +473,11 @@ public class Helper
     }
     public static bool IsValidEmail(string input, string altFilePath = "")
     {
+        string invalidsymbols = ",~`!@$%^&*()_-+={}[]|\\:;<>?/\"\'";
+        if(input.Count(c => c == '@') > 1) return false;
+        if(input.Count(c => c == '.') > 1) return false;
+        foreach(char c in invalidsymbols) if(input.Contains(c)) return false;
+
         List<User> users;
         if(altFilePath == "") users = CsvHandler.Read<User>("Data/UserDB.csv");
         else users = CsvHandler.Read<User>(altFilePath);

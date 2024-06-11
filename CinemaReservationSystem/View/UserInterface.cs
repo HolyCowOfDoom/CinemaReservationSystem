@@ -1,4 +1,4 @@
-public class UserInterface
+public class UserInterface : Interface
 {
     public static void GeneralMenu(string id){
         char DigitInput = Helper.ReadInput((char c) => c == '1' || c == '2' || c == '3' || c == '4' || c == '5',

@@ -1,4 +1,4 @@
-class Interface
+public abstract class Interface
 {
     public static void GeneralMenu(){
         Helper.WriteInCenter(Graphics.cinemaVintage);
