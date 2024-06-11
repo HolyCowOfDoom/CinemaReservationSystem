@@ -21,7 +21,7 @@ public class User : IEquatable<User>
     [Name("Email")]
     public string Email {get; private set;}
     [Name("Admin")]
-    public bool Admin { get; }
+    public bool Admin { get; protected set;}
     //public string Password {get => EncryptPassword(_password); private set => _password = value;}
     [Name("Password")]
     public string Password {get => _password; private set => _password = value;}
@@ -32,7 +32,8 @@ public class User : IEquatable<User>
     [Name("FavMovies"), Optional]
     public List<Movie> FavMovies { get; set; } = new List<Movie>();
 
-    public User(string name, string birthDate, string email, string password, bool admin = false, List<Reservation> reservations = null)
+    //removed admin parameter
+    public User(string name, string birthDate, string email, string password, List<Reservation> reservations = null)
     {
         Directory.CreateDirectory("Data");
         using (StreamWriter w = File.AppendText("Data/UserDB.csv")) //create file if it doesn't already exist
@@ -41,7 +42,7 @@ public class User : IEquatable<User>
         BirthDate = birthDate;
         Email = email;
         _password = password;
-        Admin = admin;
+        //Admin = admin;
         if(reservations != null) Reservations = reservations;
         else Reservations = new();
         UserDataController.AddUser(this);
