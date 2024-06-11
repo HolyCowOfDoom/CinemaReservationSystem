@@ -1,10 +1,3 @@
-using System.Collections;
-using System.Globalization;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using CsvHelper.Configuration.Attributes;
-
 public class UserInterfaceController
 {
     private const int batchSize = 20;
@@ -19,13 +12,13 @@ public class UserInterfaceController
         Interface.GeneralMenu();
     }
 
-    public static void ViewMovies(string id = "not logged in")
+    public static void ViewMovies(string id = "not logged in", bool favourite = false)
     {
         Helper.ConsoleClear();
         Console.CursorVisible = false;
         CurrentUser = id != "not logged in" ? UserDataController.GetUserWithValue("ID", id) : null;
         totalcount = JsonHandler.Read<Movie>("Data/MovieDB.json").Count;
-        LoadNextMovies();
+        if (!favourite) LoadNextMovies();
 
         ConsoleKeyInfo key;
         do
@@ -34,7 +27,7 @@ public class UserInterfaceController
 
             key = Console.ReadKey(true);
 
-            key = HandleUserViewMovieInput(key);
+            key = HandleUserViewMovieInput(key, favourite);
 
             Helper.ConsoleClear();
         } while (key.Key != ConsoleKey.Escape && key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Home);
@@ -79,7 +72,7 @@ public class UserInterfaceController
         }
     }
 
-    private static ConsoleKeyInfo HandleUserViewMovieInput(ConsoleKeyInfo key)
+    private static ConsoleKeyInfo HandleUserViewMovieInput(ConsoleKeyInfo key, bool favourite)
     {
         switch (key.Key)
         {
@@ -90,7 +83,7 @@ public class UserInterfaceController
                 {
                     selectedIndex = totalcount - 1;
                     LeftArrowPress();
-                    LoadNextMovies();
+                    if (!favourite) LoadNextMovies();
                 }
                 break;
             case ConsoleKey.DownArrow:
@@ -100,16 +93,16 @@ public class UserInterfaceController
                 {
                     selectedIndex = 0;
                     RightArrowPress();
-                    LoadNextMovies();
+                    if (!favourite) LoadNextMovies();
                 }
                 break;
             case ConsoleKey.LeftArrow:
                 LeftArrowPress();
-                LoadNextMovies();
+                if (!favourite) LoadNextMovies();
                 break;
             case ConsoleKey.RightArrow:
                 RightArrowPress();
-                LoadNextMovies();
+                if (!favourite) LoadNextMovies();
                 break;
             case ConsoleKey.F:
                 HandleFavoriteToggle();
@@ -222,6 +215,7 @@ public class UserInterfaceController
             if (age >= rating)
             {
                 FilterMoviesAge(rating, sortedMovies);
+                XToGoBack(id);
             }
             else
             {
@@ -238,6 +232,7 @@ public class UserInterfaceController
         {
             genre = InputGenre();
             FilterMoviesGenre(genre, sortedMovies, age);
+            XToGoBack(id);
         }
         if (option == "Both")
         {
@@ -246,6 +241,7 @@ public class UserInterfaceController
             {
                 genre = InputGenre();
                 FilterMoviesAgeAndGenre(genre, rating, sortedMovies);
+                XToGoBack(id);
             }
             else
             {
@@ -261,7 +257,7 @@ public class UserInterfaceController
         if (option == "Favorites" && user != null)
         {
             Movies = user.FavMovies;
-            PrintMovies();
+            ViewMovies(favourite: true);
         }
     }
 

@@ -98,26 +98,6 @@ public class User : IEquatable<User>
         bool compareList = true;
         if(other is null) return false;
 
-        // Reservations can not be null anymore, they're just empty, which these checks don't cover
-        // still leaving this here for a little bit untill I'm sure we won't need these checks
-        // if(Reservations == null && other.Reservations == null){
-        //     compareList = false;
-        // }
-        // else if (Reservations == null || other.Reservations == null)
-        // {
-        //     return false; //if one of them is null and the other isn't
-        // }
-        // else if (Reservations.Contains(null) || other.Reservations.Contains(null))
-        // {
-        //     return false; //if any of them contains a null reference
-        // }
-        //some debugging:
-        // Console.WriteLine($"In User.Equals(): {Reservations.SequenceEqual(other.Reservations)}");
-        // for(int i = 0; i < Reservations.Count; i++) Console.WriteLine($"{Reservations[i].ScreeningID}, {Reservations[i].TotalPrice}");
-        // Console.WriteLine("////");
-        // for(int i = 0; i < other.Reservations.Count; i++) Console.WriteLine($"{other.Reservations[i].ScreeningID}, {other.Reservations[i].TotalPrice}");
-
-        //if neither is/has null then compare as usual
         bool returnValue = Name == other.Name 
                     && ID == other.ID 
                     && BirthDate == other.BirthDate
