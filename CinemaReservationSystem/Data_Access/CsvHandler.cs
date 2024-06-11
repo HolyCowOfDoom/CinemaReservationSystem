@@ -16,6 +16,7 @@ public static class CsvHandler
         using StreamReader reader = new(csvFile);
         using CsvHelper.CsvReader csvReader = new(reader, config);
         csvReader.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter());
+        csvReader.Context.TypeConverterCache.AddConverter<List<Movie>>(new MovieConverter());
         return csvReader.GetRecords<T>().ToList();
     }
 
@@ -24,6 +25,7 @@ public static class CsvHandler
         using StreamWriter writer = new(csvFile);
         using CsvHelper.CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
         csvWriter.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter()); 
+        csvWriter.Context.TypeConverterCache.AddConverter<List<Movie>>(new MovieConverter());
         csvWriter.WriteRecords(recordsList);
         return true;
     }
@@ -39,7 +41,8 @@ public static class CsvHandler
         };
         using StreamWriter writer = new(csvFile, true);
         using CsvHelper.CsvWriter csvWriter = new(writer, config);
-        csvWriter.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter());  
+        csvWriter.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter());
+        csvWriter.Context.TypeConverterCache.AddConverter<List<Movie>>(new MovieConverter());
         csvWriter.WriteRecords(records);
         return true;
     }
@@ -62,6 +65,9 @@ public static class CsvHandler
         using CsvHelper.CsvReader csvReader = new(reader, config);
         csvReader.Context.TypeConverterCache.AddConverter<Reservation>(new ReservationConverter()); 
         csvReader.Context.TypeConverterCache.AddConverter<List<Reservation>>(new ReservationConverter()); 
+
+        //csvReader.Context.TypeConverterCache.AddConverter<Movie>(new MovieConverter());
+        csvReader.Context.TypeConverterCache.AddConverter<List<Movie>>(new MovieConverter());
         
         csvReader.Read();
         csvReader.ReadHeader();
