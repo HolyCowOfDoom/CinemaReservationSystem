@@ -30,7 +30,7 @@ public static class UserDataController
 
     public static void AddFavoriteMovie(User user, Movie movie)
     {
-        if (!user.FavMovies.Contains(movie))
+        if (!user.FavMovies.Any(m => m.ID == movie.ID))
         {
             user.FavMovies.Add(movie);
             UserDataController.AddValueToUser(user, "FavMovies", movie);
