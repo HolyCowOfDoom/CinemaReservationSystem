@@ -1,10 +1,3 @@
-using System.Collections;
-using System.Globalization;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using CsvHelper.Configuration.Attributes;
-
 public class UserInterfaceController
 {
     private const int batchSize = 20;
@@ -222,6 +215,7 @@ public class UserInterfaceController
             if (age >= rating)
             {
                 FilterMoviesAge(rating, sortedMovies);
+                XToGoBack(id);
             }
             else
             {
@@ -238,6 +232,7 @@ public class UserInterfaceController
         {
             genre = InputGenre();
             FilterMoviesGenre(genre, sortedMovies, age);
+            XToGoBack(id);
         }
         if (option == "Both")
         {
@@ -246,6 +241,7 @@ public class UserInterfaceController
             {
                 genre = InputGenre();
                 FilterMoviesAgeAndGenre(genre, rating, sortedMovies);
+                XToGoBack(id);
             }
             else
             {
