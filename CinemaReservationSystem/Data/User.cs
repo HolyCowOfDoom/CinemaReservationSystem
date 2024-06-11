@@ -32,13 +32,10 @@ public class User : IEquatable<User>
     [Name("FavMovies"), Optional]
     public List<Movie> FavMovies { get; set; } = new List<Movie>();
 
-//[CsvHelper.Configuration.Attributes.Ignore] fixes csvHelper expecting the parameter to match a header in the database
-    public User(string name, string birthDate, string email, string password, bool admin = false, List<Reservation> reservations = null, [CsvHelper.Configuration.Attributes.Ignore]string altFilePath = "") //, string altFilePath = ""
+    public User(string name, string birthDate, string email, string password, bool admin = false, List<Reservation> reservations = null)
     {
-        
         Directory.CreateDirectory("Data");
         using (StreamWriter w = File.AppendText("Data/UserDB.csv")) //create file if it doesn't already exist
-        
         ID = Guid.NewGuid().ToString();
         Name = name;
         BirthDate = birthDate;
@@ -46,12 +43,11 @@ public class User : IEquatable<User>
         _password = password;
         Admin = admin;
         if(reservations != null) Reservations = reservations;
-        else Reservations = new(); //
+        else Reservations = new();
         UserDataController.AddUser(this);
     }
     //for use by CsVHandler.Read(), copies ID rather than generating a new one
-    //CsvHelper uses the constructor with the most parameters, so this constructor also needs the altFilePath parameter even if we don't use it here, because we wan't csvHelper to use THIS constructor!
-    public User(string id, string name, string birthDate, string email,string password, bool admin, List<Reservation> reservations, [CsvHelper.Configuration.Attributes.Ignore]string altFilePath = "")//, string reservations)
+    public User(string id, string name, string birthDate, string email,string password, bool admin, List<Reservation> reservations, List<Movie> favMovies)//, string reservations)
     {
         ID = id;
         Name = name;
@@ -60,6 +56,7 @@ public class User : IEquatable<User>
         _password = password;
         Admin = admin;
         Reservations = reservations;
+        FavMovies = favMovies;
         // if(reservations != null) Reservations = reservations;
         // else Reservations = new();
         //Reservations = new() {new Reservation(new List<string>{"1","2", "3"}, "1", 30)};
