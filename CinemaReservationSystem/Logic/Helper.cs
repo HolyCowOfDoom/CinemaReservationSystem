@@ -473,7 +473,7 @@ public class Helper
     }
     public static bool IsValidEmail(string input, string altFilePath = "")
     {
-        string invalidsymbols = ",~`!@$%^&*()_-+={}[]|\\:;<>?/\"\'";
+        string invalidsymbols = ",~`!$%^&*()_-+={}[]|\\:;<>?/\"\'";
         if(input.Count(c => c == '@') > 1) return false;
         if(input.Count(c => c == '.') > 1) return false;
         foreach(char c in invalidsymbols) if(input.Contains(c)) return false;
