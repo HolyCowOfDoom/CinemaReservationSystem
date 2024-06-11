@@ -547,16 +547,15 @@ public class Helper
     }
     public static void HandleHomeKey(string id)
     {
+        ConsoleClear();
         User user = UserDataController.GetUserWithValue( "ID", id);
         if (!string.Equals(id, "not logged in"))
         {
-            ConsoleClear();
             if(user.Admin) AdminInterface.GeneralMenu(id);
             else UserInterface.GeneralMenu(id);
         }
         else
         {
-            ConsoleClear();
             Interface.GeneralMenu();
         }
     }

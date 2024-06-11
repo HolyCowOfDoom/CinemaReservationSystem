@@ -22,6 +22,7 @@ public class AdminInterfaceController
     {
         Console.WriteLine("press a to automatically add screenings or c to continue (max 10)");
         ConsoleKeyInfo key = Console.ReadKey();
+        Console.Clear();
         switch (key.Key)
         {
             case ConsoleKey.A:
@@ -31,9 +32,6 @@ public class AdminInterfaceController
             AdminInterface.GeneralMenu(id);
             break;
             case ConsoleKey.Escape:
-            Helper.ConsoleClear();
-            AdminInterface.GeneralMenu(id);
-            break;
             case ConsoleKey.Home:
             Helper.HandleHomeKey(id);
             break;
@@ -43,14 +41,6 @@ public class AdminInterfaceController
             AddScreening(movie, id);
             break; 
         }
-        // char autoInput = Helper.ReadInput((char c) => c == 'a' || c == 'c' || c);
-        // if (autoInput == 'a')
-        // {
-        //     Console.WriteLine("Enter amount of screenings to add per movie");
-        //     int amountpermovie = Convert.ToInt32(Console.ReadLine());
-        //     AddScreeningsAuto(amountpermovie);
-        //     AdminInterface.GeneralMenu(id);
-        // }
         Auditorium? screeningAud;
         do
         {
@@ -76,6 +66,7 @@ public class AdminInterfaceController
     }
     public static void AddScreeningsAuto(int amountpermovie)
     {
+        Helper.ConsoleClear();
         int progress = 0;
         if (amountpermovie > 10) amountpermovie = 10;
         List<Movie> movies = JsonHandler.Read<Movie>("Data/MovieDB.json");

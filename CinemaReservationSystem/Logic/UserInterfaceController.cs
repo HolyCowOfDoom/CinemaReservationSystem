@@ -556,23 +556,12 @@ public class UserInterfaceController
             Screening? chosenScreening = null;
             foreach (Screening screening in Screenings)
             {
-                if (Screenings.IndexOf(screening) + 1 == selectedIndex + 1)
+                if (Screenings.IndexOf(screening) == selectedIndex)
                 {
                     chosenScreening = screening;
                 }
             }
-            
-            //User? user = UserDataController.GetUserWithValue("ID", id);
-            // if(user.Admin is true) {
-            //     ManageScreenings();
-            //     ResetFields();
-            // }
-            // else 
-            // {
-            //     ResetFields(); //original order from Vincent
-            //     ReserveSeats(chosenScreening, id);
-            // }
-            
+            ReserveSeats(chosenScreening, id);
         }
         catch (NullReferenceException)
         {
@@ -595,7 +584,7 @@ public class UserInterfaceController
                 Console.BackgroundColor = ConsoleColor.Yellow;
                 Console.ForegroundColor = ConsoleColor.Black;
             }
-            Console.WriteLine($"│ {currentIndex + i + 1,-4} | Date and Time: {loadedScreenings[i].ScreeningDateTime,-18:dd-MM-yyyy HH:mm} | Auditorium: {loadedScreenings[i].AssignedAuditorium.ID, -2} | {"|", 89}");
+            Console.WriteLine($"│ {currentIndex + i + 1,-4} │ Date and Time: {loadedScreenings[i].ScreeningDateTime,-18:dd-MM-yyyy HH:mm} │ Auditorium: {loadedScreenings[i].AssignedAuditorium.ID, -2} │ {"│", 89}");
             Console.ResetColor();
         }
         Console.WriteLine("└──────┴───────────────────────────────────┴────────────────┴─────────────────────────────────────────────────────────────────────────────────────────┘");
