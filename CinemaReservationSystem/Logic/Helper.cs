@@ -264,7 +264,7 @@ public class Helper
                     case "register":
                         if (IsValidUsername(input) == 0)
                         {
-                            WriteErrorMessage("Invalid username. Must be atleast 3 chars long.");
+                            WriteErrorMessage("Invalid username. Must be atleast 3 chars long and may not contain any symbols");
                         }
                         else if (IsValidUsername(input) == -1)
                         {
@@ -284,7 +284,7 @@ public class Helper
             case "email":
                 if (!IsValidEmail(input))
                 {
-                    WriteErrorMessage("""Invalid email. Must contain "@" and ".".""");
+                    WriteErrorMessage("""Invalid email. Must contain "@" and ".". Or email is already taken""");
                 }
                 else return true;
                 break;
@@ -439,8 +439,10 @@ public class Helper
     }
     public static int IsValidUsername(string input)
     {
+        string invalidsymbols = "~`!@#$%^&*()_-+={}[]|\\:;<>?/\"\'";
+        foreach(char c in invalidsymbols) if (input.Contains(c)) return 0;
+
         List<User> users = CsvHandler.Read<User>("Data/UserDB.csv");
- 
         if(!string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 28)
         {
             foreach(User user in users)  
@@ -449,6 +451,7 @@ public class Helper
             }  
             return 1;
         }
+        
         return 0;
     }
     
