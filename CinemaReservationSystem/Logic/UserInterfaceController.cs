@@ -177,9 +177,9 @@ public class UserInterfaceController
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("Use arrow keys to move up, down and use left, right to load the next batch of movies.");
         Console.ResetColor();
-        Console.WriteLine("┌──────┬──────────────────────────────────────────┬─────────────┬─────────────┬──────────────────────────────────────────────────────────────┐");
-        Console.WriteLine($"│ ID   │ {"Title",-40} │ {"Age Rating",-11} │ {"Genre",-11} │ {"Description",-60} │");
-        Console.WriteLine("├──────┼──────────────────────────────────────────┼─────────────┼─────────────┼──────────────────────────────────────────────────────────────┤");
+        Console.WriteLine("┌──────┬──────────────────────────────────────────┬─────────────┬─────────────┬──────────────────────────────────────────────────────────────┬──────────┐");
+        Console.WriteLine($"│ ID   │ {"Title",-40} │ {"Age Rating",-11} │ {"Genre",-11} │ {"Description",-60} │ {"Favorite"} │");
+        Console.WriteLine("├──────┼──────────────────────────────────────────┼─────────────┼─────────────┼──────────────────────────────────────────────────────────────┼──────────┤");
         for (int i = 0; i < Movies.Count; i++)
         {
             if (i == selectedIndex)
@@ -187,15 +187,11 @@ public class UserInterfaceController
                 Console.BackgroundColor = ConsoleColor.Yellow;
                 Console.ForegroundColor = ConsoleColor.Black;
             }
-            var favoriteMarker = CurrentUser != null && CurrentUser.FavMovies.Contains(Movies[i]) ? "*" : "";
-            if (Movies[i].Title == "Fight Club" && favoriteMarker == "*")
-            {
-                favoriteMarker = "same";
-            }
-            Console.WriteLine($"│ {currentIndex + i + 1,-4} │ {Movies[i].Title,-40} │ {Movies[i].AgeRating,-11} │ {Movies[i].Genre,-11} │ {Movies[i].Description,-60} │ {favoriteMarker}");
+            var favoriteMarker = CurrentUser != null && CurrentUser.FavMovies.Contains(Movies[i]) ? "X" : " ";
+            Console.WriteLine($"│ {currentIndex + i + 1,-4} │ {Movies[i].Title,-40} │ {Movies[i].AgeRating,-11} │ {Movies[i].Genre,-11} │ {Movies[i].Description,-60} │    {favoriteMarker}     │");
             Console.ResetColor();
         }
-        Console.WriteLine("└──────┴──────────────────────────────────────────┴─────────────┴─────────────┴──────────────────────────────────────────────────────────────┘");
+        Console.WriteLine("└──────┴──────────────────────────────────────────┴─────────────┴─────────────┴──────────────────────────────────────────────────────────────┴──────────┘");   
         Console.WriteLine($"Page {(currentIndex / batchSize) + 1} of {totalcount / batchSize + 1}");
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("ESC to go back, HOME to return to main menu, ENTER to select movie, f to select favorite movies.");
