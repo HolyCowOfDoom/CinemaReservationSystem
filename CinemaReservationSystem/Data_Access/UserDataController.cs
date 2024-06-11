@@ -30,9 +30,12 @@ public static class UserDataController
 
     public static void AddFavoriteMovie(User user, Movie movie)
     {
-        user.FavMovies.Add(movie);
-        UserDataController.AddValueToUser(user, "FavMovies", movie);
-        // Code om user database te updaten
+        if (!user.FavMovies.Any(m => m.ID == movie.ID))
+        {
+            user.FavMovies.Add(movie);
+            UserDataController.AddValueToUser(user, "FavMovies", movie);
+            // Code om user database te updaten
+        }
     }
 
     public static void RemoveFavoriteMovie(User user, Movie movie)
