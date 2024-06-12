@@ -8,170 +8,9 @@ public interface ObjectHasID
 public class Helper
 {
     //Can be used to filter char or multiple chars and can display menu with header and user options in a box graphic
-    public static char ReadInput(Func<char, bool> validationCriteria, string header="", string text="")
-    {
-        Graphics.BoxText(text, header);
-        /* validate input examples for char
-                        char letterInput = ReadInput(char.IsLetter);
+    
 
-        Validate input to be a digit
-        char digitInput = ReadInput(char.IsDigit);
-
-        Validate input to be a specific letter 'X'
-        char specificLetterInput = ReadInput((char c) => c == 'X');
-
-        Validate input to be a specific number '5'
-        char specificNumberInput = ReadInput((char c) => c == '5');*/
-        Console.CursorVisible = false;
-        char input;
-        bool isValidInput;
-        Console.WriteLine();
-        do
-        {
-            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-            input = keyInfo.KeyChar;
-            input = char.ToLower(input);
-
-            isValidInput = validationCriteria(input);
-
-            if (!isValidInput)
-            {
-                WriteErrorMessage("Invalid input. Please try again.");
-            }
-            ClearLineDo();
-        } while (!isValidInput);
-
-        Console.Clear();
-        return input;
-    }
-
-    public static ConsoleKey ReadInput(Func<ConsoleKey, bool> validationCriteria, string header = "", string text = "")
-    {
-        Graphics.BoxText(text, header);
-
-        Console.CursorVisible = false;
-        ConsoleKey input;
-        bool isValidInput;
-        Console.WriteLine();
-        do
-        {
-            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-            input = keyInfo.Key;
-
-            isValidInput = validationCriteria(input);
-
-            if (!isValidInput)
-            {
-                WriteErrorMessage("Invalid input. Please try again.");
-            }
-            ClearLineDo();
-        } while (!isValidInput);
-
-        Console.Clear();
-        return input;
-    }
-    //Can be used to filter string and displayer menu with header and user options in a box graphic
-    // Displays user input key for key, user can backspace input
-    //Can be used for login page for input validation
-    public static string ReadInput(Func<string, bool> stringValidationCriteria)
-    {
-        /*
-        Validate input to be a string that starts with 'ABC'
-        string abcInput = ReadInput(s => s.StartsWith("ABC"));
-
-        Validate input to be a string that contains only digits
-        string digitsInput = ReadInput(s => s.All(char.IsDigit));
-            */
-        Console.CursorVisible = false;
-        string input = string.Empty;
-        int windowWidth = Console.WindowWidth;
-        Console.WriteLine("\n\n");
-        do
-        {
-            int leftPadding = (windowWidth - input.Length) / 2;
-            Console.SetCursorPosition(leftPadding, Console.CursorTop);
-
-            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-            ClearLineDo();
-
-            if (input.Length == 10)
-            {
-                ClearLastLine();
-                ClearLineDo();
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                WriteInCenter("Length exceeded. Please try again.");
-                Console.ForegroundColor = ConsoleColor.White;
-                input = string.Empty;
-            }
-            else if (keyInfo.Key == ConsoleKey.Backspace && input.Length > 0)
-            {
-                ClearLineDo();
-                input = input.Substring(0, input.Length - 1);
-                ClearLineDo();
-            }
-            else if (keyInfo.Key == ConsoleKey.Enter)
-            {
-                if (!stringValidationCriteria(input) || string.IsNullOrEmpty(input))
-                {
-                    ClearLastLine();
-                    ClearLineDo();
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    WriteInCenter("Invalid input. Please try again...");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    input = string.Empty;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            else
-            {
-                ClearLastLine();
-                input += keyInfo.KeyChar;
-            }
-            Console.WriteLine();
-            WriteInCenter(input);
-        } while (true);
-
-        ClearLastLine();
-        return input;
-    }
-
-    public static void ClearLastLine()
-    {
-        Console.SetCursorPosition(0, Console.CursorTop - 1);
-        Console.Write(new string(' ', Console.BufferWidth));
-        Console.SetCursorPosition(0, Console.CursorTop - 1);
-    }
-
-    public static void ClearLineDo()
-    {
-        Console.Write(new string(' ', Console.BufferWidth));
-        Console.SetCursorPosition(0, Console.CursorTop - 1);
-
-    }
-
-    public static void WriteInCenter(string data, int length=0, bool offset=false)
-    {
-        if (offset is true)
-        {
-            foreach (var model in data.Split('\n'))
-            {
-                Console.SetCursorPosition((Console.WindowWidth - length) / 2, Console.CursorTop);
-                Console.WriteLine(model);
-            }
-        }
-        else if (offset is false)
-        {
-            foreach (var model in data.Split('\n'))
-            {
-                Console.SetCursorPosition((Console.WindowWidth - model.Length - length) / 2, Console.CursorTop);
-                Console.WriteLine(model);
-            }
-        }
-
-    }
+   
 
 
     public static (string, string) Catchinput(int maxLength, string type,
@@ -278,49 +117,10 @@ public class Helper
         return false;
     }
 
-    private static void WriteErrorMessage(string error)
-    {
-        int cursortop;
-        
-        Console.WriteLine(new string(' ', Console.WindowWidth));
-        (_, cursortop) = Console.GetCursorPosition();
-        Console.ForegroundColor = ConsoleColor.DarkRed;
-        Console.SetCursorPosition(0, cursortop -1);
-        WriteInCenter(error);
-        Console.ResetColor();
-    }
+    
 
-    private static void HandleInputKey(ref string input, int maxLength, char keyChar, string type, string Case)
-    {
-        if (input.Length == maxLength)
-        {
-            WriteErrorMessage("Max input length reached!");
-        }
-        else if (char.IsLetterOrDigit(keyChar) || char.IsSymbol(keyChar) || char.IsPunctuation(keyChar))
-        {
-            ConsoleClear();
-            {
-                if (string.Equals(Case, "register") && string.Equals(type, "birthdate"))
-                {
-                    if (input.Length == 2 || input.Length == 5) input += "-";
-                }
-                input += keyChar;
-            }
-        }
-    }
-    private static string GetInputString(string type, string username, string birthdate, string email, string password)
-    {
-        {
-            return type switch
-            {
-                "username" => !string.IsNullOrEmpty(username) ? username : string.Empty,
-                "birthdate" => !string.IsNullOrEmpty(birthdate) ? birthdate : string.Empty,
-                "email" => !string.IsNullOrEmpty(email) ? email : string.Empty,
-                "password" => !string.IsNullOrEmpty(password) ? password : string.Empty,
-                _ => string.Empty
-            };
-        }
-    }
+    
+    
     private static void UpdateUI(string Case, string type, string input, string username, string birthdate, string email, string password, bool spacebar)
     {
         switch (Case)
@@ -379,146 +179,58 @@ public class Helper
                 break;
         }
     }
-    public static void ConsoleClear()
+    
+    private static string GetColorizedUnchangingU(string auditorium, int i, IDictionary<int, (string, bool)> seatIDcolor, IEnumerable<int> reservedbyotheruser)
     {
-        Console.WriteLine("\b \b");
-        Console.Clear();
+        (string color, bool reserved) = seatIDcolor[GetSeatNumberFromIndex(auditorium, i, true)];
+        return (reserved, reservedbyotheruser.Contains(i), color) switch
+        {
+            (true, true, _) => Colorize("U", "magenta"),
+            (_, _, "Yellow") => Colorize("U", "yellow"),
+            (_, _, "Blue") => Colorize("U", "blue"),
+            (_, _, "Red") => Colorize("U", "red"),
+            _ => throw new ArgumentException(nameof(i), $"Could not find color for seat: {GetSeatNumberFromIndex(auditorium, i, true)}")
+        };
+    }
+
+    public static string Colorize(string character, string color)
+    {
+        return color.ToLower() switch
+        {
+            "black" => $"\u001b[30m{character}\u001b[0m",
+            "red" => $"\u001b[31m{character}\u001b[0m",
+            "green" => $"\u001b[32m{character}\u001b[0m",
+            "yellow" => $"\u001b[33m{character}\u001b[0m",
+            "blue" => $"\u001b[34m{character}\u001b[0m",
+            "magenta" => $"\u001b[35m{character}\u001b[0m",
+            "cyan" => $"\u001b[36m{character}\u001b[0m",
+            "white" => $"\u001b[37m{character}\u001b[0m",
+            "lavender" => $"\u001b[38;5;147m{character}\u001b[0m",
+            "gray" => $"\u001b[90m{character}\u001b[0m",
+            _ => throw new ArgumentException(nameof(color), $"Invalid color: {color}")
+        };
     }
 
     // everything about getting the valid input.
-    public static string GetValidInput(string prompt, Func<string, bool> validation)
+   
+   public static Movie? GetMovieByID(string screeningID)
     {
-        string input;
-        do
+        List<Movie> MovieList = JsonHandler.Read<Movie>("Data/MovieDB.json");
+        foreach(Movie movie in MovieList)
         {
-            Console.Write(prompt);
-            input = Console.ReadLine();
-        } while (!validation(input));
-
-        return input;
-    }
-    public static bool IsNotNull(string input) => !string.IsNullOrWhiteSpace(input);
-    public static bool IsValidInt(string input) => input.All(char.IsDigit);
-    public static int IsValidUsername(string input)
-    {
-        List<User> users = CsvHandler.Read<User>("Data/UserDB.csv");
- 
-        if(!string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 28)
-        {
-            foreach(User user in users)  
-            {
-                if (user.Name.Equals(input)) return -1;
-            }  
-            return 1;
+            if (movie.ScreeningIDs.Contains(screeningID)) return movie;
         }
-        return 0;
+        return null;
+    }
+
+    public static Screening? GetScreeningByID(string screeningID)
+    {
+        List<Screening> ScreeningList = JsonHandler.Read<Screening>("Data/ScreeningDB.json");
+        foreach(Screening screening in ScreeningList)
+        {
+            if (screening.ID == screeningID) return screening;
+        }
+        return null;
     }
     
-    public static int IsValidUsernameLog(string input)
-    {
-        List<User> users = CsvHandler.Read<User>("Data/UserDB.csv");
- 
-        if(!string.IsNullOrWhiteSpace(input) && input.Length >= 3 && input.Length < 28)
-        {
-            foreach(User user in users)  
-            {
-                if (user.Name.Equals(input)) return 1;
-            }  
-            return -1;
-        }
-        return -1;
-    }
-    public static bool IsValidEmail(string input)
-    {
-        List<User> users = CsvHandler.Read<User>("Data/UserDB.csv");
-
-        if(!string.IsNullOrWhiteSpace(input) && input.Contains('@') && input.Contains('.') && input.Length < 31)
-        {
-            foreach(User user in users)
-            {
-                if (user.Email.Equals(input)) return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public static bool IsValidPassword(string input)
-    {
-        // test op lege string of string onder de 6 chars.
-        if (!string.IsNullOrWhiteSpace(input) && input.Length >= 6)
-        {
-            foreach (char c in input)
-            {
-                if (char.IsDigit(c))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public static bool IsValidBD(string input)
-    {
-        string dateFormat = "dd-MM-yyyy";
-        if (DateTime.TryParseExact(input, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result))
-        {
-            if (result.Date <= DateTime.Today)
-            {
-                return true; // Goede verjaardag
-            }
-            else
-            {
-                return false; // Datum is not niet geweest, dus kan niet geboren zijn
-            }
-        }
-        else
-        {
-            return false; // Verkeerde format
-        }
-    }
-
-
-    public static bool IsValidDT(string input)
-    {
-        string dateFormat = "dd-MM-yyyy HH:mm";
-        if (DateTime.TryParseExact(input, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public static int GetUserAge(User user)
-    {
-        string DoB = user.BirthDate;
-        string DateFormat = "dd-MM-yyyy";
-        DateTime birthDate;
-        
-        DateTime.TryParseExact(DoB, DateFormat, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out birthDate);
-        DateTime today = DateTime.Today;
-        int age = today.Year - birthDate.Year;
-        if (birthDate > today.AddYears(-age))
-        {
-            age--; // The user hasn't had their birthday yet this year
-        }
-        return age;
-    }
-    public static void HandleHomeKey(string id)
-    {
-        if (!string.Equals(id, "not logged in"))
-        {
-            User user = UserDataController.GetUserWithValue( "ID", id);
-            if(user.Admin)
-            {
-                AdminInterface.GeneralMenu(id);
-            }
-            else UserInterface.GeneralMenu(id);
-        }
-        else Interface.GeneralMenu();
-    }
 }

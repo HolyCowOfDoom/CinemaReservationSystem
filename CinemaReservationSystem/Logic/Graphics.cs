@@ -308,115 +308,10 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
     }
 
     //user input handling
-    private static void HandleUserInput(Screening screening, User user, string auditorium, int width, int maxindex, int mintopindex, ref int indexPos,
-                                        List<string> selectedseats, List<int> listreservedindex, Dictionary<int, char> numbertoletter,
-                                        List<int> reservedbyotheruser, List<string> reservedseatIDs, ref bool reservedDone)
-    {
-        ConsoleKeyInfo key = Console.ReadKey(true);
-
-        switch (key.Key)
-        {
-            case ConsoleKey.LeftArrow:
-            case ConsoleKey.RightArrow:
-            case ConsoleKey.DownArrow:
-            case ConsoleKey.UpArrow:
-                HandleUserMovement(key, ref indexPos, width, maxindex, mintopindex);
-                break;
-            case ConsoleKey.Spacebar:
-                HandleSpacebarKeyPress(auditorium, indexPos, selectedseats, listreservedindex, reservedbyotheruser, numbertoletter);
-                break;
-            case ConsoleKey.Enter:
-                HandleEnterKeyPress(screening, auditorium, listreservedindex, reservedseatIDs, ref reservedDone);
-                break;
-            case ConsoleKey.Backspace:
-                HandleBackspaceKeyPress(listreservedindex, selectedseats);
-                break;
-            case ConsoleKey.Escape:
-                HandleEscapeKeyPress(user, screening);
-                break;
-            case ConsoleKey.Home:
-                Helper.HandleHomeKey(user.ID);
-                break;
-        }
-    }
+    
 
     //user input handling
-    private static void HandleSpacebarKeyPress(string auditorium, int indexPos, List<string> selectedseats,
-                                                List<int> listreservedindex, List<int> reservedbyotheruser, Dictionary<int, char> numbertoletter)
-    {
-        string representingseat = $"{numbertoletter[GetRowFromIndex(auditorium, indexPos) + 1]}{GetSeatNumberFromIndex(auditorium, indexPos)}";
-        if (!selectedseats.Contains(representingseat) &&
-            IsSeat(auditorium, indexPos) && !listreservedindex.Contains(indexPos) &&
-            !reservedbyotheruser.Contains(indexPos) && selectedseats.Count < 40)
-        {
-            selectedseats.Add(representingseat);
-            listreservedindex.Add(indexPos);
-        }
-        else if (selectedseats.Contains(representingseat) &&
-                 IsSeat(auditorium, indexPos))
-        {
-            selectedseats.Remove(representingseat);
-            listreservedindex.Remove(indexPos);
-        }
-    }
-
-    //user input handling
-    private static void HandleEnterKeyPress(Screening screening, string auditorium, List<int> listreservedindex,
-                                            List<string> reservedseatIDs, ref bool reservedDone)
-    {
-        if (listreservedindex.Count < 1) return;
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        char confirm = Helper.ReadInput((char c) => c == 'y' || c == 'n', "Confirm reservation", "Are you happy with your reservations? Y/N");
-        Console.ForegroundColor = ConsoleColor.Gray;
-        if (string.Equals(Convert.ToString(confirm), "n")) return;
-        foreach (int index in listreservedindex)
-        {
-            ScreeningDataController.ReserveSeat(screening,Convert.ToString(GetSeatNumberFromIndex(auditorium, index, database: true) + GetAuditoriumOffset(Int32.Parse(screening.AssignedAuditorium.ID))));
-            reservedseatIDs.Add(Convert.ToString(GetSeatNumberFromIndex(auditorium, index, database: true) + GetAuditoriumOffset(Int32.Parse(screening.AssignedAuditorium.ID))));
-            int totalPrice = 999999;
-            Reservation reservation = new(reservedseatIDs, screening.ID, totalPrice);
-            //UserDataController.UpdateUserWithValue(user?, "Reservations", reservation); //how should i get currentUser here?
-        }
-        reservedDone = true;
-    }
-
-    //user input handling
-    private static void HandleBackspaceKeyPress(List<int> listreservedindex, List<string> selectedseats)
-    {
-        if (listreservedindex.Count > 0)
-        {
-            listreservedindex.RemoveAt(listreservedindex.Count - 1);
-            selectedseats.RemoveAt(selectedseats.Count - 1);
-        }
-    }
-
-    private static void HandleEscapeKeyPress(User user, Screening screening)
-    {
-        Console.Write("\f\u001bc\x1b[3J");
-        Movie movie = UserInterfaceController.GetMovieByID(screening.ID);
-        UserInterfaceController.ScreeningSelect(movie, user.ID);
-    }
-
-    //user input handling
-    private static void HandleUserMovement(ConsoleKeyInfo key, ref int indexPos, int width, int maxindex, int mintopindex)
-    {
-        indexPos = key.Key switch
-        {
-            ConsoleKey.LeftArrow when indexPos - 2 == - 2 => maxindex,
-            ConsoleKey.LeftArrow when indexPos - 2 >= 0 && indexPos - 2 <= maxindex => indexPos -= 2,
-
-            ConsoleKey.RightArrow when indexPos + 2 == maxindex + 2 => 0,
-            ConsoleKey.RightArrow when indexPos + 2 >= 0 && indexPos + 2 <= maxindex => indexPos += 2,
-
-            ConsoleKey.DownArrow when indexPos + width >= maxindex && indexPos + width <= maxindex + width + 2 => indexPos -= mintopindex,
-            ConsoleKey.DownArrow when indexPos + width >= 0 && indexPos + width <= maxindex => indexPos += width + 2,
-
-            ConsoleKey.UpArrow when indexPos - width >= -width && indexPos - width <= 0 => indexPos += mintopindex,
-            ConsoleKey.UpArrow when indexPos - width >= 0 && indexPos - width <= maxindex => indexPos -= width + 2,
-
-            _ => throw new ArgumentException(nameof(indexPos), $"Could not find new position for: {indexPos}")
-        };
-    }
+   
 
     //logic for drawing auditorium 
     private static void InitAuditorium(Screening screening, User user, out int indexPos, out int width, out int maxindex,
@@ -659,4 +554,57 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
             _ => 0
         };
     }
+
+
+    //refactoring
+     public static void ClearLastLine()
+    {
+        Console.SetCursorPosition(0, Console.CursorTop - 1);
+        Console.Write(new string(' ', Console.BufferWidth));
+        Console.SetCursorPosition(0, Console.CursorTop - 1);
+    }
+
+    public static void ClearLineDo()
+    {
+        Console.Write(new string(' ', Console.BufferWidth));
+        Console.SetCursorPosition(0, Console.CursorTop - 1);
+
+    }
+
+    public static void WriteInCenter(string data, int length=0, bool offset=false)
+    {
+        if (offset is true)
+        {
+            foreach (var model in data.Split('\n'))
+            {
+                Console.SetCursorPosition((Console.WindowWidth - length) / 2, Console.CursorTop);
+                Console.WriteLine(model);
+            }
+        }
+        else if (offset is false)
+        {
+            foreach (var model in data.Split('\n'))
+            {
+                Console.SetCursorPosition((Console.WindowWidth - model.Length - length) / 2, Console.CursorTop);
+                Console.WriteLine(model);
+            }
+        }
+
+    }
+
+
+    public static void WriteErrorMessage(string error)
+    {
+        int cursortop;
+        
+        Console.WriteLine(new string(' ', Console.WindowWidth));
+        (_, cursortop) = Console.GetCursorPosition();
+        Console.ForegroundColor = ConsoleColor.DarkRed;
+        Console.SetCursorPosition(0, cursortop -1);
+        WriteInCenter(error);
+        Console.ResetColor();
+    }
+
+
+
 }
