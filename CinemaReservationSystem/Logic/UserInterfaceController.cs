@@ -7,7 +7,7 @@ public class UserInterfaceController
     private static int totalcount;
     private static int currentIndex = 0;
     private static int selectedIndex = 0;
-    private static User CurrentUser;
+    private static User? CurrentUser;
     public static void LogOut(){
         Interface.GeneralMenu();
     }
@@ -124,25 +124,25 @@ public class UserInterfaceController
     {
         if (CurrentUser != null)
         {
-            var selectedMovie = Movies[selectedIndex];
-            if (CurrentUser.FavMovies.Contains(selectedMovie))
+            Movie selectedMovie = Movies[selectedIndex];
+            bool removed = false;
+            foreach (Movie movie in CurrentUser.FavMovies)
             {
-                CurrentUser.FavMovies.Remove(selectedMovie);
-                UserDataController.RemoveFavoriteMovie(CurrentUser, selectedMovie);
-                Console.WriteLine($"{selectedMovie.Title} removed from favorites");
+                if (movie.ID == selectedMovie.ID)
+                {
+                    int movieIndex = CurrentUser.FavMovies.IndexOf(movie);
+                    UserDataController.RemoveFavoriteMovie(CurrentUser, movieIndex);
+                    Console.WriteLine($"{selectedMovie.Title} removed from favorites"); 
+                    removed = true;
+                    break;
+                }
             }
-            else
+            if (removed == false)
             {
-                CurrentUser.FavMovies.Add(selectedMovie);
                 UserDataController.AddFavoriteMovie(CurrentUser, selectedMovie);
                 Console.WriteLine($"{selectedMovie.Title} added to favorites");
             }
         }
-        foreach (var movie in CurrentUser.FavMovies)
-        {
-            Console.WriteLine(movie.Title);
-        }
-        Thread.Sleep(3000);
     }
 
     private static void LeftArrowPress()
@@ -195,7 +195,17 @@ public class UserInterfaceController
                 Console.BackgroundColor = ConsoleColor.Yellow;
                 Console.ForegroundColor = ConsoleColor.Black;
             }
-            var favoriteMarker = CurrentUser != null && CurrentUser.FavMovies.Contains(Movies[i]) ? "X" : " ";
+            // var favoriteMarker = CurrentUser != null && CurrentUser.FavMovies.Contains(Movies[i]) ? "X" : " ";
+            string favoriteMarker = " ";
+            foreach (Movie movie in CurrentUser.FavMovies)
+            {
+                if (movie.ID == Movies[i].ID)
+                {
+                    favoriteMarker = "X";
+                    break;
+                }
+                else favoriteMarker = " ";
+            }
             Console.WriteLine($"│ {currentIndex + i + 1,-4} │ {Movies[i].Title,-40} │ {Movies[i].AgeRating,-11} │ {Movies[i].Genre,-11} │ {Movies[i].Description,-60} │    {favoriteMarker}     │");
             Console.ResetColor();
         }

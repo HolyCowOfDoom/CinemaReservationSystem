@@ -30,10 +30,10 @@ public class User : IEquatable<User>
     public List<Reservation> Reservations {get; set;}// = new();
 
     [Name("FavMovies"), Optional]
-    public List<Movie> FavMovies { get; set; } = new List<Movie>();
+    public List<Movie> FavMovies { get; set; }
 
     //removed admin parameter
-    public User(string name, string birthDate, string email, string password, bool admin, List<Reservation> reservations = null)
+    public User(string name, string birthDate, string email, string password, bool admin, List<Reservation>? reservations = null, List<Movie>? favMovies = null)
     {
         Directory.CreateDirectory("Data");
         using (StreamWriter w = File.AppendText("Data/UserDB.csv")) //create file if it doesn't already exist
@@ -45,6 +45,8 @@ public class User : IEquatable<User>
         Admin = admin;
         if(reservations != null) Reservations = reservations;
         else Reservations = new();
+        if(favMovies != null) FavMovies = favMovies;
+        else FavMovies = new();
         UserDataController.AddUser(this);
     }
     //for use by CsVHandler.Read(), copies ID rather than generating a new one
@@ -74,6 +76,7 @@ public class User : IEquatable<User>
         _password = user._password;
         Admin = user.Admin;
         Reservations = user.Reservations;
+        FavMovies = user.FavMovies;
     }
     
 

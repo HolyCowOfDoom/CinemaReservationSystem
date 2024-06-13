@@ -30,22 +30,14 @@ public static class UserDataController
 
     public static void AddFavoriteMovie(User user, Movie movie)
     {
-        foreach (var favMovie in user.FavMovies)
-        {
-            if (favMovie.ID == movie.ID)
-            {
-                return; // Movie bestaat al in favorites
-            }
-        }
-
         user.FavMovies.Add(movie);
         UserDataController.AddValueToUser(user, "FavMovies", movie);
         // Code to update user database
     }
 
-    public static void RemoveFavoriteMovie(User user, Movie movie)
+    public static void RemoveFavoriteMovie(User user, int movieIndex)
     {
-        user.FavMovies.Remove(movie);
+        user.FavMovies.Remove(user.FavMovies[movieIndex]);
         UserDataController.UpdateUserWithValue(user, "FavMovies", user.FavMovies);
         // Code om user database te updaten
     }
