@@ -17,8 +17,11 @@ public class UserInterfaceController
         Helper.ConsoleClear();
         Console.CursorVisible = false;
         CurrentUser = id != "not logged in" ? UserDataController.GetUserWithValue("ID", id) : null;
-        totalcount = JsonHandler.Read<Movie>("Data/MovieDB.json").Count;
-        if (!favourite) LoadNextMovies();
+        if (!favourite) {
+            LoadNextMovies();
+            totalcount = JsonHandler.Read<Movie>("Data/MovieDB.json").Count;
+        }
+        else if (favourite) totalcount = Movies.Count;
 
         ConsoleKeyInfo key;
         do
@@ -135,6 +138,11 @@ public class UserInterfaceController
                 Console.WriteLine($"{selectedMovie.Title} added to favorites");
             }
         }
+        foreach (var movie in CurrentUser.FavMovies)
+        {
+            Console.WriteLine(movie.Title);
+        }
+        Thread.Sleep(3000);
     }
 
     private static void LeftArrowPress()
@@ -253,7 +261,7 @@ public class UserInterfaceController
         if (option == "Favorites" && user != null)
         {
             Movies = user.FavMovies;
-            ViewMovies(favourite: true);
+            ViewMovies(id, favourite: true);
         }
     }
 
