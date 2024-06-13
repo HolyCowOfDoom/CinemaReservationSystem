@@ -521,7 +521,7 @@ public class UserInterfaceController
         User? user = UserDataController.GetUserWithValue("ID", id);
         if(user.Admin is true) {
             LoadScreenings();
-            PrintScreeningsAdmin(movie);
+            PrintScreenings(movie);
             AdminInterfaceController.AddScreening(movie, id);
                 //ManageScreenings();
                 ResetFields();

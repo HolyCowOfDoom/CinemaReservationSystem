@@ -31,6 +31,8 @@ public class AdminInterfaceController
             AddScreeningsAuto(amountpermovie);
             AdminInterface.GeneralMenu(id);
             break;
+            case ConsoleKey.C:
+            break;
             case ConsoleKey.Escape:
             case ConsoleKey.Home:
             Helper.HandleHomeKey(id);
