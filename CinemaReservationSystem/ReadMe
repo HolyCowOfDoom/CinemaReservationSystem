@@ -1,0 +1,37 @@
+Guide to using the CinemaReservationSystem
+Necessary packages and downloads:
+.NET framework https://dotnet.microsoft.com/en-us/
+NewtonSoft.json is required https://www.newtonsoft.com/json
+CsvHelper is required https://joshclose.github.io/CsvHelper/
+A Terminal Application from which run the app
+The CinemaReservationSystem folder on your computer (preferably in an easy to access space on your finder)
+
+Important keys:
+Number keys are used to select menu items, if at any other time you are required to press another button, it will be presented on screen,
+
+To start the application open your terminal and cd into the CinemaReservationSystem folder you have prepared on your pc. From there you can:
+* https://www.lifewire.com/change-directories-in-command-prompt-5185508 guide to use of cd in terminals
+
+Log in or Register:
+To register an account please select the proper menu and follow insert your user data. Select accept; and welcome to our System!
+
+When logging in you can simply select the login option to log in using your username and password (so save these!).
+
+Reserving seats and Canceling reservations:
+To make a reservation please navigate to the view movies menu. (This can only be done when logged in).
+
+Select a movie using the on screen controls.
+Do the same for your desired screening.
+You can then select your desired seats to make a reservation; payment is handled externally.
+
+To cancel a reservation navigate to the view user menu. From here you can cancel any reservation on your account. 
+NOTE: you cannot cancel any reservations that are scheduled to be screened in less than 24 hours time.
+
+Favorite movies:
+This can be done by pressing F on your desired movie from the view movies menu, then can then be found after filtering for favorites.]
+
+Filter movies:
+Done from the filter movies menu, select the categories you would like to filter. The application then compiles all matching movies for you.
+Log out:
+When logging out your data is stored to the database and you can safely log in to other accounts without merging data.
+
