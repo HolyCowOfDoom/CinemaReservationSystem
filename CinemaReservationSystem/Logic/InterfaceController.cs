@@ -7,7 +7,7 @@ public class InterfaceController
         UserInterfaceController.ViewMovies();
     }
 
-    public static void LogIn(bool reservemovie=false, Movie movie = null)
+    public static void LogIn(bool reservemovie=false, Movie? movie = null)
     {
         string username = string.Empty, password = string.Empty;
         string EscorTaborshift;
@@ -38,6 +38,8 @@ public class InterfaceController
                     if (!string.IsNullOrEmpty(username))
                     {
                         user = UserDataController.GetUserWithValue("Name", username);
+                        if (user.Admin == true) user = new Admin(user.ID, user.Name, user.BirthDate, user.Email, user.Password, user.Reservations, user.FavMovies);
+                        else user = new Customer(user.ID, user.Name, user.BirthDate, user.Email, user.Password, user.Reservations, user.FavMovies);
                         currentField = "password";
                     }
                     break;
@@ -60,7 +62,7 @@ public class InterfaceController
                         if (string.Equals(password, user.Password))
                         {
                             Helper.ConsoleClear();
-                            if (user.Admin is true) AdminInterface.GeneralMenu(user.ID);
+                            if (user is Admin) AdminInterface.GeneralMenu(user.ID);
                             else
                             {
 
