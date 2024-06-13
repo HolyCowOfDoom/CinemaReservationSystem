@@ -563,14 +563,7 @@ public class UserInterfaceController
     {
         try
         {
-            Screening? chosenScreening = null;
-            foreach (Screening screening in Screenings)
-            {
-                if (Screenings.IndexOf(screening) == selectedIndex)
-                {
-                    chosenScreening = screening;
-                }
-            }
+            Screening? chosenScreening = loadedScreenings[selectedIndex];
             ReserveSeats(chosenScreening, id);
         }
         catch (NullReferenceException)
