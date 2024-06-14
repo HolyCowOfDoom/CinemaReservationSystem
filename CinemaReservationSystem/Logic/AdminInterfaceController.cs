@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Net;
 
 public class AdminInterfaceController
 {
@@ -18,6 +19,52 @@ public class AdminInterfaceController
         }
     }
 
+    public static void AdjustPricing(string id)
+    {
+        Prices currentPricing = JsonHandler.Read<Prices>("Data/PricesDB.json")[0];
+        Console.WriteLine("press R to adjust the Red seats, B to adjust the Blue seats, Y to adjust the Yellow seats, press A to change all");
+        ConsoleKeyInfo key = Console.ReadKey();
+        Console.Clear();
+        switch (key.Key)
+        {
+            case ConsoleKey.R:
+                int newPriceR = Convert.ToInt32(Helper.GetValidInput("Please input the desired price in whole integers: ", Helper.IsValidInt));
+                currentPricing.Red = newPriceR;
+                break;
+            case ConsoleKey.B:
+                int newPriceB = Convert.ToInt32(Helper.GetValidInput("Please input the desired price in whole integers: ", Helper.IsValidInt));
+                currentPricing.Blue = newPriceB;
+                break;
+            case ConsoleKey.Y:
+                int newPriceY = Convert.ToInt32(Helper.GetValidInput("Please input the desired price in whole integers: ", Helper.IsValidInt));
+                currentPricing.Yellow = newPriceY;
+                break;
+            case ConsoleKey.A:
+                int newPriceRa = Convert.ToInt32(Helper.GetValidInput("(Red)Please input the desired price in whole integers: ", Helper.IsValidInt));
+                int newPriceBa = Convert.ToInt32(Helper.GetValidInput("(Blue)Please input the desired price in whole integers: ", Helper.IsValidInt));
+                int newPriceYa = Convert.ToInt32(Helper.GetValidInput("(Yellow)Please input the desired price in whole integers: ", Helper.IsValidInt));
+                currentPricing.Red = newPriceRa;
+                currentPricing.Blue = newPriceBa;
+                currentPricing.Yellow = newPriceYa;
+                break;
+            case ConsoleKey.Escape:
+            case ConsoleKey.Home:
+                Helper.HandleHomeKey(id);
+                break;
+            case ConsoleKey:
+                Helper.ConsoleClear();
+                AdjustPricing(id);
+                break; 
+        }
+        JsonHandler.Update<Prices>(currentPricing, "Data/PricesDB.json");
+        Console.Clear();
+        Console.WriteLine($"Your new prices are:\nRed: {currentPricing.Red}\nBlue: {currentPricing.Blue}\nYellow: {currentPricing.Yellow}");
+        Console.WriteLine("Press x to go back to the main menu");
+        char specificLetterInput = Helper.ReadInput((char c) => c == 'x');
+        if (specificLetterInput == 'x'){
+            AdminInterface.GeneralMenu(id);
+        }
+    }
     public static void AddScreening(Movie movie, string id)
     {
         Console.WriteLine("press a to automatically add screenings or c to continue (max 10)");

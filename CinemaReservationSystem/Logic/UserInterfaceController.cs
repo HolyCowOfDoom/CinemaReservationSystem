@@ -663,9 +663,30 @@ public class UserInterfaceController
 
         IEnumerable<string> reservedSeatIDs = Graphics.AuditoriumView(screening, user);
         //priceCalc will be done through AuditoriumView
+        int totalPrice = 0;
+        foreach (string seatID in reservedSeatIDs)
+        {
+            Seat? seat = screening.AssignedAuditorium.GetSeat(seatID);
+            if (seat != null)
+            {
+                Prices prices = JsonHandler.Read<Prices>("Data/PricesDB.json")[0];
+                switch (seat.Color)
+                {
+                    case "Red":
+                        totalPrice += prices.Red;
+                        break;
+                    case "Blue":
+                       totalPrice += prices.Blue;
+                        break;
+                    case "Yellow":
+                        totalPrice += prices.Yellow;
+                        break;
+                }
+            }
+        }
 
         
-        Reservation newReservation = new Reservation(reservedSeatIDs.ToList(), screening.ID, 20);
+        Reservation newReservation = new Reservation(reservedSeatIDs.ToList(), screening.ID, totalPrice);
         UserDataController.AddValueToUser(user, "Reservations", newReservation);
 
         Console.WriteLine("Press x to go back to the main menu");
