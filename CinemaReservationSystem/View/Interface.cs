@@ -7,7 +7,7 @@ public abstract class Interface
         switch (DigitInput) 
         {
         case '1':
-            UserInterfaceController.ViewMovies();
+            InterfaceController.ViewMovies();
             break;
         case '2':
             InterfaceController.RegisterUser();

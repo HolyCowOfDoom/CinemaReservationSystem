@@ -1,5 +1,5 @@
 ID,Name,BirthDate,Email,Admin,Password,Reservations,FavMovies
 2c90eafd-39bd-46a8-a8cf-8e9bdb1152e7,Utku,08-04-2000,utku@email.com,True,password123,,
-fcc1f35c-47e4-40e0-bf91-1d0c2cd953dd,Julian,14-09-2002,Julian@email.com,False,password123,{SeatIDs: [152]; ScreeningID: f5e675aa-c0c6-4ee5-aa6a-41866c5751d9; TotalPrice: 10},
+fcc1f35c-47e4-40e0-bf91-1d0c2cd953dd,Julian,14-09-2002,Julian@email.com,False,password123,,
 314335b5-49c1-4d33-9531-cf02a0b484a6,Admin,08-04-2000,ut.ozyurt@gmail.com,True,password123,,
 3dda0dee-a34e-432d-b283-bbb3912485a9,Customer,15-06-2006,mathijs@gmail.com,False,password123,,

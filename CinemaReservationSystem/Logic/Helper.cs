@@ -423,14 +423,7 @@ public class Helper
         return input;
     }
     public static bool IsNotNull(string input) => !string.IsNullOrWhiteSpace(input);
-    public static bool IsValidInt(string input)
-    {
-        if (!string.IsNullOrEmpty(input))
-        {
-            return input.All(char.IsDigit);
-        }
-        return false;
-    }
+    public static bool IsValidInt(string input) => input.All(char.IsDigit);
     public static bool IsValidAgeRating(string input)
     {
         HashSet<int> validNumbers = new HashSet<int> { 6, 9, 13, 15, 18 };

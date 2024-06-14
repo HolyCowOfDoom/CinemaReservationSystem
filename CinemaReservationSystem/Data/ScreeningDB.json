@@ -6033,7 +6033,7 @@
         {
           "Color": "Blue",
           "ID": "152",
-          "IsReserved": true,
+          "IsReserved": false,
           "Price": 0.0
         },
         {
