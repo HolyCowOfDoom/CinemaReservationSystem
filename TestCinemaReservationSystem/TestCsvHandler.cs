@@ -147,7 +147,7 @@ public class TestCsvHandler : TestHelperMethods //TestMethods has general method
             //applies all changes to a new User in memory based on start values of user
             User newUser = new User("NewID" + startUser.ID, "NewName" + startUser.Name, 
             "NewBirthDate" + startUser.BirthDate, "NewEmail" + startUser.Email, 
-            "NewPassword" + startUser.Password, false, testReservations);
+            "NewPassword" + startUser.Password, false, testReservations, null); //null for FavMovies for now
             //newUser.Reservations.InsertRange(0, testUsers[i].Reservations); //make sure old Reservations are in the new User to compare too
             User foundUser = CsvHandler.GetRecordWithValue<User>(fileName, "Name", testUsers[i].Name);
             Assert.AreEqual(foundUser, newUser);

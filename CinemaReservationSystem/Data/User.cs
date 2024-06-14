@@ -33,7 +33,7 @@ public class User : IEquatable<User>
     public List<Movie> FavMovies { get; set; }
 
     //removed admin parameter
-    public User(string name, string birthDate, string email, string password, bool admin, List<Reservation>? reservations = null, List<Movie>? favMovies = null)
+    public User(string name, string birthDate, string email, string password, bool admin, List<Reservation>? reservations = null, List<Movie>? favMovies = null, [CsvHelper.Configuration.Attributes.Ignore]string altFilePath = "")
     {
         Directory.CreateDirectory("Data");
         using (StreamWriter w = File.AppendText("Data/UserDB.csv")) //create file if it doesn't already exist
@@ -47,10 +47,11 @@ public class User : IEquatable<User>
         else Reservations = new();
         if(favMovies != null) FavMovies = favMovies;
         else FavMovies = new();
-        UserDataController.AddUser(this);
+        UserDataController.AddUser(this, altFilePath); //doesn't use altFilePath if it's empty
     }
     //for use by CsVHandler.Read(), copies ID rather than generating a new one
-    public User(string id, string name, string birthDate, string email,string password, bool admin, List<Reservation> reservations, List<Movie> favMovies)
+    //altFilePath still needs to be included as  constructor parameter as csvHelper defaults to using the longest constructor and we want it to use this one
+    public User(string id, string name, string birthDate, string email,string password, bool admin, List<Reservation> reservations, List<Movie> favMovies, [CsvHelper.Configuration.Attributes.Ignore]string altFilePath = "")
     {
         ID = id;
         Name = name;

@@ -13,7 +13,7 @@ public class TestHelperMethods
         List<User> testUsers = new();
         for(int i = 1; i <= count; i++ )
         {
-            User newUser = new User($"testUser{i}", $"0{i}-01-2000", $"test.user{i}@gmail.com", $"testPassword{i}", false, null, fileName);
+            User newUser = new User($"testUser{i}", $"0{i}-01-2000", $"test.user{i}@gmail.com", $"testPassword{i}", false, null, null, fileName);
             if (addReservations) newUser.Reservations.Add(new Reservation(new List<string>() {$"{i}"}, $"{i}", i*20));
             testUsers.Add(newUser);
         }

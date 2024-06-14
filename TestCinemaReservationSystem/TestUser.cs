@@ -6,7 +6,7 @@ public class TestUser : TestHelperMethods
     [TestMethod]
     public void TestConstructor()
     {
-        User user = new("TestUser1", "01-01-2000", "test.user@gmail.com", "testpassword");
+        User user = new("TestUser1", "01-01-2000", "test.user@gmail.com", "testpassword", false);
         Assert.AreEqual(user.Name, "TestUser1");
         Assert.AreEqual(user.BirthDate, "01-01-2000");
         Assert.AreEqual(user.Email, "test.user@gmail.com");
