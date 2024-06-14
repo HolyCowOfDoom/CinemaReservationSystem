@@ -344,12 +344,13 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
         }
     }
 
-    private static void DrawLegend(string Blueprice, string Redprice, string Yellowprice)
+    private static void DrawLegend()
     {
+        Prices currentPrices = JsonHandler.Read<Prices>("Data/PricesDB.json")[0];
         Console.WriteLine($"\nSEATS {Colorize("U", "magenta")} ARE ALREADY RESERVED"
-            + $", {Colorize("U", "blue")} PRICE: " + Blueprice
-            + $", {Colorize("U", "yellow")} PRICE: " + Yellowprice
-            + $", {Colorize("U", "red")} PRICE: " + Redprice);
+            + $", {Colorize("U", "blue")} PRICE: " + currentPrices.Blue
+            + $", {Colorize("U", "yellow")} PRICE: " + currentPrices.Yellow
+            + $", {Colorize("U", "red")} PRICE: " + currentPrices.Red);
     }
 
     public static IEnumerable<string> AuditoriumView(Screening screening, User user)
@@ -574,7 +575,7 @@ T         U U U U U U U   U U U U U U U U   U U U U U U U
 
 
         Console.Write(coloredAuditorium);
-        DrawLegend("10", "15", "12");
+        DrawLegend();
     }
 
     private static string GetColoredAuditorium(string auditorium, int indexPos, IEnumerable<int> reservedbyotheruser, IEnumerable<int> listreservedindex, IDictionary<int, (string, bool)> seatIDcolor)
