@@ -23,6 +23,18 @@ public class Auditorium : ObjectHasID
     {
         return $"Auditorium ID: {ID}, Number of Seats: {Seats.Count}";
     }
+
+    public Seat? GetSeat(string id)
+    {
+        foreach (Seat seat in Seats)
+        {
+            if (seat.ID == id)
+            {
+                return seat;
+            }
+        }
+        return null;
+    }
 }
 
 
