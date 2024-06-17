@@ -1,6 +1,6 @@
 ID,Name,BirthDate,Email,Admin,Password,Reservations,FavMovies
 2c90eafd-39bd-46a8-a8cf-8e9bdb1152e7,Utku,08-04-2000,utku@email.com,True,password123,,
-fcc1f35c-47e4-40e0-bf91-1d0c2cd953dd,Julian,14-09-2002,Julian@email.com,False,password123,,
+fcc1f35c-47e4-40e0-bf91-1d0c2cd953dd,Julian,14-09-2002,Julian@email.com,False,password123,{SeatIDs: [152]; ScreeningID: f5e675aa-c0c6-4ee5-aa6a-41866c5751d9; TotalPrice: 10},
 314335b5-49c1-4d33-9531-cf02a0b484a6,Admin,08-04-2000,ut.ozyurt@gmail.com,True,password123,,
 3dda0dee-a34e-432d-b283-bbb3912485a9,Customer,15-06-2006,mathijs@gmail.com,False,password123,,
 12d220d1-ac68-4b3c-b48b-1392251d3715,Yannick,27-06-2002,duck@gmail.com,False,yannick123,,"{Title: Fight Club; ID: 7998a4f3-cdb0-4301-8fad-81d7044dad7b; Rating: 18; Description: An intense exploration of masculinity and identity; Genre: Drama; ScreeningIDs: [2f6fa72e-3190-4940-90fb-40221bb0508d,9bd85636-919a-4eba-8001-93f25eea2d29,077d9888-4247-4567-9e1a-cecbb91ad218]; }&{Title: Demo Title; ID: 1d5d49f8-610e-4c31-bfdb-505cb1784197; Rating: 8; Description: a movie for demo purposes; Genre: Action; ScreeningIDs: [b81b5f1c-3441-427c-8ae0-c9f3fceab74a,8c7b3b4b-931d-452d-be97-2edf64dd2cb9,687dce6e-9269-4f3b-822a-676097a34d2a]; }&{Title: The Testening; ID: 2a564a8a-c639-4a12-a55c-b6c07a61aaad; Rating: 18; Description: its a me test; Genre: Action; ScreeningIDs: [55e379e4-5a49-4283-b808-9d37c05a41da,d7db260c-e9a2-4e4a-9ba7-0fb7e932f632,bfd45a8d-3339-4e57-a354-f4047b6f7930]; }"

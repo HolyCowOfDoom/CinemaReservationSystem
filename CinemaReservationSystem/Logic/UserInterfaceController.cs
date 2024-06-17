@@ -197,14 +197,17 @@ public class UserInterfaceController
             }
             // var favoriteMarker = CurrentUser != null && CurrentUser.FavMovies.Contains(Movies[i]) ? "X" : " ";
             string favoriteMarker = " ";
-            foreach (Movie movie in CurrentUser.FavMovies)
+            if (CurrentUser != null)
             {
-                if (movie.ID == Movies[i].ID)
+                foreach (Movie movie in CurrentUser.FavMovies)
                 {
-                    favoriteMarker = "X";
-                    break;
+                    if (movie.ID == Movies[i].ID)
+                    {
+                        favoriteMarker = "X";
+                        break;
+                    }
+                    else favoriteMarker = " ";
                 }
-                else favoriteMarker = " ";
             }
             Console.WriteLine($"│ {currentIndex + i + 1,-4} │ {Movies[i].Title,-40} │ {Movies[i].AgeRating,-11} │ {Movies[i].Genre,-11} │ {Movies[i].Description,-60} │    {favoriteMarker}     │");
             Console.ResetColor();
@@ -442,6 +445,13 @@ public class UserInterfaceController
 
     public static void CancelReservation(string id, User user)
     {
+        if (user.Reservations.Count < 1)
+        {
+            Helper.WriteInCenter("You have no reservations");
+            Thread.Sleep(1000);
+            Console.Clear();
+            ViewUser(id);
+        }
         int index = 0;
         Console.WriteLine("┌───┬──────────────────────────────────────────────────────┬────────────────────────────┬───────────────┬───────────────────────┬───────────────────┐");
         foreach (Reservation reservation in user.Reservations)
